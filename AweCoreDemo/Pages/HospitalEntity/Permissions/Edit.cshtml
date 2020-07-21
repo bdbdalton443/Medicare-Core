@@ -1,0 +1,88 @@
+﻿@page
+@using DemoHms.Data
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext  _context
+@model DemoHms.Pages.HospitalEntity.Permissions.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+   var user = _context.AppUsers.Include(a => a.EmployeeGroup).FirstOrDefault(U => U.Email.Equals(User.Identity.Name));
+    if (user.EmployeeGroup.Name == "Root")
+        Layout = "~/Pages/Shared/_Root.cshtml";
+    else
+        Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Permission</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Permission.PermissionID" />
+            <div class="form-group">
+                <label asp-for="Permission.Name" class="control-label"></label>
+                <input asp-for="Permission.Name" class="form-control" />
+                <span asp-validation-for="Permission.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Permission.CanEdit" /> @Html.DisplayNameFor(model => model.Permission.CanEdit)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Permission.CanRead" /> @Html.DisplayNameFor(model => model.Permission.CanRead)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Permission.CanDelete" /> @Html.DisplayNameFor(model => model.Permission.CanDelete)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Permission.CanAdd" /> @Html.DisplayNameFor(model => model.Permission.CanAdd)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Permission.CanApprove" /> @Html.DisplayNameFor(model => model.Permission.CanApprove)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Permission.CanConfirm" /> @Html.DisplayNameFor(model => model.Permission.CanConfirm)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Permission.EmployeeGroupID" class="control-label"></label>
+                <select asp-for="Permission.EmployeeGroupID" class="form-control" asp-items="ViewBag.EmployeeGroupID"></select>
+                <span asp-validation-for="Permission.EmployeeGroupID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Permission.ActivityID" class="control-label"></label>
+                <select asp-for="Permission.ActivityID" class="form-control" asp-items="ViewBag.ActivityID"></select>
+                <span asp-validation-for="Permission.ActivityID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Permission.CreatedOn" class="control-label"></label>
+                <input type="datetime" asp-for="Permission.CreatedOn" class="form-control" disabled />
+                <span asp-validation-for="Permission.CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

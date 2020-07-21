@@ -1,0 +1,44 @@
+﻿@page
+@model DemoHms.Pages.HospitalEntity.Branches.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Root.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Branch</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Branch.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Branch.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Branch.Location)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Branch.Location)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Branch.HospitalID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Branch.HospitalID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Branch.BranchType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Branch.BranchType.BranchTyeID)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Branch.BranchID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -1,0 +1,67 @@
+﻿@page
+@model DemoHms.Pages.HospitalEntity.Departments.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Root.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Department[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department[0].Telephone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department[0].Fax)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department[0].Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department[0].Branch)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Department) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telephone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Branch.BranchID)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.DepartmentID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.DepartmentID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.DepartmentID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

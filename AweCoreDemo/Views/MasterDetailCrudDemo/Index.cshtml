@@ -1,0 +1,143 @@
+@{
+    ViewBag.Title = "Master Details Demo using the Grid and PopupForm";
+}
+<h2>Master Detail CRUD Demo using Grid and PopupForm</h2>
+This is a demo for master detail CRUD using the Grid.<br />
+For master-detail grid see <a href="@Url.Action("Index", "GridNestingDemo")#Master-detail-grid">Master Detail Grid</a>,
+or <a href="@Url.Action("Index","GridNestingDemo")#Nested-grids--Hierarchy">Hierarchy (Nested Grids)</a>
+@*begin*@
+@{ var grid1 = "RestaurantGrid"; }
+@Html.InitCrudPopupsForGrid(grid1, "MasterDetailCrudDemo", 470, 1000)
+
+<div class="bar">
+    @Html.CreateButtonForGrid(grid1)
+</div>
+
+@(Html.Awe().Grid(grid1)
+            .Height(350)
+            .Attr("data-syncg", "rest") // crud sync using signalr in site.js
+            .Url(Url.Action("RestaurantGridGetItems"))
+            .Groupable(false)
+            .Columns(
+            new Column { ClientFormat = ".(Id)", Header = "Id", Width = 70 },
+            new Column { Bind = "Name" },
+            new Column { ClientFormat = GridUtils.EditFormatForGrid(grid1), Width = 55 },
+            new Column { ClientFormat = GridUtils.DeleteFormatForGrid(grid1), Width = 55 }))
+@*end*@
+
+<div class="tabs code">
+    <div data-caption="main view">@Html.Source("MasterDetailCrudDemo/Index.cshtml")</div>
+    <div data-caption="master create view">@Html.Source("MasterDetailCrudDemo/Create.cshtml")</div>
+    <div data-caption="detail create view">@Html.Source("AddressesGridCrud/Create.cshtml")</div>
+    <div data-caption="master crud controller">@Html.Code("Demos/Grid/MasterDetailCrud/MasterDetailCrudDemoController.cs")</div>
+    <div data-caption="detail crud controller">@Html.Code("Demos/Grid/MasterDetailCrud/AddressesGridCrudController.cs")</div>
+</div>
+
+<h2>Inline editing inside details popup</h2>
+@*beginpopie*@
+@{ var gridIE = "RestaurantGridIE1"; }
+@Html.InitCrudPopupsForGrid(gridIE, "MasterDetailInline", 470, 1000)
+
+<div class="bar">
+    @Html.CreateButtonForGrid(gridIE)
+</div>
+
+@(Html.Awe().Grid(gridIE)
+          .Height(350)
+          .Attr("data-syncg", "rest") // crud sync using signalr in site.js
+          .Url(Url.Action("RestaurantGridGetItems"))
+          .Groupable(false)
+          .Columns(
+              new Column { ClientFormat = ".(Id)", Header = "Id", Width = 70 },
+              new Column { Bind = "Name" },
+              new Column { ClientFormat = GridUtils.EditFormatForGrid(gridIE), Width = 55 },
+              new Column { ClientFormat = GridUtils.DeleteFormatForGrid(gridIE), Width = 55 }))
+@*endpopie*@
+<div class="tabs code">
+    <div data-caption="main view">@Html.Source("MasterDetailCrudDemo/Index.cshtml", "popie")</div>
+    <div data-caption="detail create view">@Html.Source("MasterDetailInline/Create.cshtml")</div>
+</div>
+
+<h2>Master Detail CRUD using in nest editing</h2>
+
+@*begin2*@
+@{ var grid2 = "RestaurantGrid2"; }
+@Html.InitCrudForGridNest(grid2, "MasterDetailCrudDemo")
+
+<div class="bar">
+    <button type="button" onclick="utils.nestCreate('@grid2', 'create@(grid2)')" class="awe-btn mbtn">Create</button>
+</div>
+
+@(Html.Awe().Grid(grid2)
+    .Url(Url.Action("RestaurantGridGetItems"))
+    .PageSize(10)
+    .Attr("data-syncg", "rest")
+    .Nests(
+        new Nest { Name = "editnst", GetFunc = "utils.loadNestPopup('edit" + grid2 + "')" },
+        new Nest { Name = "delnst", GetFunc = "utils.loadNestPopup('delete" + grid2 + "')" })
+    .Columns(
+            new Column { ClientFormat = ".Id", Header = "Id", Width = 70 },
+            new Column { Bind = "Name" },
+            new Column { ClientFormat = GridUtils.EditGridNestFormat(), Width = 55 },
+            new Column { ClientFormat = GridUtils.DeleteGridNestFormat(), Width = 55 }))
+@*end2*@
+
+<div class="tabs code">
+    <div data-caption="view">@Html.Source("MasterDetailCrudDemo/Index.cshtml", 2)</div>
+</div>
+
+<h3>Master Detail CRUD using Inline Editing and nesting</h3>
+@*begingl*@
+@{
+    var grid3 = "RestaurantGridInline";
+}
+
+@Html.InitDeletePopupForGrid(grid3)
+
+<div class="bar">
+    @Html.Awe().Button().Text("Create").OnClick("$('#" + grid3 + "').data('api').inlineCreate()").CssClass("mbtn")
+</div>
+
+@(Html.Awe().Grid(grid3)
+      .Url(Url.Action("RestaurantGridGetItems"))
+      .Mod(o => o.InlineEdit(Url.Action("Create", "RestInl"), Url.Action("Edit", "RestInl"), rowClickEdit: true))
+      .Groupable(false)
+      .Attr("data-syncg", "rest")
+      .Nests(new Nest { Name = "detailnst", Url = Url.Action("Addresses", "RestInl"), LoadOnce = true })
+      .Columns(
+          new Column { ClientFormat = ".Id", Header = "Id", Width = 70 }.Mod(o => o.InlineId()),
+          new Column { Bind = "Name" }.Mod(o => o.Inline(Html.Awe().TextBox("Name"))),
+          new Column
+          {
+              ClientFormat = "<button type='button' class='awe-btn o-pad detailnst'>details <i class='caretc'><i class='o-caret'></i></i></button>",
+              Width = 105
+          },
+          new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+          new Column { ClientFormat = Html.InlineDeleteFormatForGrid(grid3), Width = 90 }))
+<style>
+    /* hide addresses button for new rows */
+    .o-glnew .detailnst {
+        display: none;
+    }
+
+    .caretc {
+        position: relative;
+        padding: .4em .5em;
+        display: inline-block;
+    }
+
+        .caretc .o-caret {
+            transform: rotate(-90deg);
+            zoom: 1.1;
+        }
+
+    .detailnst-on .caretc .o-caret {
+        transform: rotate(0);
+    }
+</style>
+@*endgl*@
+<div class="tabs code">
+    <div data-caption="view">@Html.Source("MasterDetailCrudDemo/Index.cshtml", "gl")</div>
+    <div data-caption="nest view">@Html.Source("RestInl/Addresses.cshtml")</div>
+    <div data-caption="RestInl controller">@Html.Code("Demos/Grid/MasterDetailCrud/RestInlController.cs")</div>
+</div>

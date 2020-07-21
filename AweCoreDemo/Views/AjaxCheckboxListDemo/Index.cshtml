@@ -1,0 +1,287 @@
+@model AweCoreDemo.ViewModels.Input.AjaxCheckboxListDemoInput
+@using AweCoreDemo.Controllers.Awesome.MultiLookup
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "AjaxCheckBoxList, Cascading Checkbox List";
+}
+<h1>AjaxCheckboxList</h1>
+<div class="expl">
+    It renders a list of checkboxes, needs an url, js func or controller to get data from.
+</div>
+<script>
+    var meals = @Html.Raw(DemoUtils.Encode(Db.Meals.Select(o => new KeyContent(o.Id, o.Name))));
+    var categories = @Html.Raw(DemoUtils.Encode(Db.Categories.Select(o => new KeyContent(o.Id, o.Name))));
+</script>
+@*begin*@
+<h3>Cascading CheckboxList using binding to parent</h3>
+@(Html.Awe().AjaxCheckboxListFor(o => o.ParentCategory)
+            .Url(Url.Action("GetCategories", "Data")))
+
+@(Html.Awe().AjaxCheckboxListFor(o => o.ChildMeals)
+            .Parent(o => o.ParentCategory, "categories")
+            .Url(Url.Action("GetMeals", "Data")))
+@*end*@
+<div class="code">
+    @Html.Source("AjaxCheckboxListDemo/Index.cshtml")
+    @Html.Csource("Awesome/DataController.cs")
+</div>
+
+<h3>Bound to many parents</h3>
+@(Html.Awe().MultiLookupFor(o => o.CategoriesData)
+            .Controller<CategoriesMultiLookupController>()
+            .ClearButton())
+
+@(Html.Awe().AjaxRadioListFor(o => o.CategoryData)
+            .Url(Url.Action("GetCategories", "Data")))
+
+@(Html.Awe().AjaxCheckboxListFor(o => o.ChildOfManyMeal)
+            .Url(Url.Action("GetMeals", "Data"))
+            .Parent(o => o.CategoriesData, "categories")
+            .Parent(o => o.CategoryData, "categories"))
+
+<h3>Mods</h3>
+<div class="expl">
+    Extending the behaviour of the AjaxCheckboxList using mods. The new components have the same features as the AjaxCheckboxList but render (look) differently
+    and have additional properties which can be specified inside the Extension Method (e.g. .Multiselect() )
+</div>
+
+<div class="example">
+    <h3>Ochk</h3>
+    @*beginochk*@
+    @(Html.Awe().AjaxCheckboxList("CategoriesOchk")
+          .Value(new [] { Db.Categories[0].Id, Db.Categories[1].Id })
+          .Ochk()
+          .Url(Url.Action("GetCategories", "Data")))
+    @*endochk*@
+    @Html.Source("AjaxCheckboxListDemo/Index.cshtml", "ochk")
+</div>
+
+<div class="example">
+    <h3>ButtonGroup</h3>
+    @*beginbg*@
+    @(Html.Awe().AjaxCheckboxList("CategoriesButtonGroup")
+          .ButtonGroup()
+          .Url(Url.Action("GetCategories", "Data")))
+    @*endbg*@
+    @Html.Source("AjaxCheckboxListDemo/Index.cshtml", "bg")
+</div>
+
+<div class="example">
+    <h3>Multiselect</h3>
+    @*beginms*@
+    @(Html.Awe().AjaxCheckboxList("CategoriesMulti")
+          .Multiselect()
+          .Url(Url.Action("GetCategories", "Data")))
+
+    @(Html.Awe().AjaxCheckboxList("AllMealsMulti")
+          .Multiselect(o => o.NoSelectClose())
+          .Parent("CategoriesMulti", "categories")
+          .Url(Url.Action("GetMeals", "Data")))
+    @*endms*@
+    <br />
+    <br />
+    <div class="tabs">
+        <div data-caption="description" class="expl">Parent and Child with <code>NoSelectClose()</code>, values can be reordered by dragging them</div>
+        <div data-caption="view">@Html.Source("AjaxCheckboxListDemo/Index.cshtml", "ms")</div>
+    </div>
+</div>
+
+<div class="example">
+    <h3>Multiselect with custom item</h3>
+    @*beginmsci*@
+    @(Html.Awe().AjaxCheckboxList("MealsMultiImg")
+          .Value(new [] { Db.Meals[0].Id, Db.Meals[2].Id, Db.Meals[14].Id})
+          .Multiselect(o => o.ItemFunc("awem.imgItem").CaptionFunc("utils.imgCaption").NoSelectClose())
+          .Url(Url.Action("GetMealsImg", "Data")))
+    @*endmsci*@
+    <br />
+    <br />
+    <div class="tabs">
+        <div data-caption="description" class="expl">defining custom rendering functions for the dropdown list item and selected caption</div>
+        <div data-caption="view">@Html.Source("AjaxCheckboxListDemo/Index.cshtml", "msci")</div>
+        <div data-caption="controller">@Html.Csource("Awesome/DataController.cs", "img") </div>
+    </div>
+</div>
+
+<div class="example">
+    <h3>Multiselect Combo</h3>
+    <div class="expl">can add values not present in the select list</div>
+    @*begincmb*@
+    @(Html.Awe().AjaxCheckboxList("AllMealsMultiCombo")
+          .Multiselect(o => o.NoSelectClose().Combo())
+          .DataFunc("utils.getItems(meals)"))
+    @*endcmb*@
+    <div data-caption="view">@Html.Source("AjaxCheckboxListDemo/Index.cshtml", "cmb")</div>
+</div>
+
+<div class="example">
+    <div class="expl"><code>awem.multiselb</code>, used in grid columns selector mod</div>
+    @(Html.Awe().AjaxCheckboxList("CategoriesMulti2")
+          .Mod("awem.multiselb")
+          .Tag(new { NoSelClose = 1, InLabel = "categories" })
+          .DataFunc("utils.getItems(categories)"))
+</div>
+
+<div class="example">
+    <h3>Multiselect, with custom css</h3>
+    @(Html.Awe().AjaxCheckboxList("MealsAll")
+            .Multiselect(o => o.NoSelectClose())
+            .CssClass("llist")
+            .Value(Db.Meals.Take(5).Select(o => o.Id))
+            .Url(Url.Action("GetAllMeals", "Data")))
+
+    <style>
+        .llist {
+            width: 250px;
+        }
+
+            .llist .o-mlti {
+                width: 100%;
+            }
+    </style>
+</div>
+
+<div class="example">
+    @await Html.PartialAsync("Demos/RmtSrcGit")
+</div>
+
+<div class="example">
+    <h3>Set value from get items call</h3>
+    @*beginsv*@
+    @(Html.Awe().AjaxRadioList("CategorySv")
+            .Odropdown(o => o.AutoSelectFirst())
+            .DataFunc("utils.getItems(categories)"))
+
+    @(Html.Awe().AjaxCheckboxList("MealsSv")
+            .Parent("CategorySv", "categories")
+            .Url(Url.Action("GetMealsSetValue", "Data")))
+    @*endsv*@
+    <br />
+    <br />
+    @(Html.Awe().Tabs()
+    .Add("description", "setting selected items in the controller by returning <code>AweItems</code> instead of <code>KeyContent[]</code>", "expl")
+    .Add("view", Html.Source("AjaxCheckboxListDemo/Index.cshtml", "sv"))
+    .Add("controller", Html.Csource("Awesome/DataController.cs", "gmsv")))
+</div>
+
+<div class="example">
+    <h3>Using predefined parameters</h3>
+    @{
+        var cat1 = Db.Categories[0];
+        var cat2 = Db.Categories[1];
+    }
+    <div class="expl">
+        setting parameter parent = { @cat1.Name, @cat2.Name } using .Parameter and .ParameterFunc extensions<br />
+    </div>
+    @(Html.Awe().AjaxCheckboxListFor(o => o.Meals2)
+          .Multiselect()
+          .Parameter("categories", cat1.Id)
+          .ParameterFunc("giveParams")
+          .Url(Url.Action("GetMeals", "Data")))
+    <script>
+        function giveParams() {
+            return { categories: @(cat2.Id) };
+        }
+    </script>
+</div>
+
+<div class="example">
+    <h3>Events and Api</h3>
+    @*beginapi*@
+    @{
+        var meals1 = new [] { Db.Meals[3], Db.Meals[4] };
+        var meals2 = new [] { Db.Meals[2], Db.Meals[1], Db.Meals[0] };
+
+        Func<Meal[], string> getNames = meals => string.Join(", ", meals.Select(o => o.Name));
+        Func<Meal[], string> getIds = meals => DemoUtils.Encode(meals.Select(o => o.Id));
+    }
+
+    @(Html.Awe().AjaxCheckboxList("multiApi")
+          .Multiselect()
+          .Url(Url.Action("ApiGetMeals", "Data")))
+
+    <br />
+    <br />
+    @Html.Awe().Button().Text("Change value to " + getNames(meals1)).OnClick("changeval('" + getIds(meals1) + "')")
+    @Html.Awe().Button().Text("Change value to " + getNames(meals2)).OnClick("changeval('" + getIds(meals2) + "')")
+    @Html.Awe().Button().Text("Clear Value").OnClick("changeval('')")
+
+    @Html.Awe().Button().Text("Load only first category").OnClick("loadFirstCat()")
+    @Html.Awe().Button().Text("Reload").OnClick("reload()")
+    @Html.Awe().Button().Text("Toggle Enable").OnClick("toggleEnable()")
+
+    <br />
+    <br />
+
+    <div id="log">
+    </div>
+
+    <script>
+        var dd = $('#multiApi');
+
+        function changeval(newVal) {
+            dd.val(newVal).change();
+        }
+
+        function reload() {
+            dd.data('api').load();
+        }
+
+        function loadFirstCat() {
+            dd.data('api').load({ oparams: { cat1: true }});
+            // oparams sets cat1 just for this call
+            // params sets persistent parameters
+        }
+
+        function toggleEnable() {
+            var o = dd.data('o');
+            o.api.enable(!o.enb);
+        }
+
+        $(function() {
+            dd.on('aweload', function(e, data) {
+                awe.flash($('#log').html('loaded ' + data.length  + ' items'));
+            });
+        });
+    </script>
+    @*endapi*@
+    <br />
+    <div class="tabs">
+        <div data-caption="description" class="expl">
+            Showing commonly used client side api methods.<br />
+            To change the value you simply call jquery <code>.val(newvalue).change()</code>.<br />
+
+            <code>aweload</code> event is handled to flash the #log div whenever the dropdown loads.<br />
+            The same api methods can be used for the AjaxDropdown, AjaxRadioList controls and their mods.
+        </div>
+        <div data-caption="view">@Html.Source("AjaxDropdownDemo/Index.cshtml", "api")</div>
+        <div data-caption="controller">@Html.Code("Awesome/DataController.cs").Action("ApiGetMeals")</div>
+    </div>
+</div>
+
+<div class="example">
+    <h3>Toggle select all</h3>
+@*begintsa*@    
+    <div class="ib">
+        <button type="button" class="awe-btn" onclick="toggleChkl('chklCatAll')">toggle select all</button>
+        <br />
+        <br />
+        @(Html.Awe().AjaxCheckboxList("chklCatAll").DataFunc("utils.getItems(categories)"))
+    </div>
+    <div class="ib">
+        <button type="button" class="awe-btn" onclick="toggleChkl('chklCatAll2')">toggle select all</button>
+        <br />
+        <br />
+        @(Html.Awe().AjaxCheckboxList("chklCatAll2").DataFunc("utils.getItems(categories)").Ochk())
+    </div>
+    <script>
+        function toggleChkl(id) {
+            var f = $('#' + id).parent();
+            f.find(':checkbox').prop('checked', !f.find(':checkbox').first().prop('checked')).change();
+        }
+    </script>
+    @*endtsa*@
+    <div class="code">
+        @Html.Source("AjaxCheckboxListDemo/Index.cshtml", "tsa")
+    </div>
+</div>

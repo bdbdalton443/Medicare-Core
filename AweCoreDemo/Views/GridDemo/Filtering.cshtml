@@ -1,0 +1,242 @@
+@using AweCoreDemo.Models
+
+@{
+    ViewBag.Title = "Grid Filtering";
+}
+
+<h1>Grid Filtering</h1>
+
+<h2>Filter grid using parent controls</h2>
+
+@*begin*@
+<div class="bar">
+    @Html.Awe().TextBox("txtPerson").Placeholder("search for person ...").CssClass("searchtxt")
+    @Html.Awe().TextBox("txtFood").Placeholder("search for food ...").CssClass("searchtxt")
+    @Html.Awe().AjaxRadioList("selCountry").Url(Url.Action("GetCountries", "Data")).Odropdown().HtmlAttributes(new { style = "min-width:15em;" })
+</div>
+
+@(Html.Awe().Grid("Grid1")
+      .Mod(o => o.ColumnsSelector().PageSize().PageInfo())
+      .Columns(
+          new Column { Bind = "Id", Width = 75, Groupable = false, Resizable = false },
+          new Column { Bind = "Person" },
+          new Column { Bind = "Food", ClientFormatFunc = "imgFood", MinWidth = 200 },
+          new Column { Bind = "Country.Name", ClientFormat = ".(CountryName)", Header = "Country" },
+          new Column { Bind = "Date", Width = 120 }.Mod(o => o.Autohide()),
+          new Column { Bind = "Location" }.Mod(o => o.Autohide()),
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef" })
+      .Url(Url.Action("GetItems", "LunchGrid"))
+      .Reorderable()
+      .Resizable()
+      .Height(350)
+      .Parent("txtPerson", "person")
+      .Parent("txtFood", "food")
+      .Parent("selCountry", "country"))
+<script>
+    var root = '@Url.Content("~/Content/Pictures/Food/")';
+    function imgFood(itm) {
+        return '<img src="' + root + itm.FoodPic + '" class="food" />' + itm.Food;
+    }
+</script>
+@*end*@
+<br />
+<div class="tabs">
+    <div data-caption="description" class="expl">
+        The grid can be filtered by adding parent controls to it, when a parent control triggers the <code>change</code> event,
+        the grid (child) will reload and the parent values will be sent as parameters to the data function (or url in this case).
+    </div>
+    <div data-caption="view">
+        @Html.Source("GridDemo/Filtering.cshtml")
+    </div>
+    <div data-caption="controller">
+        @Html.Code("Awesome/Grid/LunchGridController.cs")
+    </div>
+</div>
+
+<h2>Grid filtering using a popup to enter the search criteria</h2>
+@*beginpopupfilter*@
+<div class="bar">
+    <button type="button" class="awe-btn" onclick="awe.open('filterGrid', {}, event)">Filter</button>
+    <button type="button" class="awe-btn" onclick="clearFilter()">Clear Filter</button>
+</div>
+@(Html.Awe().Grid("GridPopupFilter")
+      .Mod(o => o.ColumnsSelector().PageSize().PageInfo())
+      .Columns(
+          new Column { Bind = "Id", Width = 75, Groupable = false, Resizable = false },
+          new Column { Bind = "Person" },
+          new Column { Bind = "Food", ClientFormatFunc = "imgFood", MinWidth = 200 },
+          new Column { Bind = "Country.Name", ClientFormat = ".(CountryName)", Header = "Country" },
+          new Column { Bind = "Date", Width = 120 }.Mod(o => o.Autohide()),
+          new Column { Bind = "Location" }.Mod(o => o.Autohide()),
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef" })
+      .Url(Url.Action("LunchGridFilter", "Data"))
+      .Reorderable()
+      .Resizable()
+      .Height(350))
+<script>
+     var filterModel = {};
+
+    function clearFilter() {
+        filterModel = {};
+        filterGrid();
+    }
+
+    function filterGrid() {
+        var api = $('#GridPopupFilter').data('api');
+        api.load({
+            params: filterModel
+        });
+    }
+
+    $(function () {
+        aweui.initPopupForm({
+            id: 'filterGrid',
+            title: 'Filter grid',
+            height: 0,
+            dropdown: true,
+            loadOnce: true,
+            setCont: function (sp, o) {
+                var b = formBuilder({ model: filterModel, sp: sp });
+                b.add({ prop: 'person', func: aweui.txt });
+                b.add({ prop: 'food', func: aweui.txt });
+                b.add({
+                    prop: 'country',
+                    func: aweui.radioList,
+                    opt: {
+                        url: '@Url.Action("GetCountries", "Data")',
+                        odropdown: true
+                    }
+                });
+                b.add({ prop: 'location', func: aweui.txt });
+                b.add({ prop: 'date', func: aweui.datepicker });
+                b.add({
+                    prop: 'chef',
+                    func: aweui.lookup,
+                    opt: {
+                        getUrl: '@Url.Action("GetItem","ChefLookup")',
+                        searchUrl: '@Url.Action("Search", "ChefLookup")'
+                    }
+                });
+                b.applyToPopup(o);
+            },
+            postFunc: function (sp) {
+                var vm = utils.getParams(sp);
+                filterModel = vm;
+                filterGrid();
+                return {};
+            }
+        });
+    });
+</script>
+@*endpopupfilter*@
+<br />
+<br />
+<div class="tabs">
+    <div class="expl" data-caption="description">
+        Using a popupForm and the grid api to filter the grid.
+        The search criteria is built inside the popup, and when the Ok button is clicked,
+        the post function executes, this is where the grid <code>api.load</code> function is called.
+        <br />
+        Note: we used aweui to initialize the popupForm, and a formBuilder util class to build its content (just like in the aweui grid filtering demo);
+        an alternative would be to use the PopupForm helper and instead the formBuilder we could set the <code>Url</code> to point to an action that returns a partial view with the search criteria form.
+    </div>
+    <div data-caption="view">
+        @Html.Source("GridDemo/Filtering.cshtml", "popupfilter")
+    </div>
+    <div data-caption="controller">
+        @Html.Code("Awesome/DataController.cs").Action("LunchGridFilter")
+    </div>
+</div>
+
+<h2>Filter by all columns</h2>
+@*beginallfilter*@
+<div class="bar">
+    @Html.Awe().TextBox("txtsearch").Placeholder("search ...").CssClass("searchtxt")
+    <span class="hint">&nbsp; you can search multiple columns at the same time (try 'pizza tavern')</span>
+</div>
+
+@(Html.Awe().Grid("GridClientData")
+      .DataFunc("loadDataAndBuildGridModel")
+      .Height(350)
+      .Mod(o => o.PageInfo().PageSize().ColumnsSelector())
+      .Persistence(Persistence.View)
+      .Resizable()
+      .Reorderable()
+      .Parent("txtsearch", "search", false)
+      .Columns(
+          new Column { Bind = "Id", Width = 75, Groupable = false, Resizable = false },
+          new Column { Bind = "Person" },
+          new Column { Bind = "Food" },
+          new Column { Bind = "Location" },
+          new Column { Bind = "Date", Width = 120 },
+          new Column { Bind = "CountryName", Header = "Country" },
+          new Column { Bind = "ChefName", Header = "Chef" }))
+<script>
+    var lunches;
+    // load data on first call
+    function loadDataAndBuildGridModel(sgp) {
+        if (!lunches) {
+            return $.get('@Url.Action("GetLunches", "Data")')
+                .then(function(items) {
+                    lunches = items;
+                    return getGridData(sgp);
+                });
+        } else {
+            return getGridData(sgp);
+        }
+    }
+
+    function getGridData(sgp) {
+        var where = aweq.where, contains = aweq.contains, loop = awef.loop;
+        var gp = utils.getGridParams(sgp);
+        var list = lunches;
+
+        if (gp.search) {
+            var words = gp.search.toLowerCase().split(" ");
+
+            list = where(lunches, function (o) {
+                var matches = 0;
+                loop(words, function (w) {
+                    if (contains(o.Food, w) || contains(o.Person, w) || contains(o.Location, w) || contains(o.CountryName, w)
+                        || contains(o.DateStr, w)
+                        || contains(o.ChefName, w)) matches++;
+                });
+
+                return matches === words.length;
+            });
+        }
+
+        function map(o) { return { Id: o.Id, Person: o.Person, Food: o.Food, Location: o.Location,
+            Date: o.DateStr, CountryName: o.CountryName, ChefName: o.ChefName }; };
+
+
+        return utils.gridModelBuilder(
+            {
+                key:"Id",
+                gp: gp,
+                items: list,
+                map:map,
+                // replace default group header value for Date column
+                getHeaderVal:{ Date: function(o){ return o.DateStr; } }
+            });
+    }
+
+    $(function() {
+        $('#txtsearch').keyup(function() {
+            $('#GridClientData').data('api').load();
+        });
+    });
+</script>
+@*endallfilter*@
+<br />
+<div class="tabs">
+    <div class="expl" data-caption="description">
+        Filtering by multiple columns at once from one textbox, you can type multiple keywords separated by space and the grid will get filtered.
+        <br/>
+        The grid data is loaded once from the server after it is stored in the 'lunches' variable.
+        The function defined in <code>DataFunc</code> can either return the grid model or a promise which will return the grid model later, and in this case on the first load we return a promise ($.get).
+    </div>
+    <div data-caption="view">
+        @Html.Source("GridDemo/Filtering.cshtml", "allfilter")
+    </div>
+</div>

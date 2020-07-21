@@ -1,0 +1,20 @@
+@model IEnumerable<AweCoreDemo.Models.Dinner>
+@foreach (var o in Model)
+{
+    <tr class="awe-li" id="dinner@(o.Id)" data-val="@o.Id">
+        <td><button type="button" class="awe-movebtn awe-btn" ><i class="awe-icon"></i></button> @o.Name </td>
+        <td>@o.Date.ToShortDateString() </td>
+        <td>@o.Chef.FirstName @o.Chef.LastName </td>
+        <td>@(string.Join(", ", o.Meals.Select(z => z.Name)))</td>
+        <td>
+            <button type="button" onclick="awe.open('editDinner', {params: {id: @o.Id }})" class="awe-btn">
+                <span class="ico-edit"></span>
+            </button>
+        </td>
+        <td>
+            <button type="button" onclick="awe.open('deleteDinner', {params: {id: @o.Id }})" class="awe-btn">
+                <span class="ico-del"></span>
+            </button>
+        </td>
+    </tr>
+}

@@ -1,0 +1,160 @@
+@model AweCoreDemo.ViewModels.Input.AjaxDropdownDemoInput
+@using AweCoreDemo.Controllers.Awesome.AjaxDropdown
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "AjaxDropdown, Cascading DropdownList";
+}
+<h1>AjaxDropdown</h1>
+<div class="expl">
+    AjaxDropdown needs an url, js func or controller to get data from, by default convention it
+    will look for a controller with the same name as it + "AjaxDropdown"<br />
+</div>
+
+<div class="example">
+    @await Html.PartialAsync("Demos/Cascade")
+</div>
+
+<div class="example med">
+    <h3>Bound to many parents</h3>
+
+    @*beginm*@
+    @Html.Awe().AjaxRadioListFor(o => o.Category1).Url(Url.Action("GetCategories", "Data"))
+    +
+    @Html.Awe().AjaxCheckboxList("Categories").Url(Url.Action("GetCategories", "Data"))+
+    @Html.Awe().TextBox("txtMealName").Placeholder("where name contains").CssClass("searchtxt")
+    =
+    @(Html.Awe().AjaxDropdownFor(o => o.ChildOfManyMeal)
+          .Controller<MealBoundToManyController>()
+          .Parent(o => o.Category1)
+          .Parent("Categories")
+          .Parent("txtMealName", "mealName"))
+    =
+    @(Html.Awe().AjaxRadioList("ChildOfManyMealRadioList")
+          .Controller<MealBoundToManyController>()
+          .Parent(o => o.Category1)
+          .Parent("Categories")
+          .Parent("txtMealName", "mealName"))
+    @*endm*@
+    <div class="code">
+        @Html.Source("AjaxDropdownDemo/Index.cshtml", "m")
+        parent Category1 and "Categories" are being merged together and received by the controller as int[] parent
+        @Html.Csource("Awesome/AjaxDropdown/MealBoundToManyController.cs")
+    </div>
+</div>
+<div class="example">
+    <h2>Set value from get items call</h2>
+    @*beginsv*@
+    @(Html.Awe().AjaxDropdown("CategorySv")
+          .Url(Url.Action("GetCategories", "Data")))
+
+    @(Html.Awe().AjaxDropdown("MealsSv")
+          .Parent("CategorySv", "categories")
+          .Url(Url.Action("GetMealsSetValue2", "Data")))
+    @*endsv*@
+
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("AjaxDropdownDemo/Index.cshtml", "sv")</div>
+        <div data-caption="controller">@Html.Csource("Awesome/DataController.cs", "sv")</div>
+    </div>
+</div>
+
+<div class="example">
+    <h2>Using enum for dropdown items</h2>
+    @*beginenum*@
+    @(Html.Awe().AjaxDropdown("EnumAdd").Url(Url.Action("GetWeatherEnumItems", "Data")))
+    @*endenum*@
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("AjaxDropdownDemo/Index.cshtml", "enum")</div>
+        <div data-caption="controller">@Html.Csource("Awesome/DataController.cs", "enum")</div>
+    </div>
+</div>
+
+<div class="example">
+    <h2>Using predefined parameters</h2>
+    @{
+        var cat1 = Db.Categories[0];
+        var cat2 = Db.Categories[1];
+    }
+    setting parameter parent = { @cat1.Name, @cat2.Name } using .Parameter and .ParameterFunc extensions<br />
+    @*beginp*@
+    @(Html.Awe().AjaxDropdownFor(o => o.Meal1)
+          .Parameter("categories", cat1.Id)
+          .ParameterFunc("giveParams")
+          .Url(Url.Action("GetMeals", "Data")))
+    <script>
+        function giveParams() {
+            return { categories: @(cat2.Id) };
+        }
+    </script>
+    @*endp*@
+    <div class="code">
+        @Html.Source("AjaxDropdownDemo/Index.cshtml", "p")
+    </div>
+</div>
+
+<div class="example">
+    <h3>Events and Api</h3>
+    @*beginapi*@
+    @{
+        var meal1 = Db.Meals[1];
+        var meal2 = Db.Meals[2];
+    }
+    
+    @(Html.Awe().AjaxDropdown("ddApi")
+          .Url(Url.Action("ApiGetMeals", "Data")))
+    
+    <br />
+    <br />
+    @Html.Awe().Button().Text("Change value to " + meal1.Name).OnClick("changeval(" + meal1.Id + ")")
+    @Html.Awe().Button().Text("Change value to " + meal2.Name).OnClick("changeval(" + meal2.Id + ")")
+
+    @Html.Awe().Button().Text("Load only first category").OnClick("loadFirstCat()")
+    @Html.Awe().Button().Text("Reload").OnClick("reload()")
+    @Html.Awe().Button().Text("Toggle Enable").OnClick("toggleEnable()")
+    
+    <br />
+    <br />
+    
+    <div id="log">
+    </div>
+
+    <script>
+        var dd = $('#ddApi');
+
+        function changeval(newVal) {
+            dd.val(newVal).change();
+        }
+
+        function reload() {
+            dd.data('api').load();
+        }
+
+        function loadFirstCat() {
+            dd.data('api').load({ oparams: { cat1: true }});
+            // oparams sets cat1 just for this call
+            // params sets persistent parameters
+        }
+
+        function toggleEnable() {
+            var o = dd.data('o');
+            o.api.enable(!o.enb);
+        }
+        
+        $(function() {
+            dd.on('aweload', function(e, data) {
+                awe.flash($('#log').html('loaded ' + data.length  + ' items'));
+            });
+        });
+    </script>
+    @*endapi*@
+    <br />
+    <div class="tabs">
+        <div data-caption="description" class="expl">
+            Using client side api to change the dropdown value, disable and enable it and load with additional parameters that are sent to the server.<br />
+            <code>aweload</code> event is handled to flash the #log div whenever the dropdown loads.<br />
+            The same api methods can be used for the AjaxRadioList, AjaxCheckboxList controls and their mods.
+        </div>
+        <div data-caption="view">@Html.Source("AjaxDropdownDemo/Index.cshtml", "api")</div>
+        <div data-caption="controller">@Html.Code("Awesome/DataController.cs").Action("ApiGetMeals")</div>
+    </div>
+</div>

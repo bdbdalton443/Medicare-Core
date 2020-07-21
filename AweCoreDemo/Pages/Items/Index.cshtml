@@ -1,0 +1,143 @@
+﻿@page
+@model DemoHms.Pages.Items.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<p>
+    <h2><a asp-page="Create">New Item</a></h2>
+</p>
+<table class="table">
+    <thead style="background-color:black;color:white;">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].Name)
+            </th>
+            <th>
+                Created By
+            </th>
+            <th>
+                Modified By
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].TradeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].PackageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].PackageDesc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].Manufacturer)
+            </th>
+            <th>
+               Unit
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemsPerPkg)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].Supplier)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Item)
+        {
+            if ((item.ItemID % 2) == 0)
+            {
+                <tr style="background-color:lightblue;color:white;">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedByUser.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedByUser.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TradeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PackageName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PackageDesc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Manufacturer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemUnit.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemsPerPkg)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Supplier.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemType.Name)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.ItemID">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.ItemID">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.ItemID">Delete</a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedByUser.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedByUser.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TradeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PackageName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PackageDesc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Manufacturer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemUnit.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemsPerPkg)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Supplier.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemType.Name)
+        </td>
+        <td>
+            <a asp-page="./Edit" asp-route-id="@item.ItemID">Edit</a> |
+            <a asp-page="./Details" asp-route-id="@item.ItemID">Details</a> |
+            <a asp-page="./Delete" asp-route-id="@item.ItemID">Delete</a>
+        </td>
+    </tr>
+            }
+
+        }
+            </tbody>
+</table>

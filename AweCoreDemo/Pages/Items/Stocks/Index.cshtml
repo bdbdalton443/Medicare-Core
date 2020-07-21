@@ -1,0 +1,61 @@
+﻿@page
+@model AweCoreDemo.Pages.Items.Stocks.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock[0].ItemName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock[0].Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock[0].Item)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock[0].Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock[0].Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Stock) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item.ItemID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.DepartmentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.StockID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.StockID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.StockID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,122 @@
+﻿@page
+@using DemoHms.Data
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext _context
+@model AweCoreDemo.Pages.HospitalEntity.Users.EditUserModel
+
+@{
+    var user = await _context.AppUsers.Include(a => a.EmployeeGroup).FirstOrDefaultAsync(U => U.Email.Equals(User.Identity.Name));
+    var group = user.EmployeeGroup;
+    var permissions = await _context.Permissions.Include(a => a.Activity).Include(a => a.EmployeeGroup).Where(p => p.EmployeeGroupID == group.EmployeeGroupID).ToListAsync();
+}
+@{
+    ViewData["Title"] = "EditUser";
+    if(group.Name.Equals("Root"))
+    {
+        Layout = "~/Views/Shared/_Root.cshtml";
+    }
+    else
+    {
+        Layout = "~/Pages/Shared/_Home.cshtml";
+    }
+}
+
+<h1>Edit User</h1>
+
+<div class="row">
+    <div class="col-md-11" style="margin:auto;">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow mb-12">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">User Details</h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink14">
+                                <div class="dropdown-header">Actions:</div>
+                                <a class="dropdown-item" href="#">Reset Form</a>
+                                <a class="dropdown-item" href="#">Save</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <form method="post">
+                                <h4>Edit account.</h4>
+                                <hr />
+                                <input asp-for="ApplicationUser.Id" type="hidden" />
+                                <input asp-for="@Model.IsPasswordReset" type="hidden" />
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="ApplicationUser.FirstName"></label>
+                                    <input asp-for="ApplicationUser.FirstName" class="form-control-sm" style="width:100%" />
+                                    <span asp-validation-for="ApplicationUser.FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ApplicationUser.LastName"></label>
+                                    <input asp-for="ApplicationUser.LastName" class="form-control-sm" style="width:100%" />
+                                    <span asp-validation-for="ApplicationUser.LastName" class="text-danger"></span>
+                                </div>
+                                @if (user.EmployeeGroup.Name.Equals("Root"))
+                                {
+                                    <div class="form-group">
+                                        <label asp-for="ApplicationUser.HospitalId"></label>
+                                        <select asp-for="ApplicationUser.HospitalId" class="form-control" asp-items="ViewBag.HospitalId"></select>
+                                        <span asp-validation-for="ApplicationUser.HospitalId" class="text-danger"></span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+                                        <label asp-for="ApplicationUser.HospitalId"></label>
+                                        <select asp-for="ApplicationUser.HospitalId" disabled class="form-control" asp-items="ViewBag.HospitalId"></select>
+                                        <span asp-validation-for="ApplicationUser.HospitalId" class="text-danger"></span>
+                                    </div>
+                                }
+                                @if (permissions.FirstOrDefault(P => P.Activity.Name == "Employee Data" && P.CanEdit) != null || group.Name.Equals("Root"))
+                                {
+                                    <div class="form-group">
+                                        <label asp-for="ApplicationUser.EmployeeGroupID"></label>
+                                        <select asp-for="ApplicationUser.EmployeeGroupID" class="form-control" asp-items="ViewBag.EmployeeGroupID"></select>
+                                        <span asp-validation-for="ApplicationUser.EmployeeGroupID" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="ApplicationUser.DepartmentID"></label>
+                                        <select asp-for="ApplicationUser.DepartmentID" class="form-control" asp-items="ViewBag.DepartmentID"></select>
+                                        <span asp-validation-for="ApplicationUser.DepartmentID" class="text-danger"></span>
+                                    </div>
+                                }
+                                <div class="form-group">
+                                    <label asp-for="ApplicationUser.Email"></label>
+                                    <input asp-for="ApplicationUser.Email" class="form-control" />
+                                    <span asp-validation-for="ApplicationUser.Email" class="text-danger"></span>
+                                </div>
+                                @if (user.Id == Model.ApplicationUser.Id && Model.IsPasswordReset)
+                                {
+                                    <div class="form-group">
+                                        <label asp-for="Input.Password"></label>
+                                        <input asp-for="Input.Password" class="form-control" />
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Input.ConfirmPassword"></label>
+                                        <input asp-for="Input.ConfirmPassword" class="form-control" />
+                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                }
+
+                                <button type="submit" class="btn btn-primary" style="float:right">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

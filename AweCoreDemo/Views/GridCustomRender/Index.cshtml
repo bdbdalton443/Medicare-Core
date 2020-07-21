@@ -1,0 +1,97 @@
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "Grid custom render, cards view";
+}
+<script>
+    // used in inline crud
+    var meals = @Html.Raw(DemoUtils.Encode(Db.Meals.Select(o => new KeyContent(o.Id, o.Name))));
+</script>
+
+<h1>Grid custom rendering</h1>
+<div class="expl">Custom rendering achieved using mods that override grid api methods</div>
+
+<div class="example">
+    @await Html.PartialAsync("Demos/GridCardsView")
+</div>
+
+<div class="example">
+    @await Html.PartialAsync("Demos/GridInlineCrudCustomRender")
+</div>
+
+<div class="example">
+   @await Html.PartialAsync("Demos/TreeGridCustomRender")
+</div>
+
+<div class="example">
+    @*begin*@
+    <h2> Tree grid nested cards </h2>
+    @(Html.Awe().Grid("LazyTreeGridCr")
+          .Url(Url.Action("LazyTree", "TreeGrid"))
+          .Mod(o => o.CustomRender("cardstree"))
+          .Columns(
+              new Column {Bind = "Name"},
+              new Column {Bind = "Id", Width = 100})
+          .Persistence(Persistence.View)
+          .ColumnsPersistence(Persistence.Session)
+          .PageSize(3)
+          .Height(500))
+    <script>
+        function cardstree(o) {
+            var api = o.api;
+            var fcol = utils.colf(o.columns).fcol;
+
+            // node
+            api.nodef = function(p) {
+                // don't wrap nodetype = items
+                if (p.gv.nt == 2) return p.ren();
+                var attr = p.h ? 'style="display:none;"' : ''; // collapsed
+                var res = '<div class="gwrap" ' + attr + '>' + p.ren() + '</div>';
+                return res;
+            };
+
+            // group header content
+            api.ghead = function(g) {
+                return api.ceb() + g.c;
+            };
+
+            // render row
+            api.itmf = function(opt) {
+                function val(col) {
+                    return utils.gcv(api, col, opt);
+                }
+
+                var content = '';
+                if (opt.con) {
+                    content = opt.con;
+                } else {
+                    if (opt.ceb) content += api.ceb();
+                    content += val(fcol('Name'));
+                }
+
+                if (opt.ceb) {
+                    opt.clss += ' cardhead awe-ceb';
+                } else {
+                    opt.clss += ' itcard';
+                }
+
+                var attr = opt.attr;
+                attr += ' class="' + opt.clss + '"';
+                opt.style && (attr += ' style="' + opt.style + '"');
+
+                return '<div ' + attr + '>' + content + '</div>';
+            };
+
+            // ignore columns width for content
+            o.syncon = 0;
+        }
+    </script>
+    @*end*@
+    <br/>
+    <br/>
+    <div class="tabs">
+        <div data-caption="description" class="expl">
+            Rendering the grid nodes as cards and placing the child nodes inside the parent card. The grid is also using lazy loading.
+        </div>
+        <div data-caption="view">@Html.Source("GridCustomRender/Index.cshtml")</div>
+    </div>
+</div>

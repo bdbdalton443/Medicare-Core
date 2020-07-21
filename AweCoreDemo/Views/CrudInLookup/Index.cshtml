@@ -1,0 +1,28 @@
+@model AweCoreDemo.ViewModels.Input.LookupCrudDemoInput
+@{
+    ViewBag.Title = "Lookup with CRUD functionality inside its Popup";
+}
+
+<div class="example">
+    @await Html.PartialAsync("Demos/LookupCrud")
+</div>
+<div class="example">
+    <div class="efield">
+        <div class="elabel">
+            MultiLookup:
+        </div>
+        <div class="einput">
+            @*begin*@
+        @(Html.Awe().MultiLookupFor(o => o.Dinner3)
+              .MultiLookupGrid(Url.Action("DinnerMultiLookup"))
+              .Mod(o => o.ShowHeader())
+              .GetItemsUrl(Url.Action("GetDinnerItems", "Data"))
+              .Fullscreen())@*end*@
+        </div>
+
+    </div>
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("CrudInLookup/Index.cshtml")</div>
+        <div data-caption="dinner multilookup view">@Html.Source("CrudInLookup/DinnerMultiLookup.cshtml")</div>
+    </div>
+</div>

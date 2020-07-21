@@ -1,0 +1,8 @@
+wui.css:.\.wwwroot\css\themes\wui\AwesomeMvc.css 
+mui.css:..\wwwroot\css\themes\mui\AwesomeMvc.css 
+bts.css:..\wwwroot\css\themes\bts\AwesomeMvc.css
+met.css:..\wwwroot\css\themes\met\AwesomeMvc.css
+gui.css:..\wwwroot\css\themes\gui\AwesomeMvc.css
+gui3.css:..\wwwroot\css\themes\gui3\AwesomeMvc.css
+start.css:..\wwwroot\css\themes\start\AwesomeMvc.css
+black-cab.css:..\wwwroot\css\themes\black-cab\AwesomeMvc.css

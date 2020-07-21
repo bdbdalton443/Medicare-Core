@@ -1,0 +1,28 @@
+@using AweCoreDemo.Models
+
+@{
+    ViewBag.Title = "Grid Radiobuttons demo";
+}
+
+<h2>Grid with RadioButtons demo</h2>
+<script>
+    var meals = @Html.Raw(DemoUtils.Encode(Db.Meals.Select(o => new KeyContent(o.Id, o.Name))));
+</script>
+@{
+    var rblformat = Html.Awe().AjaxRadioList("Meals")
+        .Url(Url.Action("GetAllMeals", "Data"))
+        .DataFunc("utils.getItems(meals)")
+        .Odropdown()
+        .Prefix(".(Id)")
+        .Svalue(".(BonusMealId)")
+        .ToString();
+}
+
+@(Html.Awe().Grid("GridRb")
+      .Mod(o => o.PageInfo())
+      .Url(Url.Action("GridGetItems", "GridRadioButtons"))
+      .Height(350)
+      .Columns(
+          new Column { Bind = "Id", Width = 100 },
+          new Column { Bind = "Name"},
+          new Column { Bind = "BonusMeal.Name", Header = "Bonus Meal", ClientFormat = rblformat }))

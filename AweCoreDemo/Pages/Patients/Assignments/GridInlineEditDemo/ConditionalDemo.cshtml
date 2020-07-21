@@ -1,0 +1,85 @@
+@using Omu.Awem.Helpers
+@using AweCoreDemo.Utils
+@using AweCoreDemo.Models
+@using AweCoreDemo.Helpers.Awesome
+@using AweCoreDemo.Helpers
+@{
+    ViewBag.Title = "Grid inline editing conditional Demo";
+}
+<h1>Grid inline editing conditional</h1>
+@*begin*@
+@{ var grid = "DinnersGrid2"; }
+@Html.InitDeletePopupForGrid(grid, "GridInlineEditDemo")
+
+<div class="bar">
+    @Html.InlineCreateButtonForGrid(grid, new { DispOrganic = "" })
+</div>
+
+@{
+    var isAdmin = false;
+}
+@(Html.Awe().Grid(grid)
+      .Mod(o => o.PageInfo().InlineEdit(Url.Action("Create"), Url.Action("Edit")))
+      .Url(Url.Action("GridGetItems"))
+      .Height(350)
+      .Resizable()
+      .Columns(
+          new Column { Bind = "Id", Width = 75 }.Mod(o => o.InlineId()),
+          new Column { Bind = "Name" }.Mod(o => o.Inline(Html.Awe().TextBox("Name"))),
+
+          new Column { Bind = "Date", Width = 170 }
+            .Mod(o => o.InlineFunc("dateCond",
+                f => f.Param(p => p.Inline("<input type='hidden' name='Date' value='#Value'/>#Value"))
+                      .Param(p => p.Inline(Html.Awe().DatePicker("Date")))
+                )),
+
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef", Width = 200 }
+            .Mod(o => o.Inline(Html.Awe().Lookup("Chef").Controller("ChefLookup"), "ChefId")),
+
+          new Column { ClientFormat = ".(Meals)", Header = "Meals", Width = 220 }
+          .Mod(o => o.Inline(Html.Awe().AjaxCheckboxList("Meals").Multiselect().DataFunc("utils.getItems(meals)"), "MealsIds")),
+
+          new Column { Bind = "BonusMeal.Name", ClientFormat = ".(BonusMeal)", Header = "Bonus Meal" }
+            .Mod(o => o.Inline(Html.Awe().AjaxRadioList("BonusMealId").DataFunc("utils.getItems(meals)").Odropdown(), "BonusMealId")),
+
+          new Column { Bind = "Organic", Width = 100, ClientFormat = ".(DispOrganic)" }
+          .Mod(o =>
+          {
+              if (isAdmin)
+                  o.Inline(Html.Awe().CheckBox("Organic").Otoggl());
+              else
+                  o.InlineReadonly(); // readonly, used if you set isAdmin = false
+          }),
+
+          new Column { ClientFormatFunc = "editff", Width = 80 },
+          new Column { ClientFormatFunc = "delff", Width = 85 }))
+<script>
+    var meals = @Html.Raw(DemoUtils.Encode(Db.Meals.Select(o => new KeyContent(o.Id, o.Name))));
+
+    function dateCond(o, params) {
+        if (o.DateReadOnly) return params[0];
+        return params[1];
+    }
+
+    function editff(o) {
+        return o.Editable === false ? '': '@Html.Raw(GridUtils.InlineEditFormat())';
+    }
+
+    function delff(o) {
+        var format = @Html.Raw(DemoUtils.Encode(Html.InlineDeleteFormatForGrid(grid)));
+        format = format.split(".(Id)").join(o.Id);
+        return o.Editable === false ? '': format;
+    }
+</script>
+@*end*@
+
+<br />
+<div class="tabs">
+    <div class="expl" data-caption="description">
+        rows with 1 meal are not editable<br />
+        dates with year less than 2012 are readonly<br />
+        Organic is editable only if isAdmin set to true (set to false in code)
+    </div>
+    <div data-caption="view">@Html.Source("GridInlineEditDemo/ConditionalDemo.cshtml")</div>
+    <div data-caption="controller">@Html.Csource("Demos/Grid/GridInlineEditDemoController.cs")</div>
+</div>

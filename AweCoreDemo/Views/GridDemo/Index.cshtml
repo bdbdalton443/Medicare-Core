@@ -1,0 +1,93 @@
+@{
+    ViewBag.Title = "Grid control Basic Features";
+}
+<h1>Grid control basic features</h1>
+
+@*begin*@
+<div class="bar">
+    @Html.Awe().TextBox("txtPerson").Placeholder("search for person ...").CssClass("searchtxt")
+    @Html.Awe().TextBox("txtFood").Placeholder("search for food ...").CssClass("searchtxt")
+    @Html.Awe().AjaxRadioList("selCountry").Url(Url.Action("GetCountries", "Data")).Odropdown().HtmlAttributes(new { style = "min-width:15em;" })
+</div>
+
+@(Html.Awe().Grid("Grid1")
+      .Mod(o => o.ColumnsSelector().PageSize().PageInfo().Loading().AutoMiniPager())
+      .Columns(
+          new Column { Bind = "Id", Width = 75, Groupable = false, Resizable = false },
+          new Column { Bind = "Person" },
+          new Column { Bind = "Food", ClientFormatFunc = "imgFood", MinWidth = 200 },
+          new Column { Bind = "Country.Name", ClientFormat = ".(CountryName)", Header = "Country" },
+          new Column { Bind = "Date", Width = 120 }.Mod(o => o.Autohide()),
+          new Column { Bind = "Location" }.Mod(o => o.Autohide()),
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef" })
+      .Url(Url.Action("GetItems", "LunchGrid"))
+      .Reorderable()
+      .Resizable()
+      .Persistence(Persistence.Session)
+      .ColumnsPersistence(Persistence.Session)
+      .Height(350)
+      .Parent("txtPerson", "person")
+      .Parent("txtFood", "food")
+      .Parent("selCountry", "country"))
+<script>
+    var root = '@Url.Content("~/Content/Pictures/Food/")';
+    function imgFood(itm) {
+        return '<img src="' + root + itm.FoodPic + '" class="food" />' + itm.Food;
+    }
+</script>
+@*end*@
+<br />
+<div class="tabs">
+    <div data-caption="description" class="expl">
+        The Awesome Grid control for ASP.net Core and MVC is used to display data, by default using a table, but that can be changed. <a href="https://www.aspnetawesome.com/learn/mvc/Grid"> Documentation </a> 
+        <br/>
+        <br/>
+        It can get the data from the server by specifying the url <code>Url(urlstr)</code> or from a js function <code>DataFunc(jsfunc)</code> (the javascript function could also do an ajax request and return the promise).
+        <br/>
+        The Grid (like most awesome controls) can be bound to other controls using the <code>Parent</code> extension (used for filtering). 
+        It can also be filtered using the api.
+        <br/>
+        Mods are used to add additional features to the grid like: inline editing, automatic columns hiding and via dropdown, adaptive pager (based on window width), and more.
+        <br/>
+        <br/>
+        Features:
+        <ul class="alist">
+            <li>Sorting (multiple and single column), Grouping</li>
+            <li>Resize, reorder, hide and show columns (using columns selector mod or api)</li>
+            <li>Persistence - save columns state, current page and collapsed groups/nodes</li>
+            <li><a href="@Url.Action("CustomFormat")">Custom formatting</a></li>
+            <li><a href="@Url.Action("ClientSideApi")">Client side api</a></li>
+            <li><a href="@Url.Action("Index","TreeGrid")">Tree Grid</a></li>
+            <li><a href="@Url.Action("Index", "GridNestingDemo")">Nesting</a></li>
+            <li><a href="@Url.Action("Index","GridNestingDemo")#Nested-grids--Hierarchical-grid">Hierarchical grid</a> (done using nesting)</li>
+            <li><a href="@Url.Action("Index","GridInlineEditDemo")">Inline Editing</a> (using mod)</li>
+            <li><a href="@Url.Action("Index","GridMultiRowHeaderGroups")">Multiple rows group headers</a></li>
+            <li><a href="@Url.Action("Index","DragAndDropDemo")">Reorder rows</a>, also from one grid to another</li>
+            <li><a href="@Url.Action("Selection")">Selection</a></li>
+            <li><a href="@Url.Action("RTLSupport")">RTL Support</a></li>
+            <li>Responsive layout, and autohide columns (using Autohide mod)</li>
+            <li><a href="@Url.Action("Index","GridCustomRender")">Custom rendering</a></li>
+            <li><a href="@Url.Action("Index","GridCustomRender")#Grid-Cards-View">Cards View</a> (using custom rendering mod)</li>
+            <li><a href="@Url.Action("Index","GridClientDataDemo")">Client data source</a> - get data from a js function instead of specifying url</li>
+            <li>Export to excel, pdf, txt (csv) - <a href="@Url.Action("Index","GridExportToExcelDemo")">demo</a></li>
+        </ul>
+        <br/>
+        Other grid crud demos: @Html.ActionLink("Grid Crud (Popup)", "Index", "GridCrudDemo"), 
+        <a href="@Url.Action("Index", "GridNestingDemo")#In-nest-editing-grid">Grid in nest editing</a>,
+        @Html.ActionLink("Master Detail Crud Demo", "Index", "MasterDetailCrudDemo")
+    </div>
+    <div data-caption="view">
+        @Html.Source("GridDemo/Index.cshtml")
+    </div>
+    <div data-caption="controller">
+        @Html.Code("Awesome/Grid/LunchGridController.cs")
+    </div>
+</div>
+<br />
+<br />
+<p>
+    See also:
+</p>
+<a href="https://youtu.be/qC9XERoZEa0">Awesome Grid Video Tutorial</a><br />
+<a href="@Url.Action("Index", "GridClientDataDemo")"> Grid Client Data Demo</a><br/>
+<a href="@Url.Action("Index", "MailboxDemo")"> Grid Mailbox Demo</a><br/>

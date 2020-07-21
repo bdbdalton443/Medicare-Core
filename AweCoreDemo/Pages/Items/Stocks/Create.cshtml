@@ -1,0 +1,177 @@
+﻿@page
+@using AweCoreDemo.Utils
+@using Microsoft.AspNetCore.Mvc
+@using Omu.AwesomeMvc
+@inject DemoHms.Data.ApplicationDbContext _context
+@model AweCoreDemo.Pages.Items.Stocks.CreateModel
+
+@{
+    ViewData["Title"] = "Stock";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+<script>
+    var items = @Html.Raw(DemoUtils.Encode(Model.items.Select(o => new KeyContent(o.ItemID, o.Name))));
+
+    var departments = @Html.Raw(DemoUtils.Encode(Model.departments.Select(d => new KeyContent(d.DepartmentID, d.Name))));
+</script>
+@{
+    var gridId = "gridStock";
+}
+<h1>Create</h1>
+
+<h4>Stock</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <ul id="ul6" class="nav nav-tabs align-content-center" runat="server">
+            <li class="nav-item" runat="server"><a id="istock1" class="nav-link active" role="tab" data-toggle="tab" href="#stockItem1" runat="server">Opening Stock<span id="opStock" runat="server" style="color:red"></span></a></li>
+            <li class="nav-item"><a id="istock2" class="nav-link" role="tab" data-toggle="tab" href="#stockItem2" runat="server">Damages<span id="Span16" runat="server" style="color:red"></span></a></li>
+            <li class="nav-item"><a id="istock3" class="nav-link" role="tab" data-toggle="tab" href="#stockItem3" runat="server">Losses<span id="Span17" runat="server" style="color:red"></span></a></li>
+            <li class="nav-item"><a id="istock4" class="nav-link" role="tab" data-toggle="tab" href="#stockItem4" onclick="RenderGrids()">New Stock<span id="Span8" runat="server" style="color:red"></span></a></li>
+            <li class="nav-item"><a id="istock5" class="nav-link" role="tab" data-toggle="tab" href="#stockItem5" runat="server" onclick="RenderGrids2()">Allocate Stock<span id="Span22" runat="server" style="color:red"></span></a></li>
+
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane container active" role="tabpanel" id="stockItem1" runat="server">
+               
+                    <div style="width:100%" id="stockGrid">
+                        <div class="bar">
+                            <div style="float: right;">
+                                @Html.Awe().TextBox("txtSearchInl").Placeholder("search...").CssClass("searchtxt")
+                            </div>
+                            <button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn mbtn">Create</button>
+                            @*<button type="button" onclick="$('#grdOpeningStk').data('api').inlineCreate()" class="awe-btn">Create</button>*@
+                        </div>
+
+                        @(Html.Awe()
+                            .InitPopupForm()
+                            .Name("delete" + gridId)
+                            .Group(gridId)
+                            .Url(Url.Action("Delete", "OpeningStock"))
+                            .Success("utils.itemDeleted('" + gridId + "')")
+                            .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+                            .Height(200)
+                            .Modal())
+
+                        @(Html.Awe().Grid(gridId)
+                                .Mod(o => o.PageInfo().InlineEdit(Url.Action("Create", "OpeningStock"), Url.Action("Edit", "OpeningStock")))
+                                .Url(Url.Action("GridGetItems", "OpeningStock"))
+                                .Parent("txtSearchInl", "search")
+                                .Height(500)
+                                .Resizable()
+                                .Reorderable()
+                                .Attr("data-syncg", "stock")
+                            .Columns(
+                                new Column { Bind = "StockID", Width = 70, Header = "ID" }
+                                .Mod(o => o.InlineId()),
+
+                                new Column { Bind = "Item.Name", ClientFormat = ".(Item)", Header = "Item" }
+                                .Mod(o => o.Inline(Html.Awe().AjaxRadioList("ItemID").Odropdown().DataFunc("utils.getItems(items)"), "ItemID")),
+
+                                new Column { Bind = "Quantity", Header = "Quantity" }
+                                .Mod(o => o.Inline(Html.Awe().TextBox("Quantity"))),
+
+                                new Column { Bind = "Department.Name", ClientFormat = ".(Department)", Header = "Department" }
+                                .Mod(o => o.Inline(Html.Awe().AjaxRadioList("DepartmentID").Odropdown().DataFunc("utils.getItems(departments)"), "DepartmentID")),
+
+                                new Column { Bind = "Description", Header = "Description" }
+                                .Mod(o => o.Inline(Html.Awe().TextBox("Description"))),
+
+                                new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+                                new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 85 }))
+
+                    </div>
+               
+            </div>
+            <div class="tab-pane container fade" id="stockItem2" role="tabpanel" runat="server">
+               
+            </div>
+            <div class="tab-pane container fade" id="stockItem3" role="tabpanel" runat="server">
+               
+            </div>
+            <div class="tab-pane container fade" id="stockItem4" role="tabpanel" runat="server">
+                <div class="form-group" id="newStockGrid">
+
+                </div>
+            </div>
+            <div class="tab-pane container fade" role="tabpanel" id="stockItem5" runat="server">
+                <div class="form-group" id="allocateStockGrid">
+
+                </div>
+
+             
+            </div>
+        </div>
+        <div>
+            <a asp-page="Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    var rendered1 = false;
+    var rendered2 = false;
+    var rendered3 = false;
+</script>
+<script>
+    function RenderGrids() {
+        if (!rendered1) {
+            var indx = -1;
+         var last = $('#newStockGrid');
+        var url = '@Url.Action("RendStock", "Data")';
+
+        site.loadWhenSeen(last, url, indx++, loadNext);
+
+                function loadNext(res)
+                {
+                    if (!res || res == 'end') return;
+
+                    var el = $('<div class="example" />').html(res);
+                    last.after(el);
+                    last = el;
+
+                    site.handleAnchors();
+                    site.handleTabs();
+                    site.parseCode();
+                    site.prettyPrint();
+
+                    //site.loadWhenSeen(last, url, indx++, loadNext);
+            }
+            rendered1 = true;
+        }
+    }
+    function RenderGrids2() {
+        if (!rendered2) {
+            var indx = -1;
+         var last = $('#allocateStockGrid');
+        var url = '@Url.Action("RendStock", "Data")';
+
+        site.loadWhenSeen(last, url, indx++, loadNext);
+
+                function loadNext(res)
+                {
+                    if (!res || res == 'end') return;
+
+                    var el = $('<div class="example" />').html(res);
+                    last.after(el);
+                    last = el;
+
+                    site.handleAnchors();
+                    site.handleTabs();
+                    site.parseCode();
+                    site.prettyPrint();
+
+                    //site.loadWhenSeen(last, url, indx++, loadNext);
+            }
+            rendered2 = true;
+        }
+
+    }
+</script>

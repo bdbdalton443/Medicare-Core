@@ -1,0 +1,38 @@
+@model AweCoreDemo.ViewModels.Input.RestaurantInput
+@using (Html.Awe().BeginContext())
+{
+    var gridId = "AddressesGrid";
+    using (Html.BeginForm())
+    {
+        @Html.EditorFor(o => o.Id)
+        @Html.EditorFor(o => o.Name)
+    }
+
+    <div class="bar">
+        @Html.InlineCreateButtonForGrid(gridId, new { restaurantId = Model.Id }, "Add address")
+    </div>
+    <div>
+        @(Html.Awe().Grid(gridId)
+              .Url(Url.Action("AddressGrid", "MasterDetailInline"))
+              .Mod(o => o.InlineEdit(Url.Action("CreateAddr"), Url.Action("EditAddr"), rowClickEdit: true))
+              .Parameter("restaurantId", Model.Id)
+              .Attr("data-syncg", "addr")
+              .Height(230)
+              .Groupable(false)
+              .Columns(
+                  new Column { Bind = "Id", Width = 75 }
+                      .Mod(o => o.InlineId()),
+
+                  new Column { Bind = "Line1,Line2", ClientFormat = ".(Line1) .(Line2)", Header = "Address" }
+                      .Mod(o => o.Inline(Html.Awe().TextBox("Line1"))
+                          .Inline(Html.Awe().TextBox("Line2"))),
+
+                  new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef" }
+                      .Mod(o => o.Inline(Html.Awe().AjaxRadioList("ChefId")
+                                        .Url(Url.Action("GetChefs", "Data"))
+                                        .Odropdown())),
+
+                  new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+                  new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 85 }))
+    </div>
+}

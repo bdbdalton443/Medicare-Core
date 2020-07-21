@@ -1,0 +1,39 @@
+@{
+    ViewBag.Title = "About";
+}
+<div class="example">
+    <div style="line-height: 1.8em;">
+        <h1>About ASP.net Core MVC Awesome</h1>
+    
+        Awesome ASP.net Core and MVC Controls
+        <a href="https://www.aspnetawesome.com">www.aspnetawesome.com</a>
+        <br />
+        using @Html.Awe().About()
+        <br />
+        <br />
+        <b>Download</b><br />
+        you can download this demo <a href="https://www.aspnetawesome.com/Download/MvcCoreDemoApp">here</a>
+        <br />
+        <br />
+        <b>See also:</b><br />
+        aweui.js - js UI components library :  <a href="https://aweui.aspnetawesome.com">aweui.aspnetawesome.com</a><br />
+        ProDinner demo app (uses Entity Framework):  <a href="https://prodinner.aspnetawesome.com">prodinner.aspnetawesome.com</a>
+        <br />
+        <br />
+        <a href="https://www.aspnetawesome.com/learn">Documentation</a><br />
+        <a href="https://www.aspnetawesome.com/learn/mvc/VideoTutorials">Video Tutorials</a><br />
+        <a href="https://www.aspnetawesome.com/forum">Forum</a><br />
+        <a href="https://www.aspnetawesome.com/buy">Purchase license</a><br />
+        <a href="https://www.aspnetawesome.com/ContactUs">Contact us</a>
+        <br />
+    </div>
+</div>
+<br />
+<div id="social"></div>
+<script>
+    $(function() {
+        $.get('@Url.Action("Social")', function(res) {
+            $('#social').html(res);
+        });
+    });
+</script>

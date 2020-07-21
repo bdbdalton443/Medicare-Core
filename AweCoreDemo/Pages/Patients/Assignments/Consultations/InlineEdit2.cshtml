@@ -1,0 +1,253 @@
+﻿@page
+@using AweCoreDemo.Models
+@using AweCoreDemo.Utils
+@model AweRazorPages.Pages.InlineEdtModel2
+@{
+    ViewData["Title"] = "InlineEdit";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+<h1>Grid Inline Edit</h1>
+<a href="@Url.Page("Index")">Back to main page</a>
+<br />
+<br />
+<script>
+    var tests = @Html.Raw(DemoUtils.Encode(Model.Tests.Select(o => new KeyContent(o.TestID, o.Name))));
+</script>
+@{
+    var gridId = "examinations";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Assignment.Description)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.Description)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Assignment.Emergency)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.Emergency)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Assignment.Recommendation)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.Recommendation)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Assignment.LastVisted)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.LastVisted)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Assignment.Reported)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.Reported)
+            </dd>
+            <dt class="col-sm-4">
+                Patient
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.Patient.FullName)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Assignment.ReferralStatus)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.ReferralStatus.ReferralStatusID)
+            </dd>
+            <dt class="col-sm-4">
+                Patient Type
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.Patient.PatientType.Name)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Assignment.Doctor)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.Doctor.FullName)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Assignment.CreatedOn)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.CreatedOn)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Assignment.UpdatedOn)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Assignment.UpdatedOn)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-8">
+        <div class="container">
+            <ul id="ul" class="nav nav-tabs" runat="server">
+                <li class="nav-item" id="l1" runat="server"><a id="conDetails" class="nav-link active" role="tab" data-toggle="tab" href="#ass1">New Consultation<span id="assCount" runat="server" style="color:red"></span></a></li>
+                <li class="nav-item"><a id="labDetails" class="nav-link" role="tab" data-toggle="tab" href="#ass2" runat="server">Requests FeedBack Details<span id="fdBackCount" runat="server" style="color:red"></span></a></li>
+                <li class="nav-item"><a id="pendingExam" class="nav-link" role="tab" data-toggle="tab" href="#ass3">Pending Requests<span id="pendingEx" runat="server" style="color:red"></span></a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane container active" role="tabpanel" id="ass1" runat="server">
+                    <div class="card shadow mb-4" runat="server" visible="true">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Consultation Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <form method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Assignment.AssignmentID" />
+                                <div class="form-group">
+                                    <textarea id="admissionDesc" asp-for="Assignment.Description" runat="server" placeholder="Description" style="border-radius:6px;width:100%;"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <select id="billStatus" style="width: 100%; border-radius: 6px;" asp-for="Assignment.BillStatusID" asp-items="ViewBag.BillStatusID">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <select id="referalStatus" style="width: 100%; border-radius: 6px;" runat="server" asp-for="Assignment.ReferralStatusID" asp-items="ViewBag.ReferralStatusID" onchange="switchViewSection(this, '@Url.Action("","InlineEdt")')">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="recommendation" runat="server" placeholder="Reported Issue or Recommendation" style="border-radius:6px;width:100%;"></textarea>
+                                </div>
+                                <div class="form-group" id="exmGrid">
+                                    @*<partial name="_Examination" />*@
+                                    @*@await Html.PartialAsync("_Examination")*@
+                                </div>
+                                <div class="form-group" id="trtGrid">
+                                    <div class="bar">
+                                        <div style="float: right;">
+                                            @Html.Awe().TextBox("txtSearchInl").Placeholder("search...").CssClass("searchtxt")
+                                        </div>
+                                        <button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn">Create</button>
+                                    </div>
+
+                                    @*@(Html.Awe()
+                                        .InitPopupForm()
+                                        .Name("delete1" + gridId)
+                                        .Group(gridId)
+                                        .Url(Url.Page("", "Delete"))
+                                        .Success("utils.itemDeleted('" + gridId + "')")
+                                        .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+                                        .Height(200)
+                                        .Modal())*@
+
+                                    @(Html.Awe().Grid(gridId)
+                                          .Mod(o => o.PageInfo().InlineEdit(Url.Page("", "Create"), Url.Page("", "Edit")))
+                                          .Url(Url.Page("", "GridGetProcedures"))
+                                          .Parent("txtSearchInl", "search")
+                                          .Height(350)
+                                          .Resizable()
+                                          .Reorderable()
+                                        .Columns(
+                                              new Column { Bind = "ProcedureID", Width = 70, Header = "ID" }
+                                              .Mod(o => o.InlineId()),
+
+                                              new Column { Bind = "Test.Name", ClientFormat = ".(Test)", Header = "Test" }
+                                                .Mod(o => o.Inline(Html.Awe().AjaxRadioList("TestID").Odropdown().DataFunc("utils.getItems(tests)"), "TestID")),
+
+                                              new Column { Bind = "Description", Width = 200 }
+                                                .Mod(o => o.Inline(Html.Awe().TextBox("Description"))),
+
+
+                                              new Column { Bind = "Findings", Width = 200 }
+                                                .Mod(o => o.Inline(Html.Awe().TextBox("Findings"))),
+
+                                              //new Column { Bind = "Date", Width = 160 }
+                                              //  .Mod(o => o.Inline(Html.Awe().DatePicker("Date").ReadonlyInput().ChangeYear().ChangeMonth())),
+
+                                              //new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef", MinWidth = 170 }
+                                              //  .Mod(o => o.Inline(Html.Awe().Lookup("Chef").Controller("ChefLookup"), "ChefId")),
+
+                                              //new Column { ClientFormat = ".(Meals)", Header = "Meals", MinWidth = 250 }
+                                              //  .Mod(o => o.Inline(Html.Awe().AjaxCheckboxList("Meals").Multiselect().DataFunc("utils.getItems(meals)"), "MealsIds")),
+
+                                              //new Column { Bind = "Organic", Width = 90, ClientFormat = ".(DispOrganic)" }
+                                              //  .Mod(o => o.Inline(Html.Awe().CheckBox("Organic").Otoggl())),
+
+                                              new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+                                            new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 85 }))
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<div class="expl">
+    grid inline editing, using razor pages to handle the ajax requests instead of mvc
+</div>
+<br />
+<br />
+<br />
+@{
+
+}
+}
+@section HideSwitchSec1{
+    <script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+            $("#trtGrid").hide();
+        });
+    </script>
+}
+@section HideSwitchSec2{
+    <script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+            $("#exmGrid").hide();
+        });
+    </script>
+}
+@section SwitchSec{
+    <script type="text/javascript">
+        function switchViewSection(item, baseUrl) {
+            if (item.value == '2') {
+                @*$('#@gridIdExam').data('api').reset;
+                //@Model.Grd="examinations";
+                $('#@gridIdExam').data('api').render();
+                $('#@gridIdExam').on('awebeginload', function (event, requestData) {
+                    console.log('awebeginload handled', data, requestData);
+                });*@
+                $("#trtGrid").hide();
+                $("#exmGrid").show();
+            }
+            else {
+                 @*$('#@gridIdExam').data('api').reset;
+                $('#@gridId').data('api').reset;
+                 //@Model.Grd="treatments";
+                 $('#@gridId').on('awebeginload', function (event, requestData) {
+                    console.log('awebeginload handled', data, requestData);
+                });*@
+                $("#exmGrid").hide();
+                $("#trtGrid").show();
+            }
+        }
+    </script>
+}
+
+
+

@@ -1,0 +1,171 @@
+﻿@page
+@model DemoHms.Pages.HospitalEntity.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Root.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Hospital</h4>
+<hr />
+<div class="row">
+    <div class="col-md-11" style="margin:auto;">
+    <div class="row">
+    <div class="col-md-4">
+        <div class="card shadow mb-12">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">New Item Details</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink14">
+                        <div class="dropdown-header">Actions:</div>
+                        <a class="dropdown-item" href="#">Reset Form</a>
+                        <a class="dropdown-item" href="#">Save</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Hospital.Name" class="control-label"></label>
+                            <input asp-for="Hospital.Name" class="form-control" />
+                            <span asp-validation-for="Hospital.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Hospital.Location" class="control-label"></label>
+                            <input asp-for="Hospital.Location" class="form-control" />
+                            <span asp-validation-for="Hospital.Location" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Hospital.ContactNumber" class="control-label"></label>
+                            <input asp-for="Hospital.ContactNumber" class="form-control" />
+                            <span asp-validation-for="Hospital.ContactNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Hospital.BoxNumber" class="control-label"></label>
+                            <input asp-for="Hospital.BoxNumber" class="form-control" />
+                            <span asp-validation-for="Hospital.BoxNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Hospital.Email" class="control-label"></label>
+                            <input asp-for="Hospital.Email" class="form-control" />
+                            <span asp-validation-for="Hospital.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Hospital.ContractLength" class="control-label"></label>
+                            <input asp-for="Hospital.ContractLength" class="form-control" />
+                            <span asp-validation-for="Hospital.ContractLength" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Hospital.Color" class="control-label"></label>
+                            <input type="color" asp-for="Hospital.Color" class="form-control" id="color"/>
+                            <span asp-validation-for="Hospital.Color" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Hospital.StatusID" class="control-label"></label>
+                            <select asp-for="Hospital.StatusID" class="form-control" asp-items="ViewBag.StatusID"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Hospital.EntityTypeID" class="control-label"></label>
+                            <select asp-for="Hospital.EntityTypeID" class="form-control" asp-items="ViewBag.EntityTypeID"></select>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow mb-12">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">New Item Details</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink14">
+                        <div class="dropdown-header">Actions:</div>
+                        <a class="dropdown-item" href="#">Reset Form</a>
+                        <a class="dropdown-item" href="#">Save</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Hospitals[0].Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Hospitals[0].Location)
+                                </th>
+                                <th>
+                                    Contact
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Hospitals[0].Status)
+                                </th>
+                                <th>
+                                    Entity Type
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Hospitals)
+                            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Location)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ContactNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EntityType.Name)
+                                </td>
+                                <td>
+                                    <a asp-page="./Edit" asp-route-id="@item.HospitalID">Edit</a> |
+                                    <a asp-page="./Details" asp-route-id="@item.HospitalID">Details</a> |
+                                    <a asp-page="./Delete" asp-route-id="@item.HospitalID">Delete</a>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div></div> 
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

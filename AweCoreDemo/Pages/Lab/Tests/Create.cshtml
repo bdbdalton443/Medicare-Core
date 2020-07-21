@@ -1,0 +1,129 @@
+﻿@page
+@using AweCoreDemo.Utils
+@model AweCoreDemo.Pages.Lab.Tests.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+@{ 
+    var gridId = "testConsumables";
+}
+<h1>Create</h1>
+
+<h4>Test</h4>
+<hr />
+<script>
+    var tests = @Html.Raw(DemoUtils.Encode(Model.Tests.Select(S=>new KeyContent(S.TestID, S.Name))))
+    var items = @Html.Raw(DemoUtils.Encode(Model.Items.Select(S=>new KeyContent(S.ItemID, S.Name))))
+</script>
+<div class="row">
+    <div class="col-md-11" style="margin:auto;">
+        <div class="card shadow mb-12">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">New Item Details</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink14">
+                        <div class="dropdown-header">Actions:</div>
+                        <a class="dropdown-item" href="#">Reset Form</a>
+                        <a class="dropdown-item" href="#">Save</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form method="post">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="Test.Name" class="control-label"></label>
+                                            <input asp-for="Test.Name" class="form-control" />
+                                            <span asp-validation-for="Test.Name" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Test.Code" class="control-label"></label>
+                                            <input asp-for="Test.Code" class="form-control" />
+                                            <span asp-validation-for="Test.Code" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Test.Description" class="control-label"></label>
+                                            <input asp-for="Test.Description" class="form-control" />
+                                            <span asp-validation-for="Test.Description" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Test.DepartmentID" class="control-label"></label>
+                                            <select asp-for="Test.DepartmentID" class="form-control" asp-items="ViewBag.DepartmentID"></select>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" value="Create" class="btn btn-primary" />
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" id="trtGrid">
+                                        <div class="bar">
+                                            <div style="float: right;">
+                                                @Html.Awe().TextBox("txtSearchInl").Placeholder("search...").CssClass("searchtxt")
+                                            </div>
+                                            <button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn mbtn">Create</button>
+                                            @*<button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn">Create</button>*@
+                                        </div>
+
+                                        @(Html.Awe()
+                                            .InitPopupForm()
+                                            .Name("delete" + gridId)
+                                            .Group(gridId)
+                                            .Url(Url.Page("", "Delete"))
+                                            .Success("utils.itemDeleted('" + gridId + "')")
+                                            .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+                                            .Height(200)
+                                            .Modal())
+
+                                        @(Html.Awe().Grid(gridId)
+                                              .Mod(o => o.PageInfo().InlineEdit(Url.Page("", "Create"), Url.Page("", "Edit")))
+                                              .Url(Url.Page("", "GridGetItems"))
+                                              .Parent("txtSearchInl", "search")
+                                              .Height(350)
+                                              .Resizable()
+                                              .Reorderable()
+                                            .Columns(
+                                                  new Column { Bind = "TestConsumableID", Width = 70, Header = "ID" }
+                                                  .Mod(o => o.InlineId()),
+
+                                                  new Column { Bind = "Item.Name", ClientFormat = ".(Item)", Header = "Item"}
+                                                    .Mod(o => o.Inline(Html.Awe().AjaxRadioList("ItemID").Odropdown().DataFunc("utils.getItems(items)"), "ItemID")),
+
+                                                  new Column { Bind = "Test.Name", ClientFormat = ".(Test)", Header = "Test" }
+                                                    .Mod(o => o.Inline(Html.Awe().AjaxRadioList("TestID").Odropdown().DataFunc("utils.getItems(tests)"), "TestID")),
+
+                                                  new Column { Bind = "Quantity", Header = "Quantity Required" }
+                                                    .Mod(o => o.Inline(Html.Awe().TextBox("Quantity"))),
+                                                  new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+                                                new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 85 }))
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

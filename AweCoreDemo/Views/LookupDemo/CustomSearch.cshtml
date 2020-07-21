@@ -1,0 +1,32 @@
+@{
+    ViewBag.Title = "Lookup Custom Search Demo";
+}
+<h1>Lookup with Custom Search </h1>
+<div class="efield">
+    <div class="elabel">
+        Meal:
+    </div>
+    <div class="einput">
+        @*begin*@
+        @Html.Awe().Lookup("MealCustomSearch").CustomSearch()
+        @*end*@
+    </div>
+</div>
+<br />
+<div class="expl">
+    Custom search is achieved by setting <code>.CustomSearch(true)</code> and adding a <code>SearchForm</code> action
+    in the Lookup controller which will render the custom SearchForm view
+</div>
+<br />
+<br />
+<div class="tabs">
+    <div data-caption="view">
+        @Html.Source("LookupDemo/CustomSearch.cshtml")
+    </div>
+    <div data-caption="lookup controller">
+        @Html.Csource("Awesome/Lookup/MealCustomSearchLookupController.cs")
+    </div>
+    <div data-caption="SearchForm view">
+        @Html.Source("MealCustomSearchLookup/SearchForm.cshtml")
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Product>Asp.net Core MVC Awesome Mods</Product>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+    
+    <AssemblyName>Omu.Awem</AssemblyName>
+    <RootNamespace>Omu.Awem</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <Version>2.3.19.0</Version>
+    <Authors>Ribor</Authors>
+    <Description>ASP.net Core MVC Awesome Mods</Description>
+    <Copyright>Ribor</Copyright>
+    <PackageTags>aspnetcore;aspnetcoremvc</PackageTags>
+    <PackageLicenseUrl>https://www.aspnetawesome.com/Buy/License</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <AssemblyVersion>2.3.19.0</AssemblyVersion>
+    <FileVersion>2.3.19.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">    
+    <DebugType>None</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Trial|AnyCPU' ">
+    <Product>ASP.net Core MVC Awesome Mods Trial Version</Product>
+    <Description>
+      ASP.net Core MVC Awesome Mods Trial Version;
+      https://www.aspnetawesome.com/learn/mvc/Installation#ASPnet-Core
+    </Description>
+    <DebugType>None</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Trial</OutputPath>
+    <DefineConstants>TRACE;TRIAL</DefineConstants>
+    <PackageId>Omu.Awem.Trial</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <Reference Include="Omu.AwesomeMvc">
+      <HintPath>..\libs\Omu.AwesomeMvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

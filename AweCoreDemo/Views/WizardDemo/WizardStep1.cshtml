@@ -1,0 +1,15 @@
+@model AweCoreDemo.ViewModels.Input.Wizard.Step1Model
+<div class="wizardForm">
+    <div id="wizardData" style="height: 250px;">
+        @using (Html.BeginForm())
+        {
+            <div class="expl">Hi, please write a name and select a category </div>
+
+            @Html.EditorFor(o => o.Name)
+            @Html.EditorFor(o => o.CategoryId)
+        }
+    </div>
+    <div style="text-align: center;">
+        <button type="submit" class="awe-btn mbtn" onclick="$('#wizardData form').submit()" style="width: 100px;">Continue</button>
+    </div>
+</div>

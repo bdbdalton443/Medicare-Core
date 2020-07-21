@@ -1,0 +1,148 @@
+@using AweCoreDemo.Models
+<h2 data-u="@Url.Action("Index","GridCustomRender")">Grid Custom Render with Inline Editing</h2>
+@*begin*@
+@{
+    var gridId = "InlineCustomRender";
+    var initObj = new
+    {
+        Name = DemoUtils.RndName(),
+        Date = DateTime.Now.ToShortDateString(),
+        ChefId = Db.Chefs.First().Id,
+        MealsIds = Db.Meals.Take(2).Select(o => o.Id).ToArray()
+    };
+
+}
+<div class="bar">
+    <div style="float: right;">
+        @Html.Awe().TextBox("txtSearchInlCr").Placeholder("search...").CssClass("searchtxt")
+    </div>
+    <button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn">Create</button>
+
+    @Html.InlineCreateButtonForGrid(gridId, initObj, "Create with predefined values")
+</div>
+
+@Html.InitDeletePopupForGrid(gridId, "GridInlineEditDemo")
+
+@(Html.Awe().Grid(gridId)
+    .Mod(o => o.PageInfo()
+          .InlineEdit(Url.Action("Create", "GridInlineEditDemo"), Url.Action("Edit", "GridInlineEditDemo"))
+          .CustomRender("inlDinner"))
+      .Url(Url.Action("GridGetItems", "GridInlineEditDemo"))
+      .Parent("txtSearchInlCr", "search")
+      .Height(620)
+      .ColumnWidth(100)
+      .Attr("data-syncg", "dinner") // crud sync using signalr in site.js
+      .Columns(
+          new Column { Bind = "Id", Width = 75, Hidden = true }
+              .Mod(o => o.InlineId()),
+
+          new Column { Bind = "Name" }
+              .Mod(o => o.Inline(Html.Awe().TextBox("Name"))),
+
+          new Column { Bind = "Date" }
+              .Mod(o => o.Inline(Html.Awe().DatePicker("Date").ReadonlyInput().ChangeYear().ChangeMonth())),
+
+          new Column { Id = "chef", Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef" }
+              .Mod(o => o.Inline(Html.Awe().Lookup("Chef").Controller("ChefLookup"), "ChefId")),
+
+          new Column { Id = "meals", ClientFormat = ".(Meals)", Header = "Meals" }
+              .Mod(o => o.Inline(Html.Awe().AjaxCheckboxList("Meals").CssClass("cedMulti").Multiselect().DataFunc("utils.getItems(meals)"), "MealsIds")),
+
+          new Column { Bind = "BonusMeal.Name", ClientFormat = ".(BonusMeal)", Header = "Bonus Meal", Width = 140 }
+              .Mod(o => o.Inline(Html.Awe().AjaxRadioList("BonusMealId").Odropdown().DataFunc("utils.getItems(meals)"), "BonusMealId")),
+
+          new Column { Bind = "Organic", ClientFormat = ".(DispOrganic)" }
+              .Mod(o => o.Inline(Html.Awe().CheckBox("Organic").Otoggl())),
+
+          new Column { Id = "edit", ClientFormat = GridUtils.InlineEditFormat(), Hidden = true },
+          new Column { Id = "del", ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Hidden = true }))
+<script>
+    function inlDinner(o) {
+        var api = o.api;
+
+        // node (group) content add wrap for padding
+        api.ncon = function(p) {
+            if (!p.lvl) return p.ren();
+            return '<div style="padding-left:' + p.lvl + 'em;" >' + p.ren() + '</div>';
+        };
+
+        // group header content
+        api.ghead = function(g) {
+            return api.ceb() + g.c;
+        };
+
+        // render item (row)
+        api.itmf = function(opt) {
+            var content = '';
+
+            // content already set (group header)
+            if (opt.con) {
+                content = opt.con;
+            } else {
+                var colFuncs = utils.colf(o.columns);
+                var colByBind = colFuncs.fcol; // find column by Bind
+                var colById = colFuncs.fcoli; // find column by Id
+
+                // get column value
+                function val(col, cls) {
+                    return utils.gcvw(api, col, opt, cls);
+                }
+
+                function field(col, nolabel) {
+                    var label = '';
+                    if (col.H && !nolabel) {
+                        label = '<div class="elabel">' + col.H + ':</div> ';
+                    }
+                    return '<div class="efield">' + label + '<div class="einput">' + val(col) + '</div></div>';
+                }
+
+                function hid(col) {
+                    return '<div style="display:none;">' + val(col) + '</div>';
+                }
+
+                content += hid(colByBind('Id')) +
+                    '<div class="earea">' +
+                    field(colByBind('Name')) +
+                    field(colByBind('Date')) +
+                    field(colById('chef')) +
+                    '</div><div class="earea">' +
+                    field(colByBind('BonusMeal.Name')) +
+                    field(colByBind('Organic')) +
+                    '</div>' +
+                    field(colById('meals')) +
+                    '<div class="inlbtns">' +
+                    val(colById('edit'), 'awe-il') +
+                    val(colById('del'), 'awe-il') +
+                    '</div>';
+            }
+
+            // has collapse button
+            if (opt.ceb) {
+                opt.clss += ' cardhead';
+                opt.style += 'margin-left:' + opt.ind + 'em;';
+            } else {
+                opt.clss += ' edcard';
+            }
+
+            var attr = opt.attr;
+            attr += ' class="' + opt.clss + '"';
+            opt.style && (attr += ' style="' + opt.style + '"');
+
+            return '<div ' + attr + '>' + content + '</div>';
+        };
+
+        // ignore columns width for grid content
+        o.syncon = 0;
+
+        // no alt rows
+        o.alt = 0;
+    }
+</script>
+@*end*@
+<br />
+<div class="tabs">
+    <div data-caption="description" class="expl">
+        Grid with custom rendering and inline editing mod applied. Edit on row click can also be used.
+    </div>
+    <div data-caption="view">@Html.Source("Shared/Demos/GridInlineCrudCustomRender.cshtml")</div>
+</div>

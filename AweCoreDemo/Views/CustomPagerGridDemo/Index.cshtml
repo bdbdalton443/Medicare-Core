@@ -1,0 +1,79 @@
+@{
+    ViewBag.Title = "Grid with Custom Pager, pager at both top and bottom of the grid";
+}
+<h2>Grid custom pager demo</h2>
+@*begin*@
+<div class="expl">
+    using mods to change the pager<br />
+    you can see the first pager on the home page or grid demo (quick view) if you resize your browser screen to less than 1000px width
+</div>
+<br />
+@(Html.Awe().Grid("Grid")
+    .Mod("awem.gridMiniPager")
+    .Columns(
+        new Column { Bind = "Id", Width = 75, Groupable = false },
+        new Column { Bind = "Person" },
+        new Column { Bind = "Food" },
+        new Column { Bind = "Location" })
+    .Url(Url.Action("GetItems", "LunchGrid"))
+    .Height(300))
+<br />
+<h3>Grid with pager at both top and bottom</h3>
+
+@(Html.Awe().Grid("Grid2")
+    .Mod(o => o.PageInfo().PageSize().Custom("pagerBoth"))
+    .Columns(
+        new Column { Bind = "Id", Width = 75, Groupable = false },
+        new Column { Bind = "Person" },
+        new Column { Bind = "Food" },
+        new Column { Bind = "Location" })
+    .Url(Url.Action("GetItems", "LunchGrid")))
+
+<script>
+    function pagerBoth(o) {
+        var grid = o.v;
+        var footer = grid.find('.awe-footer');
+        var fclone = footer.clone(true);
+        var psi = o.i + 'ps2';
+        var pshtml = '<div class="awe-ajaxradiolist-field o-gpgs awe-field"><input id="' + psi +
+            '" class="awe-val" type="hidden" value="' + o.ps +
+            '" /><div class="awe-display"></div></div>';
+
+        var dd = footer.find('.o-gpgs .awe-val');
+        fclone.find('.o-gpgs').after(pshtml).remove();
+        grid.prepend(fclone);
+        
+        // on small screen there's no pagesize selector
+        if ($('#' + psi).length) {
+            awe.radioList({ i: psi, nm: psi, l: 1, df: getdata, md: awem.odropdown, tag: { InLabel: awem.clientDict.PageSize + ": " } });
+
+            var dd2 = $('#' + psi);
+
+            function getdata() {
+                return dd.data('o').lrs;
+            }
+
+            dd.on('change', function() {
+                dd2.val(dd.val()).data('api').render();
+            });
+
+            dd2.on('change', function() {
+                dd.val(dd2.val()).change();
+            });
+        }
+        
+        fclone.addClass('topFooter');
+    }
+</script>
+<style>
+    .awe-grid .awe-footer.topFooter {
+        border-top: none;
+        border-bottom: 1px solid gainsboro;
+    }
+
+    .black-cab .awe-footer.topFooter {
+        border-bottom-color: #2B3443;
+    }
+</style>
+@*end*@
+@Html.Source("CustomPagerGridDemo/Index.cshtml", wrap: true)

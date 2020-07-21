@@ -1,0 +1,62 @@
+﻿@using AweCoreDemo.Utils
+<h2 data-u="@Url.Action("Index","GridInlineEditDemo")">Grid inline editing demo</h2>
+@*begin*@
+@model AweRazorPages.Pages.InlineEdtModel
+@{
+    var gridIdExam = "examinations";
+}
+<script>
+     var tests = @Html.Raw(DemoUtils.Encode(Model.Tests.Select(o => new KeyContent(o.TestID, o.Name))));
+</script>
+<div class="bar">
+    <div style="float: right;">
+        @Html.Awe().TextBox("txtSearchInlExam").Placeholder("search...").CssClass("searchtxt")
+        <input id="assID" type="hidden" value="@Model.Assignment.AssignmentID" />
+    </div>
+    <button type="button" onclick="$('#@gridIdExam').data('api').inlineCreate()" class="awe-btn">Create</button>
+</div>
+
+@(Html.Awe()
+    .InitPopupForm()
+    .Name("delete2" + gridIdExam)
+    .Group(gridIdExam)
+    .Url(Url.Action("Delete", "Data"))
+    .Success("utils.itemDeleted('" + gridIdExam + "')")
+    .OnLoad("utils.delConfirmLoad('" + gridIdExam + "')") // calls grid.api.select and animates the row
+    .Height(200)
+    .Modal())
+
+@(Html.Awe().Grid(gridIdExam)
+      .Mod(o => o.PageInfo().InlineEdit(Url.Action("CreateProcedure", "Data"), Url.Action("EditProcedure", "Data")))
+      .Url(Url.Action("GridGetProcedures", "Data"))
+      .Parent("assID", "searchProc")
+      .Height(350)
+      .Resizable()
+      .Reorderable()
+    .Columns(
+          new Column { Bind = "ProcedureID", Width = 70, Header = "ID" }
+          .Mod(o => o.InlineId()),
+
+          new Column { Bind = "Test.Name", ClientFormat = ".(Test)", Header = "Test" }
+            .Mod(o => o.Inline(Html.Awe().AjaxRadioList("TestID").Odropdown().DataFunc("utils.getItems(tests)"), "TestID")),
+
+          new Column { Bind = "Description", Width = 200, Header = "Description" }
+            .Mod(o => o.Inline(Html.Awe().TextBox("Description"))),
+
+           new Column { Bind = "Findings", Width = 200, Header = "Findings" }
+            .Mod(o => o.Inline(Html.Awe().TextBox("Findings"))),
+
+          //new Column { Bind = "Date", Width = 160 }
+          //  .Mod(o => o.Inline(Html.Awe().DatePicker("Date").ReadonlyInput().ChangeYear().ChangeMonth())),
+
+          //new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef", MinWidth = 170 }
+          //  .Mod(o => o.Inline(Html.Awe().Lookup("Chef").Controller("ChefLookup"), "ChefId")),
+
+          //new Column { ClientFormat = ".(Meals)", Header = "Meals", MinWidth = 250 }
+          //  .Mod(o => o.Inline(Html.Awe().AjaxCheckboxList("Meals").Multiselect().DataFunc("utils.getItems(meals)"), "MealsIds")),
+
+          //new Column { Bind = "Organic", Width = 90, ClientFormat = ".(DispOrganic)" }
+          //  .Mod(o => o.Inline(Html.Awe().CheckBox("Organic").Otoggl())),
+
+          new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+        new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridIdExam), Width = 85 }))

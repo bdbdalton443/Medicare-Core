@@ -1,0 +1,121 @@
+﻿@page
+@model AweCoreDemo.Pages.Patients.NextOfKins.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].MiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].Guid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].DOB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].Tel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].Occupation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].NOKRelationship)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin[0].UpdatedOn)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.NextOfKin) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Guid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DOB)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Occupation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NOKRelationship.NOKRelationshipID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedOn)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.NextOfKinID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.NextOfKinID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.NextOfKinID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

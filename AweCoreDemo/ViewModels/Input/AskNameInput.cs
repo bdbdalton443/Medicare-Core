@@ -1,0 +1,18 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace AweCoreDemo.ViewModels.Input
+{
+    public class AskNameInput
+    {
+        [Required]
+        [DisplayName("First Name")]
+        public string FName { get; set; }
+
+        [Required]
+        [DisplayName("Last Name")]
+        public string LName { get; set; }
+
+        public bool Delay { get; set; }
+    }
+}

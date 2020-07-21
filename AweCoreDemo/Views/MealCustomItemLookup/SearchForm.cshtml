@@ -1,0 +1,7 @@
+@{ Layout = null; }
+<input type="text" name="search" class="awe-searchtxt" placeholder="search..."/>
+@(Html.Awe().InitPopup()
+            .Name("details")
+            .Url(Url.Action("Details"))
+            .Mod(o => o.OutClickClose())
+            .Modal())

@@ -1,0 +1,68 @@
+@{
+    var settings = SiteSettings.Read(Html.ViewContext.HttpContext.Request);
+    var ver = 130;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Awesome ASP.net Core and MVC Controls demos</title>
+    <link rel="shortcut icon" href="@Url.Content("~/favicon.ico")" type="image/x-icon" />
+    <link rel="apple-touch-icon image_src" href="@Url.Content("~/apple-touch-icon.png")">
+    <script>
+        document.ver = @ver;
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Roboto" rel="stylesheet">
+    <link href="~/css/themes/@(settings.Theme)/AwesomeMvc.css?v=@(ver)" rel="stylesheet" type="text/css" id="aweStyle" />
+    <link href="~/css/site.min.css?v=@(ver)" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    @*jquery needs to be at the top, for document.ready $(function(){ ... })*@
+</head>
+<body class="@settings.Theme">
+    @await Html.PartialAsync("top", settings)
+    <div class="page">
+        <div id="main" style="clear: both;">
+            <div class="maintitl">Awesome ASP.net Core and MVC Controls</div>
+            @await Html.PartialAsync("Menu")
+            <div id="demoPage">
+                <main id="maincont" role="main">
+                    @RenderBody()
+                    <br />
+                    <br />
+                    <br />
+                    <br style="clear: both;" />
+                </main>
+                <nav id="footer" role="navigation">
+                    <a href="https://www.aspnetawesome.com/ContactUs">Contact Us</a>
+                    <a href="https://www.aspnetawesome.com/Company/TermsOfUse">Terms of Use</a>
+                    <a href="https://www.aspnetawesome.com/Company/PrivacyPolicy">Privacy policy</a>
+                </nav>
+            </div>
+        </div>
+</div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+
+    @*install Bundler & Minifier vsx for the site.min.js to update on save*@
+    <script src="~/js/site.min.js?v=@ver"></script>
+
+    @*calling init after utils.js and validate.js*@
+    @Html.Awe().Init()
+
+    @*used in utils.init and sent on all post requests made by awe*@
+    @Html.AntiForgeryToken()
+
+    <script>
+    // specific to this demo (no need to copy)
+        document.root = '@Url.Content("~")';
+    $(function () {
+        site.documentReady();
+    });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js" async></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.1/js.cookie.min.js" async></script>
+</body>
+</html>

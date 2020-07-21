@@ -1,0 +1,334 @@
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "Overview";
+   Layout = "~/Pages/Shared/_Home.cshtml";
+    var mealsDir = Url.Content(DemoUtils.MealsUrl);
+}
+<script>
+    var categories = @Html.Raw(DemoUtils.Encode(Db.Categories.Select(o => new KeyContent(o.Id, o.Name))));
+    var meals = @Html.Raw(DemoUtils.Encode(Db.Meals.Select(o => new { k = o.Id, c = o.Name, cid = o.Category.Id, url = mealsDir + o.Name + ".jpg" })));
+
+    function getMealsChild(params) {
+        var pobj = utils.getParams(params);
+        var result = [];
+
+        awef.loop(meals, function(item) {
+            if(item.cid == pobj.categories)
+                result.push(item);
+        });
+
+        return result;
+    }
+</script>
+<h1 style="font-size: 1.2em;">ASP.net Core MVC Awesome Controls overview:</h1>
+
+<div class="qo">
+    <div class="example cbl">
+        <div class="efield">
+            <div class="elabel">
+                <a href="@Url.Action("Index", "AutocompleteDemo")#Autocomplete">Autocomplete</a>
+            </div>
+            <div class="einput">
+                @(Html.Awe().Autocomplete("Meal")
+                      .ItemFunc("awem.imgItem")
+                      .DataFunc("utils.getItems(meals)")
+                      .Url(Url.Action("GetMealsImgAutoc", "Data"))
+                      .Placeholder("try o"))
+            </div>
+        </div>
+        <div class="efield">
+            <div class="elabel">
+                <a href="@Url.Action("Index","DatePickerDemo")">DatePicker</a>
+            </div>
+            <div class="einput">
+                @Html.Awe().DatePicker("Date1").ChangeMonth().ChangeYear()
+            </div>
+        </div>
+        <div class="efield">
+            <div class="elabel">
+                <a href="@Url.Action("Index","TextBoxDemo")">Textbox (numeric)</a>
+            </div>
+            <div class="einput">
+                @(Html.Awe().TextBox("PriceUSD")
+                      .Value("20")
+                      .FormatFunc("utils.prefix('$')")
+                      .Numeric(o => o.Decimals(2)))
+            </div>
+        </div>
+    </div>
+
+    <div class="example cbl">
+        <div class="efield">
+            <div class="elabel">
+                <a href="@Url.Action("Index","AjaxRadioListDemo")#odropdown">Odropdown</a>
+            </div>
+            <div class="einput">
+                @(Html.Awe().AjaxRadioList("AllMeals")
+                      .Odropdown(o => o.AutoSelectFirst()
+                                    .ItemFunc("awem.imgItem")
+                                    .CaptionFunc("utils.imgCaption"))
+                      .DataFunc("utils.getItems(meals)"))
+            </div>
+        </div>
+        <div class="efield">
+            <div class="elabel">
+                <a href="@Url.Action("Index", "AjaxRadioListDemo")#Combobox">Combobox</a>
+            </div>
+            <div class="einput">
+                @(Html.Awe().AjaxRadioList("AllMealsCombo")
+                      .Combobox()
+                      .Value(Db.Meals[3].Id)
+                      .DataFunc("utils.getItems(meals)"))
+            </div>
+        </div>
+        <div class="efield">
+            <div class="elabel">
+                <a href="@Url.Action("Index", "AjaxRadioListDemo")#oremotesearch">Odropdown remote search</a>
+            </div>
+            <div class="einput">
+                @(Html.Awe().AjaxRadioList("RemoteSearchOdropdown")
+                      .Load(false)
+                      .Odropdown(o => o.SearchFunc("utils.osearch", Url.Action("SearchMeals", "Data"))))
+            </div>
+        </div>
+    </div>
+
+    <div class="example cbl">
+        <div class="efield">
+            <div class="elabel">
+                <a href="@Url.Action("Index","AjaxRadioListDemo")#ButtonGroup">ButtonGroup</a>
+            </div>
+            <div class="einput">
+                @(Html.Awe().AjaxRadioList("CategoriesButtonGroup")
+                  .ButtonGroup()
+                  .Value(Db.Categories[2].Id)
+                  .DataFunc("utils.getItems(categories)"))
+            </div>
+        </div>
+        <div class="efield">
+            <div class="elabel"><a href="@Url.Action("Index","AjaxDropdownDemo")">AjaxDropdown</a></div>
+            <div class="einput">
+                @(Html.Awe().AjaxDropdown("add1")
+                      .DataFunc("getMealsChild")
+                      .Parent("CategoriesButtonGroup", "categories"))
+            </div>
+        </div>
+        <div class="efield">
+            <div class="elabel">
+                <a href="@Url.Action("Index","AjaxRadioListDemo")#Odropdown-tree-data-lazy-nodes-remote-search">
+                    Tree data, remote search, lazy nodes
+                </a>
+            </div>
+            <div class="einput">
+                @(Html.Awe().AjaxRadioList("RmtLazyTree")
+                    .Url(Url.Action("GetTreeNodesLazy", "Data"))
+                    .Odropdown(o => o.CollapseNodes()
+                        .PopupMinWidth(350)
+                        .SearchFunc("utils.osearch", Url.Action("SearchTree", "Data"))
+                    ))
+            </div>
+        </div>
+    </div>
+    <div class="example cbl" style="padding-left:1em;">
+        <div class="ib arl">
+            <div class="elabel"><a href="@Url.Action("Index","AjaxRadioListDemo")">AjaxRadioList</a></div>
+            @(Html.Awe().AjaxRadioList("ParentCat")
+              .Value(Db.Categories[2].Id)
+              .Ochk()
+              .DataFunc("utils.getItems(categories)"))
+        </div>
+        <div class="ib arl">
+            <div class="elabel"><a href="@Url.Action("Index","AjaxCheckboxListDemo")">AjaxCheckboxList</a></div>
+            @(Html.Awe().AjaxCheckboxList("ChildMeal1")
+              .DataFunc("getMealsChild")
+              .Ochk()
+              .Value(new[] { 185, 187 })
+              .Parent("ParentCat", "categories"))
+        </div>
+    </div>
+
+    <div class="example cbl">
+        <div class="efield">
+            <div class="elabel">
+                <a href="@Url.Action("Index", "AjaxCheckboxListDemo")#Multiselect">Multiselect</a>
+            </div>
+            @(Html.Awe().AjaxCheckboxList("AllMealsMulti")
+                  .Multiselect(o => o.ItemFunc("awem.imgItem")
+                                    .CaptionFunc("utils.imgCaption")
+                                    .NoSelectClose())
+                  .CssClass("bigMulti")
+                  .Value(new[] { Db.Meals[2].Id, Db.Meals[3].Id, Db.Meals[5].Id })
+                  .Url(Url.Action("GetMealsGroupedImg", "Data")))
+        </div>
+    </div>
+
+    <div class="example cbl">
+        <div class="efield">
+            <div class="elabel">
+                <a href="@Url.Action("Index", "PopupDemo")">Popup</a>
+            </div>
+            
+            @(Html.Awe().InitPopup()
+                  .Name("popup1")
+                  .Url(Url.Action("Popup1", "PopupDemo"))
+                  .LoadOnce()
+                  .Title("popup title"))
+
+            @Html.Awe().Button().Text("Open Popup").OnClick(Html.Awe().OpenPopup("popup1"))
+            
+            @(Html.Awe().InitPopup()
+                  .Name("popupTop")
+                  .Url(Url.Action("Popup1", "PopupDemo"))
+                  .LoadOnce()
+                  .Modal()
+                  .Top()
+                  .Mod(o => o.OutClickClose())
+                  .Width(1000)
+                  .Title("top modal popup"))
+
+            @Html.Awe().Button().Text("Open top modal").OnClick(Html.Awe().OpenPopup("popupTop"))
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="efield cbl">
+            <div class="elabel">
+                <a href="@Url.Action("Index", "LookupDemo")">Lookup</a>
+            </div>
+            <div class="einput">
+                @(Html.Awe().Lookup("MealLookupDropdown")
+                      .Controller("MealLookup")
+                      .Mod(o => o.Dropdown()))
+            </div>
+        </div>
+
+        <div class="efield cbl">
+            <div class="elabel">
+                <a href="@Url.Action("Index", "MultiLookupDemo")">MultiLookup</a>
+            </div>
+            <div class="einput">
+                @(Html.Awe().MultiLookup("MealsMultiLookupDropdown")
+                  .Controller("MealsMultiLookup"))
+            </div>
+        </div>
+
+        <div class="efield cbl">
+            <div class="elabel">
+                <a href="@Url.Action("CustomSearch", "LookupDemo")">Lookup (custom search)</a>
+            </div>
+            <div class="einput">
+                @(Html.Awe().Lookup("MealCustomSearch")
+                  .CustomSearch())
+            </div>
+        </div>
+    </div>
+</div>
+<div class="example qo">
+    <div class="efield">
+        <div class="elabel">
+            <a href="@Url.Action("Misc", "LookupDemo")#Lookup-Grid">Lookup grid</a>
+        </div>
+        <div class="einput">
+            @(Html.Awe().Lookup("MealCustomPopup")
+          .LookupGrid(Url.Action("MealLookup", "LookupDemo"))
+          .Controller("MealLookup"))
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="example">
+    <h3>Grid, search using parent binding</h3>
+    @*begin1*@
+    <div class="bar">
+        @Html.Awe().TextBox("txtperson").Placeholder("search for person ...").CssClass("searchtxt")
+        @Html.Awe().TextBox("txtfood").Placeholder("search for food ...").CssClass("searchtxt")
+        @Html.Awe().AjaxRadioList("oCountry").Url(Url.Action("GetCountries", "Data")).Odropdown().HtmlAttributes(new { style = "min-width:15em;" })
+    </div>
+
+    @(Html.Awe().Grid("Grid1")
+          .Reorderable()
+          .Mod(o => o.PageInfo().PageSize().AutoMiniPager().ColumnsSelector())
+          .Columns(
+              new Column { Bind = "Id", Width = 75, Groupable = false, Resizable = false },
+              new Column { Bind = "Person" },
+              new Column { Bind = "Food", ClientFormatFunc = "imgFood", MinWidth = 200 },
+              new Column { Bind = "Location" },
+              new Column { Bind = "Date", Width = 120 }.Mod(o => o.Autohide()),
+              new Column { Bind = "Country.Name", ClientFormat = ".CountryName", Header = "Country" }.Mod(o => o.Autohide()),
+              new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef" }.Mod(o => o.Autohide()))
+          .Url(Url.Action("GetItems", "LunchGrid"))
+          .Persistence(Persistence.Session) // save collapsed groups and nodes when switching between grid pages
+          .ColumnsPersistence(Persistence.Session) // save columns (width, visibility, etc..) for browser session lifetime
+          .Resizable()
+          .Height(350)
+          .Parent("txtperson", "person")
+          .Parent("txtfood", "food")
+          .Parent("oCountry", "country"))
+    <script>
+        var root = '@Url.Content("~/Content/Pictures/Food/")';
+        function imgFood(itm) {
+            return '<img src="' + root + itm.FoodPic + '" class="food" />' + itm.Food;
+        }
+    </script>
+    @*end1*@
+    @(Html.Awe().Tabs().CssClass("code")
+          .Add("description",
+        @<text>Grid basic features and search using <code>Parent</code> binding.<br />
+            Some columns have autohide mod, you can resize the browser window to see the columns hide and show depending on window width.</text>, "expl")
+          .Add("view", Html.Source("Home/Index.cshtml", 1))
+          .Add("controller", Html.Code("Awesome/Grid/LunchGridController.cs")))
+</div>
+
+<div class="example">
+    @*beginmsc*@
+    <button type="button" class="awe-btn" onclick="awem.notif('Hi,</br> how are you ! ', 5000)">Show Notification</button>
+    <button type="button" class="awe-btn redbtn" onclick="awem.notif('<h5>Oops !</h5> error example ', 0, 'o-err')">Show Error</button>
+    <button type="button" class="awe-btn" onclick="awe.flash($(this).parent())">Flash</button>
+    <button type="button" class="awe-btn" onclick="awe.flash(awem.notif('Hi,</br> how are you ! ', 5000))">Flash Notify</button>
+    @*endmsc*@
+
+    <div class="code">
+        @Html.Source("Home/Index.cshtml", "msc")
+    </div>
+</div>
+
+<div id='lastEx'>
+</div>
+
+<br />
+<br />
+See also:
+<br />
+<a href="@Url.Action("Index", "DragAndDropDemo")"> Drag And Drop Demo (grid move rows)</a><br />
+<a href="@Url.Action("Index", "GridClientDataDemo")"> Grid Client Data Demo</a><br />
+<a href="@Url.Action("Index", "GridNestingDemo")#In-nest-editing-grid">Grid In Nest Editing Demo</a><br />
+@Html.ActionLink("Grid Inline Editing Demo", "Index", "GridInlineEditDemo")<br />
+@Html.ActionLink("Master Detail Crud Demo", "Index", "MasterDetailCrudDemo")<br />
+@Html.ActionLink("Wizard Demo", "Index", "WizardDemo")<br />
+
+<script>
+    $(function() {
+        var indx = 0;
+        var last = $('#lastEx');
+        var url = '@Url.Action("Rend", "Data")';
+        
+        site.loadWhenSeen(last, url, indx++, loadNext);
+
+        function loadNext(res) {
+            if (!res || res == 'end') return;
+
+            var el = $('<div class="example" />').html(res);
+            last.after(el);
+            last = el;
+
+            site.handleAnchors();
+            site.handleTabs();
+            site.parseCode();
+            site.prettyPrint();
+            
+            site.loadWhenSeen(last, url, indx++, loadNext);
+        }
+    });
+</script>

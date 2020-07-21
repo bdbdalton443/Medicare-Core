@@ -1,0 +1,13 @@
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\bin\Debug\netcoreapp3.0\Omu.Awem.deps.json
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\bin\Debug\netcoreapp3.0\Omu.Awem.dll
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\bin\Debug\netcoreapp3.0\Omu.Awem.pdb
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\bin\Debug\netcoreapp3.0\Omu.Awem.xml
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\bin\Debug\netcoreapp3.0\Omu.AwesomeMvc.dll
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\bin\Debug\netcoreapp3.0\Omu.AwesomeMvc.xml
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\obj\Debug\netcoreapp3.0\Awem.AssemblyInfoInputs.cache
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\obj\Debug\netcoreapp3.0\Awem.AssemblyInfo.cs
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\obj\Debug\netcoreapp3.0\Awem.csproj.CopyComplete
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\obj\Debug\netcoreapp3.0\Omu.Awem.dll
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\obj\Debug\netcoreapp3.0\Omu.Awem.xml
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\obj\Debug\netcoreapp3.0\Omu.Awem.pdb
+D:\Tutorials\ASP Core Tables\AweCoreDemo\AweCoreDemo\Awem\obj\Debug\netcoreapp3.0\Awem.csprojAssemblyReference.cache

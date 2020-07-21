@@ -1,0 +1,37 @@
+﻿@page
+@model AweCoreDemo.Pages.Finance.FinanceSettings.BillItemTypes.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BillItemType[0].Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.BillItemType) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.BillItemTypeID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.BillItemTypeID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.BillItemTypeID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

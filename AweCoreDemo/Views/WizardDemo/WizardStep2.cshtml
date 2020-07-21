@@ -1,0 +1,24 @@
+@model AweCoreDemo.ViewModels.Input.Wizard.Step2Model
+<div class="wizardForm">
+    <div id="wizardData" style="height: 250px;">
+        @using (Html.BeginForm())
+        {
+            <div>good, now select a meal</div>
+
+            @Html.EditorFor(o => o.CategoryId)
+            @Html.EditorFor(o => o.MealIds)
+        }
+    </div>
+    <div>
+        <div style="float: left; margin-right: -100px;">
+            @using (Html.BeginForm("WizardStep1", null, new { Model.WizardId }, FormMethod.Get))
+            {
+                <button type="submit" class="awe-btn mbtn" style="width: 100px;">Go back</button>
+            }
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" class="awe-btn mbtn" onclick="$('#wizardData form').submit()" style="width: 100px;">Continue</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "Grid inline editing multiple editors in one cell";
+}
+<h2>Grid inline editing multiple with editors in one cell</h2>
+@*begin*@
+@{
+    var grid = "DinnersGrid";
+}
+<div class="bar">
+    <div style="float: right;">
+        @Html.Awe().TextBox("txtSearch").Placeholder("search...").CssClass("searchtxt")
+    </div>
+    <button type="button" onclick="$('#@grid').data('api').inlineCreate()" class="awe-btn mbtn">Create</button>
+    @{
+        var chefId = Db.Chefs.First().Id;
+        var meals = Db.Meals.Take(2).Select(o => o.Id).ToArray();
+        var initObj = new { Name = "hi there", Date = DateTime.Now.ToShortDateString(), ChefId = chefId, MealsIds = meals };
+    }
+    
+    @Html.InlineCreateButtonForGrid(grid, initObj, "Create with predefined values")
+</div>
+
+@Html.InitDeletePopupForGrid(grid, "GridInlineEditDemo")
+
+@(Html.Awe().Grid(grid)
+      .Mod(o => o.PageInfo().InlineEdit(Url.Action("Create"), Url.Action("Edit")).ColumnsSelector())
+      .Url(Url.Action("GridGetItems"))
+      .Parent("txtSearch", "search")
+      .Height(350)
+      .Resizable()
+      .Reorderable()
+      .Columns(
+          new Column { Bind = "Id", Width = 75 }
+              .Mod(o => o.InlineId()),
+
+          new Column { Bind = "Name,Date", ClientFormat = ".Name .Date", Header = "Name" }
+              .Mod(o => o.Inline(Html.Awe().TextBox("Name"))
+                         .Inline(Html.Awe().DatePicker("Date"))),
+
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef", Width = 200 }
+              .Mod(o => o.Inline(Html.Awe().Lookup("Chef").Controller("ChefLookup"), "ChefId")),
+
+          new Column { ClientFormat = ".Meals and .BonusMeal", Header = "Meals" }
+              .Mod(o => o.Inline(Html.Awe().AjaxCheckboxList("Meals").Multiselect().DataFunc("utils.getItems(meals)"), "MealsIds")
+                         .Inline(Html.Awe().AjaxRadioList("BonusMealId").Odropdown().DataFunc("utils.getItems(meals)"), "BonusMealId")),
+
+          new Column { Bind = "Organic", Width = 100, ClientFormat = ".DispOrganic" }
+              .Mod(o => o.Inline(Html.Awe().CheckBox("Organic").Otoggl())),
+
+          new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+          new Column { ClientFormat = Html.InlineDeleteFormatForGrid(grid), Width = 85 }))
+<script>
+    var meals = @Html.Raw(DemoUtils.Encode(Db.Meals.Select(o => new KeyContent(o.Id, o.Name))));
+</script>
+@*end*@
+<br />
+<div class="tabs">
+    <div data-caption="description" class="expl">
+        You can have more than one editor inside a grid cell by calling .Inline(format) multiple times.
+    </div>
+    <div data-caption="view">@Html.Source("GridInlineEditDemo/MultiEditorsDemo.cshtml")</div>
+    <div data-caption="controller">@Html.Csource("Demos/Grid/GridInlineEditDemoController.cs")</div>
+</div>

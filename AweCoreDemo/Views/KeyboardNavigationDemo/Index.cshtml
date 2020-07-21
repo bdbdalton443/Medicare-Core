@@ -1,0 +1,61 @@
+@{
+    ViewBag.Title = "Grid Keyboard navigation and selection";
+}
+<h1>Keyboard navigation and selection demo</h1>
+adding keyboard navigation functionality using custom js, any grid with keynav class assigned will get this functionality
+    <br />
+<br />
+@*begin*@
+@(Html.Awe().Grid("KeyNavGrid")
+        .DataFunc("getHybrid")
+        .Mod(o => o.KeyNav().PageSize().PageInfo())
+        .Height(400)
+        .Selectable(SelectionType.Single)
+        .Columns(
+        new Column { Bind = "Id", Width = 70 },
+        new Column { Bind = "Person" },
+        new Column { Bind = "Food" },
+        new Column { Bind = "CountryName", Header = "Country" },
+        new Column { Bind = "Location" }))
+
+<script>
+    $(function () {
+        $(document).on('keydown', function (e) {
+            if (e.altKey && e.which == 71)// alt + g
+            {
+                $('#KeyNavGrid').focus();
+            }
+        });
+    });
+
+    // get data from the server on the first call only
+    var loadedItems;
+    function getHybrid(sgp) {
+        var gp = utils.getGridParams(sgp);
+
+        var opt = {
+             key: "Id", 
+             gp: gp
+        };
+
+        if (loadedItems) {
+            opt.items = loadedItems;
+            return utils.gridModelBuilder(opt);
+        }
+
+        return $.get('@Url.Action("GetLunches","Data")').then(function (items) {
+            loadedItems = items;
+            opt.items = items;
+            return utils.gridModelBuilder(opt);
+        });
+    }
+</script>
+@*end*@
+<br />
+alt + g - select grid<br />
+up and down - move to next/prev row, if it's the last or first row it will go on next/prev page<br />
+page up and page down - next/prev page<br />
+home, end - first, last row
+<br />
+enter, space - select row<br />
+@Html.Source("KeyboardNavigationDemo/Index.cshtml", wrap: true)

@@ -1,0 +1,39 @@
+@{
+    Layout = null;
+    var cid = Html.Awe().GetControlId();
+}
+<div class="elabel2">Name:</div>
+<div class="einput">
+    <input type="text" name="search" class="awe-searchtxt" placeholder="search..." />
+</div>
+<button type="button" class="awe-searchbtn awe-btn">Search</button>
+<button type="button" class="awe-btn" onclick="awe.open('createDinner')" style="padding: 0.35em 0.7em;">Create</button>
+<br style="clear: both;" />
+
+@(Html.Awe().InitPopupForm()
+                .Name("createDinner")
+                .Url(Url.Action("Create", "Dinners"))
+                .Success("utils.lookupTblCreated('" + cid + "')")
+                .Height(430)
+                .Modal()
+                .Group("dinner")
+                .Title("create dinner"))
+
+@(Html.Awe().InitPopupForm()
+                .Name("editDinner")
+                .Url(Url.Action("Edit", "Dinners"))
+                .Success("utils.lookupEdited('" + cid + "')")
+                .Height(430)
+                .Modal()
+                .Group("dinner")
+                .Title("edit dinner"))
+
+@(Html.Awe().InitPopupForm()
+                .Name("deleteDinner")
+                .Url(Url.Action("Delete", "Dinners"))
+                .Success("utils.lookupDeleted('" + cid + "')")
+                .OkText("Yes")
+                .CancelText("No")
+                .Modal()
+                .Height(200)
+                .Title("delete dinner"))

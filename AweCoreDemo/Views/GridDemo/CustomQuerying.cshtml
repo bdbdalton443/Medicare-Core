@@ -1,0 +1,53 @@
+@{
+    ViewBag.Title = "Grid control with Custom data querying for Sorting, Grouping and Paging";
+}
+<h1>Grid custom querying</h1>
+<div class="expl">
+    By default the GridModelBuilder will query the data (order and get page), but you can to that yourself and pass the ordered and paged data. 
+    You might need to do that if you're using stored procedures, service calls, or any other data storage tech that doesn't support linq.
+    <br />
+    You might also want to load the data using <code>async/await</code> methods and only after that pass it to the GridModelBuilder, 
+    and for this scenario the GridModelBuilder has methods to apply the OrderBy and Page on your query before you call your Async Load method, see examples below.
+</div>
+<div class="example">
+    <h2>Manually ordering and paging data</h2>
+    @*begin*@
+    @(Html.Awe().Grid("CustomQueryingGrid")
+    .Url(Url.Action("GetItems", "CustomQueryingGrid"))
+    .Height(300)
+    .Columns(
+    new Column { Bind = "Id", Groupable = false, Sortable = false, Width = 70 },
+    new Column { Bind = "Person" },
+    new Column { Bind = "Food" }))
+    @*end*@
+    <br />
+    <div class="tabs">
+        <div data-caption="description" class="expl">
+            Here we are showing how we could query the data manually before passing it to the GridModelBuilder.
+            One could also use something like Dynamic Linq or generate a sql script etc.
+        </div>
+        <div data-caption="view">@Html.Source("GridDemo/CustomQuerying.cshtml")</div>
+        <div data-caption="controller">@Html.Code("Demos/Grid/CustomQueryingGridController.cs").Action("GetItems")</div>
+    </div>
+</div>
+<div class="example">
+    <h2>Execute async query before building model</h2>
+    @*begin2*@
+    @(Html.Awe().Grid("GridQuery2")
+      .Url(Url.Action("GetEfAsyncItems", "CustomQueryingGrid"))
+      .Height(300)
+      .Columns(
+          new Column { Bind = "Id", Groupable = false, Sortable = false, Width = 70 },
+          new Column { Bind = "Person" },
+          new Column { Bind = "Food" }))
+    @*end2*@
+    <br />
+    <div class="tabs">
+        <div data-caption="description" class="expl">
+            In this grid we are fetching the data before calling <code>GridModelBuilder.Build</code>, this way you could use an async call to fetch data,
+            await for the call and after pass the items and count to the GridModelBuilder.
+        </div>
+        <div data-caption="view">@Html.Source("GridDemo/CustomQuerying.cshtml", 2)</div>
+        <div data-caption="controller">@Html.Code("Demos/Grid/CustomQueryingGridController.cs").Action("GetEfAsyncItems")</div>
+    </div>
+</div>

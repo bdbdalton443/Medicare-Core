@@ -1,0 +1,104 @@
+﻿@page
+@model DemoHms.Pages.Items.Requests.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Request</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Request.Name" class="control-label"></label>
+                <input asp-for="Request.Name" class="form-control" />
+                <span asp-validation-for="Request.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Request.RequestedBy" class="control-label"></label>
+                <input asp-for="Request.RequestedBy" class="form-control" />
+                <span asp-validation-for="Request.RequestedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Request.Department" class="control-label"></label>
+                <input asp-for="Request.Department" class="form-control" />
+                <span asp-validation-for="Request.Department" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Request.Status" class="control-label"></label>
+                <input asp-for="Request.Status" class="form-control" />
+                <span asp-validation-for="Request.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Request.Quantity" class="control-label"></label>
+                <input asp-for="Request.Quantity" class="form-control" />
+                <span asp-validation-for="Request.Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Request.IssuedQty" class="control-label"></label>
+                <input asp-for="Request.IssuedQty" class="form-control" />
+                <span asp-validation-for="Request.IssuedQty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Request.ApprovedQty" class="control-label"></label>
+                <input asp-for="Request.ApprovedQty" class="form-control" />
+                <span asp-validation-for="Request.ApprovedQty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Request.Requested_On" class="control-label"></label>
+                <input asp-for="Request.Requested_On" class="form-control" />
+                <span asp-validation-for="Request.Requested_On" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Request.Balance" class="control-label"></label>
+                <input asp-for="Request.Balance" class="form-control" />
+                <span asp-validation-for="Request.Balance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Request.Approved_On" class="control-label"></label>
+                <input asp-for="Request.Approved_On" class="form-control" />
+                <span asp-validation-for="Request.Approved_On" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Request.Received" /> @Html.DisplayNameFor(model => model.Request.Received)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Request.Confirmed" /> @Html.DisplayNameFor(model => model.Request.Confirmed)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Request.Appoved" /> @Html.DisplayNameFor(model => model.Request.Appoved)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Request.Issued" /> @Html.DisplayNameFor(model => model.Request.Issued)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Request.ItemID" class="control-label"></label>
+                <select asp-for="Request.ItemID" class ="form-control" asp-items="ViewBag.ItemID"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

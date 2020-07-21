@@ -1,0 +1,55 @@
+@{
+    string pivotId;
+}
+@using (Html.Awe().BeginContext())
+{
+    pivotId = Html.Awe().GetContextPrefix() + "pivot";
+}
+@*above code needed for when you don't know the popup id*@
+
+<div class="maindiv">
+    <input type="hidden" id="@pivotId" />
+
+    <p>
+        hi, try resizing the browser window
+    </p>
+    
+    <p>
+        @Html.Awe().Button().Text("toggle fullscreen").OnClick("toggleFullscreen()")
+    </p>
+
+    <p class="modsbtns">
+        change min width:
+        @Html.Awe().Button().Text("big").OnClick("modw(1000)")
+        @Html.Awe().Button().Text("small").OnClick("modw(200)")
+    </p>
+    
+    <script>
+        var popup = $('#' + '@pivotId').closest('.awe-popup');
+        var main = popup.find('.maindiv');
+        var po = popup.data('o');
+
+        function modw(w) {
+            w = Math.min(w, $(window).width() - 70);
+            main.css('min-width', w);
+
+            //call to reposition the popup
+            popup.data('api').lay();
+        }
+
+        function toggleFullscreen() {
+            po.p.f = !po.p.f;
+            popup.data('api').lay();
+        }
+    </script>
+    <style>
+        .modsbtns .awe-btn {
+            min-width: 100px;
+        }
+
+        .maindiv {
+            border: 1px dashed fuchsia;
+            padding: 1em;
+        }
+    </style>
+</div>

@@ -1,0 +1,435 @@
+/*mui*/
+var bordrad1 = 3px;
+var bordrad2 = 5px;
+var bordradg = 2px;
+var bordraded = 2px;
+var bg1 = #f8f8f8;
+var bg2 = #fff;
+var bgdisb = #f8f8f8;
+var bgeditor = #fff;
+var bgpop = var.bgeditor;
+var bgmodal = #111;
+var awelipad = .39em;
+var rowlineh = 2.2em;
+var hghlcolor = #fafaf7;
+var clrbrdcol = gray;
+var clrdis = var.clrbrdcol;
+var mcolor = rem;
+var mbrdcolor = gainsboro;
+var lbrdcolor = #e5e5e5;
+var bgli = #fff;
+var bgg = var.bg2;
+var outlselli = gold;
+var btnbrdcolor = #ccc;
+var gbarcolor = #777;
+var bglkpsel = #fff0bf;
+var gtdvborder = none;
+var clscolor = gray;
+var bgspincont = rgba(242, 240, 240, 0.64);
+var colcolor = #333;
+var sidebtnw = 2.2em;
+var slbtnw = 2.5em;
+var dtpsidepad = 2.6em;
+var edith = 2.2em;
+var mlkpsidepad = calc(var.sidebtnw - 1px);
+var txtsidepad = .75em;
+var cecolor = #6b7069;
+
+var eddisp = {
+	min-height: var.edith;
+};
+
+var add = {
+	height: var.edith;
+};
+
+var ajxltd = {
+	border-bottom: 1px solid #eee;
+};
+
+var ajxlthead = {
+	color: #555;
+    background-color: #fafafa;
+};
+
+var btn = {
+	border: 1px solid #ccc;
+    background-image: none;
+    background-color: #f5f5f5;
+    border-radius: var.bordraded;
+    color: #333;
+	transition: box-shadow 450ms cubic-bezier(0.23, 1, 0.32, 1) 0, border-color 450ms cubic-bezier(0.23, 1, 0.32, 1) 0;
+    background-image: linear-gradient(to bottom, #FCFCFC 0, #F8F8F8 100%);
+};
+
+var btnhover = {
+	color: #333;
+	border-color: #AAA #AAA #999;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), inset 0 0 3px white;
+};
+
+var btnfocus = {
+	border-color: #AAA #AAA #999;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), inset 0 0 3px white;
+};
+
+var btnactive = {
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+	border: 1px solid #C5C5C5;
+	background-color: #E9E9E9;
+	background-image: none;
+};
+
+var btnsel = {
+	@inherit awebtnactive;
+};
+
+var btnselspin = {
+	box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.25), 0 1px 0 white;
+};
+
+var btndis = {};
+
+var morebtn = {};
+
+var morebtnhover = {};
+
+var okbtnblock = {};
+
+var openbtn = {};
+var icon2 = awe_icons.png;
+var colorhov = #333;
+var brdcol = #d3d3d3;
+var brdcolgrid = #eaeaea;
+var brdcolhov = #C5C5C5;
+var bghov = #eee;
+var grad1 = linear-gradient(to bottom, #4D90FE, #4787ED);
+var grad2 = linear-gradient(to bottom, #fafafa 0, #e9e9e9 100%);
+var txshcolor = rgba(0, 0, 0, 0.1);
+
+var reloadico = {};
+
+var gridheader = {
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	color: #333;
+};
+
+var highlight = {
+	color: gray !important;
+};
+
+var gbarcol = {};
+
+var highlightgroupbar = {};
+
+var awetxt = {
+	color: #333;
+    border: 1px solid #D5D5D5;
+    border-top-color: #B5B5B5;
+};
+
+var awetxtdis = {
+	background: #f5f5f5;
+};
+
+var awetxtfocus = {};
+
+var txtplaceholder = {};
+
+var placeholder = {
+	color: rgb(159, 170, 175);
+};
+
+var spincont = {
+	border: 1px solid gainsboro;
+    border-top-color: #B5B5B5;
+};
+
+var tabbtn = {
+	background-color: #f7f7f7;
+};
+
+var tabfocus = {
+	outline: thin dotted;
+	outline-offset: -3px;
+};
+
+var tabactive = {
+	background: #fff;
+	border: 1px solid #DCDCDC;
+	margin-bottom: -2px;
+	border-bottom: 1px solid #FFF;
+};
+
+var btngarw = {};
+
+var btngbtn = {
+	font-size: .9em;
+};
+
+var btnghover = {};
+
+var btngsel = {};
+
+var btngfocus = {};
+
+var btngactive = {};
+
+var omenu = {
+	border: 1px solid rgba(100, 100, 100, 0.4);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+};
+var oobrdcolor = #7b7b7b;
+
+var oitm = {
+	line-height: 3.1em;
+};
+
+var itmfocus = {
+	background-color: rgba(0, 0, 0, 0.07);
+};
+
+var itmsel = {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAKCAYAAACwoK7bAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLHAoAB0rBjw8AAAEZSURBVCjPrZK9SsRQEEbPTVLI5gl2U9sIgmQSEEUIWGmfwkbBRrRXfAEVLOxsLCxsBcHHMCSsEIjN1hutJCIYg+TaRFllwQiZcr5vDvOn6DA8z9vUWp8qpfY7g4rIoYho13WvAIwOmEpEjoETICvLcg/A6gB6DuwCb3Vdh1mWvbYGi8g8QJIk6UTaEJFLYAtAKbUzHA6zL9H8CxoEwUxVVTdaa7ff73/kef4QhqHZ6/WugY0GehHH8dGPUdp07Pv+Ql3XUdPIGTAHrDfyfVEUi6PR6H2yxmwDHo/Hj4PB4AVYA5aA2UYqLMtaSdP0+XeN2fZKeZ7fOY5jA8vfSzaM1SiKsmn+f71bHMcHwC3wpLXetm07AvQ07yddElvdEn1epgAAAABJRU5ErkJggg==) no-repeat left center rgba(0, 0, 0, 0);
+};
+
+var itmselfocus = {
+	background-color: rgba(0, 0, 0, 0.07);
+};
+
+var itmfoccei = {};
+
+var obtn = {};
+
+var obtnhover = {};
+
+var obtnfocus = {};
+
+var obtnactive = {};
+
+var ddbtn = {
+	padding: .375em .75em;
+    height: var.edith;
+};
+
+var ddbtncptn = {
+	padding-right: 1.75em;
+};
+
+var ddbtnactive = {};
+
+var igmenu = {};
+
+var igmenusel = {};
+
+var cbxbtnfocus = {};
+
+var cbxbtnslbtn = {
+	color: #333;
+};
+
+var phdr = {};
+
+var ophdrocls = {
+	padding: .5em 1em;
+    font-size: 1.3em;
+};
+
+var optitl = {
+	font-size: 1.25em;
+};
+
+var opbtns = {
+	padding: 0.5em;
+	border-top: 1px solid gainsboro;
+};
+
+var opmc = {
+	border: 1px solid rgba(100, 100, 100, 0.4);
+    background: rgba(255, 255, 255, 0.98);
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+};
+var bgloadanim = #26a69a;
+var bgkeynav = #eaeaea;
+var keynavoutlcol = #afafaf;
+var keynavbright = 97;
+var bordradday = 50%;
+
+var dtpdayhov = {
+	background-color: #f0f0f0;
+};
+
+var odaydiv = {
+	border: 1px solid #fff;
+	border-radius: 50%;
+};
+
+var otdaydiv = {
+	border-color: gainsboro;
+};
+
+var selday = {
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+	background: #e3e3e3;
+};
+var arww = 2px;
+var arwcol = #555;
+
+var schedbararw = {};
+
+var cmbtnarw = {
+	border-width: 0 3px 3px 0;
+};
+
+var mnthawebtn = {
+	color: #333;
+};
+var chkcolor = #26a69a;
+var tgonhov = #239389;
+
+var ntp = {
+	background-color: #fff;
+    border: 1px solid #ccc;
+};
+
+var ontpocls = {
+	font-size: 1.3em;
+    padding: .1em .8em;
+};
+
+var ntlb = {};
+
+var errntlb = {};
+
+var errntp = {
+	color: white;
+	background: #CE5252;
+};
+
+var errcls = {
+	color: #fff;
+};
+
+var pbtnblock = {
+.o-pbtn {
+    font-size: 15px;
+    padding: .7em 1.3em;
+    background: transparent;
+    border-color: transparent !important;
+    box-shadow: none;
+    font-weight: 600;
+    font-family: "Open Sans", "Segoe UI", Roboto, Arial, sans-serif;
+    color: gray;
+}
+
+    .o-pbtn:hover, .o-pbtn:focus {
+        box-shadow: none;
+        color: #000;
+    }
+
+.awe-movebtn {
+    border: none;
+    background: transparent;
+}
+
+.awe-row:not(.o-glrow) .awe-btn:not(.o-tgh) {
+    background: transparent;
+    border: none;
+}
+};
+
+var chkmchked = {
+	color: var.chkcolor;
+};
+
+var chkico = {
+	transition: 140ms;
+	border: .15em solid #aaa;
+	border-radius: .15em;
+	background: #fff;
+};
+
+var chkchked = {
+	background: var.chkcolor;
+    border-color: transparent;
+};
+
+var chkicoafter = {
+	box-sizing: border-box;
+	transform: rotate(45deg);
+	position: absolute;
+	content: '';
+	top: -.02em;
+	left: .349em;
+	height: .93em;
+	width: .45em;
+	border: solid white .17em;
+	border-top: 0;
+	border-left: 0;
+	display: block;
+};
+
+var rdlchkbfaf = {
+	border: 2px solid #aaa;	
+	background: #fff;
+};
+
+var rdlchkedbfaf = {
+	border: 2px solid var.chkcolor;
+};
+
+var rdlchkedaf = {
+	background-color: var.chkcolor;
+};
+
+var rdlchkbfafdisb = {
+	border-color: #bbb;
+};
+
+var rdlchkedbfafdisb = {};
+
+var rdlchkedafdisb = {
+	background-color: #bbb;
+};
+
+var dischkico = {
+	background-color: #dcdcdc !important;
+	border-color: #ccc;
+};
+
+var dischked = {};
+var tgbrdcolor = var.mbrdcolor;
+
+var tgoff = {
+	background: #e5e5e5;
+};
+var bgoffhover = #d3d3d3;
+
+var cbxbtnhov = {
+	color: #000;
+};
+
+var footerbtn = {
+	border: none;
+	background: transparent;
+};
+
+var footerbtnsel = {
+	@inherit awebtnsel;
+};
+
+var footerbtnfocus = {
+	@inherit obtnfocus;
+};
+
+var nstcreate = {};
+
+var nstcell = {};
+
+var rowtd = {};
+
+var altrow = {
+	background: var.bg2;
+};
+@insert main.css;

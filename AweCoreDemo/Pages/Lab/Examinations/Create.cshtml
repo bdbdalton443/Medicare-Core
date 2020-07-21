@@ -1,0 +1,67 @@
+﻿@page
+@model AweCoreDemo.Pages.Lab.Examinations.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Examination</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Examination.Description" class="control-label"></label>
+                <input asp-for="Examination.Description" class="form-control" />
+                <span asp-validation-for="Examination.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Examination.Code" class="control-label"></label>
+                <input asp-for="Examination.Code" class="form-control" />
+                <span asp-validation-for="Examination.Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Examination.Findings" class="control-label"></label>
+                <textarea asp-for="Examination.Findings" class="form-control"></textarea>
+                <span asp-validation-for="Examination.Findings" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Examination.ExaminationStatusID" class="control-label"></label>
+                <select asp-for="Examination.ExaminationStatusID" class ="form-control" asp-items="ViewBag.ExaminationStatusID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Examination.BillStatusID" class="control-label"></label>
+                <select asp-for="Examination.BillStatusID" class ="form-control" asp-items="ViewBag.BillStatusID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Examination.AssignmentID" class="control-label"></label>
+                <select asp-for="Examination.AssignmentID" class ="form-control" asp-items="ViewBag.AssignmentID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Examination.CreatedOn" class="control-label"></label>
+                <input asp-for="Examination.CreatedOn" class="form-control" />
+                <span asp-validation-for="Examination.CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Examination.UpdatedOn" class="control-label"></label>
+                <input asp-for="Examination.UpdatedOn" class="form-control" />
+                <span asp-validation-for="Examination.UpdatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,110 @@
+﻿@page
+@model DemoHms.Pages.Items.Requests.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Request</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.RequestedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.RequestedBy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Department)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Department)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Quantity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Quantity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.IssuedQty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.IssuedQty)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.ApprovedQty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.ApprovedQty)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Requested_On)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Requested_On)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Balance)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Balance)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Approved_On)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Approved_On)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Received)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Received)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Confirmed)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Confirmed)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Appoved)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Appoved)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Issued)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Issued)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.Item)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.Item.ItemID)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Request.RequestID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

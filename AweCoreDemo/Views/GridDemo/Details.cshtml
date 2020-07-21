@@ -1,0 +1,9 @@
+@model AweCoreDemo.Models.Lunch
+<div style="padding: .5em; line-height: 1.7em;">
+    details:
+    @Model.Person had @Model.Food <br />
+    Date: @Model.Date.ToShortDateString() <br />
+    Price: @Model.Price <br />
+    Country: @Model.Country.Name <br />
+    Chef: @Model.Chef.FirstName @Model.Chef.LastName
+</div>

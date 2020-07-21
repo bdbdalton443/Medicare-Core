@@ -1,0 +1,121 @@
+﻿@page
+@model DemoHms.Pages.Items.Requests.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].RequestedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].IssuedQty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].ApprovedQty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Requested_On)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Balance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Approved_On)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Received)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Confirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Appoved)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Issued)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request[0].Item)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Request) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IssuedQty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApprovedQty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Requested_On)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Balance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Approved_On)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Received)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Confirmed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Appoved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Issued)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item.ItemID)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.RequestID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.RequestID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.RequestID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

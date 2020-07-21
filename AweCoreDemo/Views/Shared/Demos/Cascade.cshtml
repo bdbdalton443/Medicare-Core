@@ -1,0 +1,22 @@
+<h3 data-u="@Url.Action("Index","AjaxDropdownDemo")" data-name="cascade">Cascade using binding to parent </h3>
+@*begin*@
+<div class="efield einlf">
+    <div class="elabel">Parent Category:</div>
+    @(Html.Awe().AjaxDropdown("ParentCategory")
+          .Url(Url.Action("GetCategories", "Data")))
+</div>
+<div class="efield einlf">
+    <div class="elabel">Child Meal:</div>
+    @(Html.Awe().AjaxDropdown("ChildMeal")
+        .Parent("ParentCategory", "categories")
+      .Url(Url.Action("GetMeals", "Data")))
+</div>
+@*end*@
+<div class="tabs code">
+    <div data-caption="description" class="expl">
+        Binding controls using <code>Parent</code> extension,
+        one control can be bound to multiple others, works for all editor helpers.
+    </div>
+    <div data-caption="view">@Html.Source("Shared/Demos/Cascade.cshtml")</div>
+    <div data-caption="controller">@Html.Csource("Awesome/DataController.cs")</div>
+</div>

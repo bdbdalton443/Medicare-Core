@@ -1,0 +1,149 @@
+﻿*, :before, :after {
+    box-sizing: border-box;
+}
+
+body, ul, fieldset, textarea, img, legend, button, i {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    font-family: Roboto, "Segoe UI", Oxygen-Sans, Ubuntu, Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    font-size: 15px;
+    line-height: 1.42857143;
+    background: whitesmoke;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+}
+
+.awe-col, .elabel, h1, h2, h3, b {
+    font-family: "Segoe UI", Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #6e707e;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d1d3e2;
+    border-radius: .35rem;
+    -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out
+}
+h1, h2, h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 400;
+    line-height: 1.1;
+    color: #333;
+}
+
+select.awe-display {
+    padding: 0.2em;
+    border-radius: 2px;
+}
+
+.awe-ajaxdropdown-field select {
+    min-width: 9em;
+}
+
+input[type="text"], textarea {
+    margin: 0;
+    padding: 5px 8px 6px;
+    color: #333;
+    border: 1px solid #D5D5D5;
+    border-top-color: #B5B5B5;
+    border-radius: 1px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"] {
+    width: 200px;
+}
+
+.maincont {
+    padding: 20px;
+    margin: 0 50px;
+}
+
+.awe-field {
+    vertical-align: top;
+}
+
+.awe-searchbtn {
+    padding: 0.35em 0.5em;
+    vertical-align: top;
+}
+
+.chkLbl {
+    vertical-align: middle;
+}
+
+.o-chk .o-wav {
+    background: #78bff7;
+}
+
+/* grid btns */
+.editbtn, .delbtn, .editnst, .delnst {
+    padding: .2em .3em;
+}
+
+.ico-crud {
+    background-image: url(editdel.png);
+}
+
+.start .ico-crud, .gui3 .ico-crud, .black-cab .ico-crud, .met .ico-crud, .bts .ico-crud {
+    background-image: url(editdel_w.png);
+}
+
+.ico-edit, .ico-del {
+    display: block;
+    overflow: hidden;
+    height: 18px;
+    width: 18px;
+    background-repeat: no-repeat;
+}
+
+.ico-edit {
+    background-position: 0 -1px;
+}
+
+.ico-del {
+    background-position: -17px -1px;
+}
+/* end grid btns */
+
+.bar {
+    overflow: visible;
+    padding: .3em 0;
+}
+
+.bar .awe-field {
+    margin-bottom: 5px;
+}
+
+.expl {
+    padding: 1em;
+    background: white;
+    line-height: 1.7em;
+}
+
+.expl li {
+    padding: 3px 0;
+    list-style: none;
+}
+
+.expl p {
+    padding: 0;
+    margin: 0;
+}

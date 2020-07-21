@@ -1,0 +1,401 @@
+/*black-cab*/
+var bordrad1 = 3px;
+var bordrad2 = 2px;
+var bordradg = 2px;
+var bordraded = 2px;
+var bg1 = #3D4A5A;
+var bg2 = #506073;
+var bgdisb = #526677;
+var bgeditor = var.bg2;
+var bgpop = #445869;
+var bgmodal = #5A849C;
+var awelipad = 5px;
+var rowlineh = 1.7em;
+var hghlcolor = #82A6BA;
+var clrbrdcol = gray;
+var clrdis = var.clrbrdcol;
+var mcolor = #F8F9F5;
+var mbrdcolor = #303948;
+var lbrdcolor = #303948;
+var bgli = #323F4F;
+var bgg = #323F4F;
+var outlselli = #92B7C9;
+var btnbrdcolor = #2B3443;
+var gbarcolor = #aaa;
+var bglkpsel = var.bgmodal;
+var gtdvborder = 1px solid var.mbrdcolor;
+var clscolor = var.mcolor;
+var bgspincont = rgba(242, 240, 240, 0.05);
+var colcolor = var.mcolor;
+var sidebtnw = 2.3em;
+var slbtnw = 2.5em;
+var dtpsidepad = 2.7em;
+var edith = 2.2em;
+var mlkpsidepad = calc(var.sidebtnw - 1px);
+var txtsidepad = .75em;
+var cecolor = #cbd0dc;
+
+var eddisp = {
+	min-height: var.edith;
+};
+
+var add = {
+	height: var.edith;
+    padding: .375em .75em;
+};
+
+var ajxltd = {
+	border-bottom: var.gtdvborder;
+};
+
+var ajxlthead = {
+	color: var.mcolor;
+    background-color: var.bg1;
+};
+
+var btn = {
+	border: 1px solid var.btnbrdcolor;
+    background-image: linear-gradient(to bottom, #55697A 0, #435060 100%);
+    background-color: #445869;
+    border-radius: 3px;
+    color: var.mcolor;
+};
+
+var btnhover = {
+	background-image: linear-gradient(to bottom, #65798a 0, #536070 100%);
+	background-color: #435060;
+};
+
+var btnfocus = {};
+
+var btnactive = {
+	background-image: linear-gradient(to bottom, #5A697A 0, #445869 100%);
+	background-color: #445869;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+};
+
+var btnsel = {
+	box-shadow: inset 0 0 2px #040404;
+	background-color: #CBD0DC;
+	background-image: none;
+	color: #303948;
+	text-shadow: 0 0 3px #92B7C9;
+};
+
+var btnselspin = {
+	color: var.mcolor;
+	background-image: linear-gradient(to bottom, #5A697A 0, #445869 100%);
+	box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+};
+
+var btndis = {};
+
+var morebtn = {};
+
+var morebtnhover = {};
+
+var okbtnblock = {};
+
+var openbtn = {};
+var icon2 = awe_icons.png;
+var colorhov = #333;
+var brdcol = #d3d3d3;
+var brdcolgrid = #eaeaea;
+var brdcolhov = #C5C5C5;
+var bghov = #eee;
+var grad1 = linear-gradient(to bottom, #4D90FE, #4787ED);
+var grad2 = linear-gradient(to bottom, #fafafa 0, #e9e9e9 100%);
+var txshcolor = rgba(0, 0, 0, 0.1);
+
+var reloadico = {};
+
+var gridheader = {
+	background-image: linear-gradient(to bottom, #445869 0, #2D3D4D 100%);
+    background-color: #2D3D4D;
+};
+
+var highlight = {};
+
+var gbarcol = {
+	background: linear-gradient(to bottom, #445869 0, #2D3D4D 100%);
+};
+
+var highlightgroupbar = {
+	background-color: #445869 !important;
+	color: white !important;
+};
+
+var awetxt = {
+	border: 1px solid #303948;
+    background: #506073;
+};
+
+var awetxtdis = {
+	background: #445869;
+	border-color: #3d434a;
+};
+
+var awetxtfocus = {
+	box-shadow: 0 0 0 0.2em rgba(0, 123, 255, .25);
+    border-color: #80bdff;
+};
+
+var txtplaceholder = {
+	color: rgb(159, 170, 175);
+};
+
+var placeholder = {
+	color: rgb(159, 170, 175);
+};
+
+var spincont = {};
+
+var tabbtn = {
+	background-color: #445869;    
+    border-bottom: none;
+    color: white;
+};
+
+var tabfocus = {};
+
+var tabactive = {
+	background-color: #5A849C;
+};
+
+var btngarw = {};
+
+var btngbtn = {};
+
+var btnghover = {};
+
+var btngsel = {};
+
+var btngfocus = {};
+
+var btngactive = {};
+
+var omenu = {
+	border: 1px solid var.mbrdcolor;
+    background: #445869;
+	-webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+	color: var.mcolor;
+};
+var oobrdcolor = #92B7C9;
+
+var oitm = {
+	line-height: 3em;
+};
+
+var itmfocus = {
+	background-color: #5A849C;
+	color: var.mcolor;
+};
+
+var itmsel = {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAKCAYAAACwoK7bAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLHAoBFjlqnrwAAACUSURBVCjPrdMhCgJREAbgXRU0eARPICyYPYZ9BU9g9QQG7YJNzAoW72Db5B2MJoMgn8EHLiuG1ffH4fHBzJtJkojBGBfkMdGZV7axwBTzgJ7RjYWuAnpDvy6QIavUGth4J6+LdnDCDqNQa2JfQte/tjzAHQ8scSyhBdr/zHPqM1f0YnzWogIPkcZar0M4ggla3949AREf0AnV0H4LAAAAAElFTkSuQmCC) no-repeat left center rgba(0, 0, 0, 0);
+};
+
+var itmselfocus = {
+	background-color: #5A849C;
+};
+
+var itmfoccei = {};
+
+var obtn = {};
+
+var obtnhover = {};
+
+var obtnfocus = {};
+
+var obtnactive = {};
+
+var ddbtn = {
+	padding: .375em .75em;
+    height: var.edith;
+};
+
+var ddbtncptn = {
+	padding-right: 1.75em;
+};
+
+var ddbtnactive = {};
+
+var igmenu = {};
+
+var igmenusel = {};
+
+var cbxbtnfocus = {};
+
+var cbxbtnslbtn = {};
+
+var phdr = {};
+
+var ophdrocls = {
+	padding: .5em 1em;
+    font-size: 1.4em;
+};
+
+var optitl = {
+	font-size: 1.1em;
+    line-height: 1.5;
+};
+
+var opbtns = {
+	padding: 0.5em .7em .7em;
+	border-top: 1px solid var.mbrdcolor;
+};
+
+var opmc = {
+	border: 1px solid #384454;
+    background: #445869;    
+    -webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+	color: var.mcolor;
+};
+var bgloadanim = #92B7C9;
+var bgkeynav = rgb(68, 83, 104);
+var keynavoutlcol = rgb(167, 201, 255);
+var keynavbright = 97;
+var bordradday = 0;
+
+var dtpdayhov = {
+	border-color: #5A849C;
+    background-color: #4A707C;
+};
+
+var odaydiv = {
+	border: 1px solid #445869;
+};
+
+var otdaydiv = {
+	border-color: #384454;
+};
+
+var selday = {
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+	background: #5A849C !important;
+};
+var arww = 2px;
+var arwcol = var.mcolor;
+
+var schedbararw = {};
+
+var cmbtnarw = {};
+
+var mnthawebtn = {};
+var chkcolor = #5A849C;
+var tgonhov = #5A849C;
+
+var ntp = {
+	background-color: #445869;
+    border: 1px solid var.mbrdcolor;
+};
+
+var ontpocls = {
+	font-size: 1.3em;
+    padding: .1em .8em;
+};
+
+var ntlb = {};
+
+var errntlb = {};
+
+var errntp = {
+	color: white;
+	background: #CE5252;
+	border: none;
+};
+
+var errcls = {
+	color: #fff;
+};
+
+var pbtnblock = {};
+
+var chkmchked = {};
+
+var chkico = {
+	transition: 140ms;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	background: #CBD0DC;
+};
+
+var chkchked = {};
+
+var chkicoafter = {
+	box-sizing: border-box;
+    transform: rotate(45deg);
+    position: absolute;
+    content: '';
+    top: .05em;
+    left: .43em;
+    height: .93em;
+    width: .45em;
+    border: solid #2B3443 .17em;
+    border-top: 0;
+    border-left: 0;
+    display: block;
+};
+
+var rdlchkbfaf = {
+	border: 1px solid #aaa;	
+	background: #CBD0DC;
+};
+
+var rdlchkedbfaf = {};
+
+var rdlchkedaf = {
+	background-color: #55697A;
+};
+
+var rdlchkbfafdisb = {};
+
+var rdlchkedbfafdisb = {};
+
+var rdlchkedafdisb = {
+	background-color: #aaa;
+};
+
+var dischkico = {
+	background-color: #eee;
+};
+
+var dischked = {
+	border-color: gray;
+};
+var tgbrdcolor = #CBD0DC;
+
+var tgoff = {
+	background: #CBD0DC;
+	color: #333;
+};
+var bgoffhover = #CBD0DC;
+
+var cbxbtnhov = {
+	color: #000;
+};
+
+var footerbtn = {};
+
+var footerbtnsel = {
+	@inherit awebtnsel;
+};
+
+var footerbtnfocus = {
+	@inherit obtnfocus;
+};
+
+var nstcreate = {
+	border-top: 1px solid var.mbrdcolor;
+};
+
+var nstcell = {
+	background: var.bg2;
+};
+
+var rowtd = {};
+
+var altrow = {
+	background: #384454;
+};
+@insert main.css;

@@ -1,0 +1,48 @@
+@{
+    ViewBag.Title = "Dropmenu widget";
+}
+
+<h1>Dropmenu</h1>
+<div class="example">
+    <h2>Simple Dropmenu</h2>
+    @*begin1*@
+    <div id="area1" class="area">
+        <div class="msg">click here</div>
+    </div>
+    <script>
+        $(function () {
+            var div = $('#area1');
+            var msg = div.find('.msg');
+            var items = [{ k: 1, c: 'item 1' }, { k: 2, c: 'item 2' }, { k: 3, c: 'item 3' }];
+
+            var dd = awem.dropmenu({ df: getData, select: select });
+
+            div.click(function (e) {
+                dd.open({ xy: { y: e.clientY, x: e.clientX } });
+            });
+
+            function select(it) {
+                msg.html('you clicked ' + it.c);
+            }
+
+            function getData() {
+                return items;
+            }
+        });
+    </script>
+    @*end1*@
+    <div class="code">
+        @Html.Source("Dropmenu/Index.cshtml", 1)
+    </div>
+</div>
+
+<div class="example">
+    @await Html.PartialAsync("Demos/DropmenuItems")
+</div>
+
+<div class="example">
+    @await Html.PartialAsync("Demos/AutocInTxta")
+</div>
+
+@Html.Awe().InitPopup().Name("p1").Url(Url.Action("Popup1"))
+@Html.Awe().Button().OnClick(Html.Awe().OpenPopup("p1")).Text("Open Popup")

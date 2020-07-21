@@ -1,0 +1,97 @@
+﻿@page
+@model DemoHms.Pages.Patients.PatientOps.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Full Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient[0].Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient[0].CardNO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient[0].Tel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient[0].Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient[0].City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient[0].PatientType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient[0].CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient[0].UpdatedOn)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Patient) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>         
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CardNO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedOn)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.PatientID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.PatientID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.PatientID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

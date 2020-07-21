@@ -1,0 +1,86 @@
+﻿@page
+@model DemoHms.Pages.HospitalEntity.Permissions.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Root.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Permission</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanEdit)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanEdit)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanRead)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanRead)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanDelete)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanDelete)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanAdd)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanAdd)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanApprove)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanApprove)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanConfirm)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanConfirm)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.EmployeeGroup)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.EmployeeGroup.EmployeeGroupID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.Activity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.Activity.ActivityID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CreatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CreatedOn)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.UpdatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.UpdatedOn)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Permission.PermissionID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

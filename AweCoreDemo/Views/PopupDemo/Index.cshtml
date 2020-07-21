@@ -1,0 +1,302 @@
+@{
+    ViewBag.Title = "Popup Demo";
+}
+<h1>Popup</h1>
+<div class="expl">
+    It is initialized using <code>Html.Awe().InitPopup()</code> and after opened using <code>awe.open</code> js function.
+</div>
+<br />
+There's also the <a href="@Url.Action("Index", "PopupFormDemo")">PopupForm</a> helper which is used in all of the Crud demos
+(<a href="@Url.Action("Index", "GridCrudDemo")">Grid</a>, <a href="@Url.Action("Index", "Dinners")">AjaxList</a>),
+also in the <a href="@Url.Action("Index","WizardDemo")">Wizard Demo</a>,
+the PopupForm handles form posts that happen inside it
+and has 2 buttons by default (OK, Cancel).
+
+<div class="example">
+    <h3>Initialize and open popup on button click </h3>
+    @*begin1*@
+    @(Html.Awe().InitPopup()
+          .Name("popup1")
+          .Url(Url.Action("Popup1"))
+          .LoadOnce()
+          .Title("popup title"))
+
+    @Html.Awe().Button().Text("Open Popup").OnClick(Html.Awe().OpenPopup("popup1"))
+    @*end1*@
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("PopupDemo/Index.cshtml", 1)</div>
+        <div data-caption="controller">@Html.Code("Demos/Helpers/PopupDemoController.cs").Action("Popup1")</div>
+        <div data-caption="popup view">@Html.Source("PopupDemo/Popup1.cshtml", 1)</div>
+    </div>
+</div>
+
+<div class="example">
+    <h3>Position top, modal, close on click outside</h3>
+    @*begintm*@
+    @(Html.Awe().InitPopup()
+          .Name("popupTop")
+          .Url(Url.Action("Popup1"))
+          .LoadOnce()
+          .Modal()
+          .Top()
+          .Mod(o => o.OutClickClose())
+          .Width(1000)
+          .Title("top modal popup"))
+
+    @Html.Awe().Button().Text("Open top modal").OnClick(Html.Awe().OpenPopup("popupTop"))
+    @*endtm*@
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("PopupDemo/Index.cshtml", "tm")</div>
+    </div>
+</div>
+
+<div class="example">
+    <h3>Dropdown Popup</h3>
+    @*begin4*@
+    @(Html.Awe().InitPopup()
+        .Name("popupdd1")
+        .Url(Url.Action("DropdownContent"))
+        .LoadOnce()
+        .Mod(o => o.Dropdown()))
+
+    @Html.Awe().Button().Text("open popup").OnClick(Html.Awe().OpenPopup("popupdd1"))
+    @Html.Awe().Button().Text("open same popup").OnClick(Html.Awe().OpenPopup("popupdd1"))
+    <br />
+    <br />
+
+    <script>
+        $(function () {
+            // touchstart for ipad
+            $(document).on('click touchstart', '.area', function (e) {
+                var ev = e.type == 'touchstart' ? e.originalEvent.touches[0] : e;
+                awe.open('popupdd1', { xy: { x: ev.clientX, y: ev.clientY } }, ev);
+            });
+        });
+    </script>
+    <div class="area">
+        <div class="msg">click here</div>
+    </div>
+    <br />
+    @(Html.Awe().InitPopup()
+        .Name("ddinpop")
+        .Url(Url.Action("DdInPopup"))
+        .LoadOnce()
+        .Modal()
+        .Mod(o => o.OutClickClose()))
+
+    @Html.Awe().Button().Text("dropdown in popup").OnClick(Html.Awe().OpenPopup("ddinpop"))
+    @*end4*@
+
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("PopupDemo/Index.cshtml", 4)</div>
+        <div data-caption="controller">@Html.Csource("Demos/Helpers/PopupDemoController.cs", 3)</div>
+        <div data-caption="dropdown popup view">@Html.Source("PopupDemo/DropdownContent.cshtml")</div>
+        <div data-caption="popup view">@Html.Source("PopupDemo/DdInPopup.cshtml")</div>
+    </div>
+</div>
+
+<div class="example">
+    <h3>Sending client side parameters to server on content load</h3>
+    Value sent to the server action that returns the popup's content:
+    @*begin2*@
+    <input type="text" id="txtParam1" value="textbox value abc" />
+
+    <br />
+
+    @(Html.Awe().InitPopup()
+          .Name("PopupParams")
+          .Url(Url.Action("PopupWithParameters"))
+          .Parent("txtParam1")
+          .Parameter("p1", 15)
+          .ParameterFunc("setParams"))
+
+    @(Html.Awe().Button().Text("Open Popup")
+          .OnClick(Html.Awe().OpenPopup("PopupParams").Params(new { Id = 123 })))
+
+    <script>
+        function setParams() {
+            return { a: "hi", b: "how are you" };
+        }
+    </script>
+    @*end2*@
+    <div class="code tabs">
+        <div data-caption="view">@Html.Source("PopupDemo/Index.cshtml", 2)</div>
+        <div data-caption="controller">@Html.Csource("Demos/Helpers/PopupDemoController.cs", 2)</div>
+        <div data-caption="popup view">@Html.Source("PopupDemo/PopupWithParameters.cshtml")</div>
+    </div>
+</div>
+
+<div class="example">
+    <h3>Full screen popup</h3>
+    @*begin5*@
+    @(Html.Awe().InitPopup()
+          .Name("psize")
+          .Url(Url.Action("PopupSize"))
+          .Fullscreen())
+
+    @Html.Awe().Button().Text("Open").OnClick(Html.Awe().OpenPopup("psize"))
+    @*end5*@
+
+    @Html.Source("PopupDemo/Index.cshtml", "5", true)
+</div>
+
+<div class="example">
+    <h3>Buttons</h3>
+    @*begin3*@
+    <div id="p3Cont"></div>
+    @(Html.Awe().InitPopup().Name("p3")
+          .Button("Add Hi", "addHi")
+          .Button("Close", "closePopup")
+          .Url(Url.Action("PopupBtns"))
+          .Close("onClose"))
+
+    @Html.Awe().Button().Text("Open").OnClick(Html.Awe().OpenPopup("p3"))
+    <div id="p3Log"></div>
+    <script type="text/javascript">
+        function closePopup() {
+            $(this).data('api').close();
+        }
+
+        function addHi() {
+            $(this).prepend('<p>hi</p>');
+            $(this).data('api').lay();
+        }
+
+        function onClose() {
+            awe.flash($('#p3Log').html('popup was closed at ' + site.getFormattedTime()));
+        }
+
+    </script>
+    @*end3*@
+    <div class="code">
+        @Html.Source("PopupDemo/Index.cshtml", 3)
+    </div>
+</div>
+
+<div class="example">
+    <h3>Confirm popup close</h3>
+    @*begincc*@
+    @(Html.Awe().InitPopup()
+          .Name("popConfirmClose")
+          .PopupClass("needConfirm")
+          .Title("Close this popup")
+          .Content("<input type='text' value='hi' />"))
+
+    <button type="button" class="awe-btn" onclick="awe.open('popConfirmClose')">Open popup with confirm close</button>
+    <script type="text/javascript">
+        $(document).on('awebfclose', function (e, opt) {
+            var pdiv = $(e.target);
+            if (!pdiv.closest('.needConfirm').length || opt.force) return;
+            opt.noclose = true;
+
+            var pp = pdiv.data('o').p;
+
+            aweui.initPopup({
+                id: 'confirmClose',
+                title: 'Confirm close',
+                content: 'Are you sure you want to close this popup ?',
+                height: 200,
+                width: 500,
+                modal: true,
+                btns: [
+                    {
+                        text: "Yes",
+                        action: function () {
+                            $(this).data('api').close();
+                            pp.api.close({ force: true });
+                        }
+                    },
+                    {
+                        text: "No",
+                        action: function () {
+                            $(this).data('api').close();
+                        }
+                    }
+                ]
+            });
+
+            awe.open('confirmClose');
+        });
+
+    </script>
+    @*endcc*@
+    <div class="code">
+        @Html.Source("PopupDemo/Index.cshtml", "cc")
+    </div>
+</div>
+
+<div class="example">
+    <h3>Autosize </h3>
+    Open any popup and try resizing the browser (try to make it smaller than the popup), works for popups from other helpers as well.
+
+    <h3>Notes</h3>
+    When there is more Popup helpers declared that have the same <code>.Name(string)</code>,
+    they will share the same popup window, so opening one will close the other;
+    if you need to have popups with different names that close the other popups on open use <code>.Group(string)</code>.
+
+    <br />
+    <br />
+    <br />
+    <a href="@Url.Action("PopupMod")"> Popup Mods </a>
+</div>
+
+<h3>Open animation</h3>
+<div class="expl">
+    Using custom js to create a slide in animation when the popup opens.
+</div>
+<br />
+@*beginanim*@
+@(Html.Awe().InitPopup()
+      .Name("popupAnim")
+      .Url(Url.Action("Popup1"))
+      .Modal()
+      .Mod(o => o.OutClickClose())
+      .LoadOnce()
+      .Title("popup slide in animation"))
+
+@Html.Awe().Button().Text("popup slide in from right").OnClick(Html.Awe().OpenPopup("popupAnim").Params(new { slide = "right" }))
+@Html.Awe().Button().Text("popup slide in from bottom").OnClick(Html.Awe().OpenPopup("popupAnim").Params(new { slide = "bot" }))
+<button type="button" class="awe-btn" onclick="openPopSlide()">popup slide</button>
+<script>
+    function openPopSlide() {
+        var popup = awe.open('popupAnim');
+        slide(popup, 'bot');
+    }
+
+    $(function () {
+        $(document).on('aweopen', '.awe-popup', function () {
+            var popup = $(this);
+            var o = popup.data('o');
+            var prms = o.params;
+            if (prms && prms.slide) {
+                slide(popup, prms.slide);
+            }
+        });
+    });
+
+    function slide(popup, from) {
+        var o = popup.data('o');
+        var max = from == 'bot' ? $(window).height() : $(window).width();
+        var transl = 'translate' + (from == 'bot' ? 'Y' : 'X');
+
+        var div = popup.closest('.o-pmc');
+        o.p.nolay = 1;
+        div.css('transform', transl + '(' + max + 'px)');
+
+        setTimeout(function () {
+            div.css('transition', '.5s');
+            div.css('transform', transl + '(0)');
+
+            setTimeout(function () {
+                o.p.nolay = 0;
+                div.css('transition', '');
+                div.css('transform', '');
+                o.cx.api.lay();
+            }, 500);
+        }, 30);
+    }
+</script>
+@*endanim*@
+<div class="tabs code">
+    <div data-caption="view">@Html.Source("PopupDemo/Index.cshtml", "anim")</div>
+</div>

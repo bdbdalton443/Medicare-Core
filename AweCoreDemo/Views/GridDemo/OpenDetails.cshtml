@@ -1,0 +1,17 @@
+@model AweCoreDemo.Models.Lunch
+@{
+    ViewBag.Title = "OpenDetails";
+}
+
+<h2>Details</h2>
+
+Person: @Model.Person <br />
+Food: @Model.Food <br/>
+Date: @Model.Date.ToShortDateString() <br />
+Price: @Model.Price <br />
+Country: @Model.Country.Name <br />
+Chef: @Model.Chef.FirstName @Model.Chef.LastName<br/>
+
+<p>
+    <a href="@Url.Action("CustomFormat")">Go back to Grid Custom Format Demo</a>
+</p>

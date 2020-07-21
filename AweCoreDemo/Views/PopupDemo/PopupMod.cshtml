@@ -1,0 +1,84 @@
+@{
+    ViewBag.Title = "Popup Mod";
+}
+
+<h2>Popup Mod</h2>
+<p class="expl">
+    default popup can be replaced by setting <code>awe.popup</code>
+</p>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+
+<link href="@Url.Content(Autil.CssDir() + "site.css")" rel="stylesheet" type="text/css" />
+
+<script>
+    function setPopup(p) {
+        awe.popup = function (o) {
+            if (o.tag && o.tag.DropdownPopup) {
+                return awem.dropdownPopup(o);
+            } else if (o.tag && o.tag.Inline) {
+                return awem.inlinePopup(o);
+            } else {
+                return p(o);
+            }
+        }
+
+        // close popups that were already opened with a different kind of popup
+        $('.awe-popup').each(function () {
+            if ($(this).data('api'))
+                $(this).data('api').destroy();
+        });
+
+        $('.awe-multilookup, .awe-lookup').each(function () { $(this).data('api').initPopup(); });
+
+        awe.flash($('#testArea'));
+    }
+
+    $(function () {
+        @*we need to load this after awem.js, which is referenced at the end of the page*@
+        $.getScript('@Url.Content(Autil.JsDir() + "awem.extras.js")');
+
+        $('#btnBoot').click(function () {
+            setPopup(awemex.bootstrapPopup);
+        });
+
+        $('#btnAwe').click(function () {
+            setPopup(awem.dropdownPopup);
+        });
+
+        $('#btnInline').click(function () {
+            setPopup(awem.inlinePopup);
+        });
+
+        $('#btnUi').click(function () {
+            setPopup(awemex.uiPopup);
+        });
+    });
+</script>
+
+<button type="button" id="btnAwe" class="awe-btn">set awesome popup</button>
+<button type="button" id="btnBoot" class="awe-btn">set bootstrap popup</button>
+<button type="button" id="btnInline" class="awe-btn">set inline popup</button>
+<button type="button" id="btnUi" class="awe-btn">set jQueryUI popup</button>
+
+@(Html.Awe().InitPopup()
+      .Name("popup1")
+      .Url(Url.Action("Popup1"))
+      .LoadOnce()
+      .Title("popup title")
+      .Width(500)
+      .Height(450))
+<br/>
+<br/>
+<br/>
+<div id="testArea" style="padding: 1em 0;">
+    @Html.Awe().Button().Text("Open Popup").OnClick(Html.Awe().OpenPopup("popup1"))
+</div>
+
+<div class="tabs code">
+    <div data-caption="view">@Html.Source("PopupDemo/PopupMod.cshtml")</div>
+</div>

@@ -1,0 +1,13 @@
+@model IEnumerable<AweCoreDemo.Models.Meal>
+@{ Layout = null; }
+@foreach (var o in Model)
+{
+    <li class="awe-li" data-val="@(o.Id)">Name: @o.Name
+        <button onclick="awe.open('details', { params: { id: @o.Id } }, event)" class="awe-btn awe-nonselect lkdetail" tabindex="-1">
+            Details
+        </button>
+        Category: @o.Category.Name
+        <br />
+        Description: @o.Description
+    </li>
+}

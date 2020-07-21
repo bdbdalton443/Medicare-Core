@@ -1,0 +1,55 @@
+<h2 data-u="@Url.Action("Index","Dropmenu")">Dropmenu with different items depending on what is clicked</h2>
+@*begin*@
+<div class="area" id="area2">
+    <div class="card">
+        <div class="big">a</div>
+    </div>
+    <div class="card">
+        <div class="big">b</div>
+    </div>
+    <div class="card">
+        <div class="big">c</div>
+    </div>
+    <div class="msg">click here, or on a card</div>
+</div>
+<script>
+    $(function() {
+        var div = $('#area2');
+        var items = [];
+        var msg = div.find('.msg');
+        var dd = awem.dropmenu({ df: getData, select: select });
+
+        div.click(function(e) {
+            var card = $(e.target).closest('.card');
+            items = [{ k: 1, c: 'item 1' }, { k: 2, c: 'item 2' }];
+
+            if (card.length) {
+                items.push({ k: 'hide', c: 'hide card ' + card.find('.big').html(), i: card.index() });
+            }
+
+            if (div.find('.card:hidden').length) {
+                items.push({ k: 'all', c: 'show all' });
+            }
+
+            dd.render();
+            dd.open({ xy: { y: e.clientY, x: e.clientX } });
+        });
+
+        function select(it) {
+            msg.html('you clicked ' + it.c);
+            if (it.k == 'hide') {
+                div.find('.card').eq(it.i).hide();
+            } else if (it.k == 'all') {
+                div.find('.card').show();
+            }
+        }
+
+        function getData() {
+            return items;
+        }
+    });
+</script>
+@*end*@
+<div class="code">
+    @Html.Source("Shared/Demos/DropmenuItems.cshtml")
+</div>

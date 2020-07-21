@@ -1,0 +1,19 @@
+@model AweCoreDemo.ViewModels.Input.Lookup.LookupPopupInput
+@using (Html.Awe().BeginContext()) { 
+    <div class="bar">
+    @Html.Awe().TextBoxFor(o => o.Search).Placeholder("search...")
+    </div>
+    <div style="max-width: 900px">
+        @(Html.Awe().Grid("MealsGrid")
+              .Mod(o => o.PageInfo().ColumnsSelector().AutoMiniPager().KeyNav())
+              .Selectable(SelectionType.Single)
+              .Parent(o => o.Search, "name")
+              .Columns(
+                  new Column { Bind = "Id", Width = 75, Resizable = false },
+                  new Column { Bind = "Name", Width = 150}.Mod(o => o.Nohide()),
+                  new Column { Bind = "Description", CssClass = "txtlim"}.Mod(o => o.Autohide()))
+              .Url(Url.Action("MealsGrid", "Data"))
+              .Groupable(false)
+              .Height(350))
+    </div>
+}

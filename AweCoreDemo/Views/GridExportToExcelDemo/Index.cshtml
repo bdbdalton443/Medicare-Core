@@ -1,0 +1,103 @@
+@{
+    ViewBag.Title = "Export grid to Excel, Pdf and txt (csv) using NPOI, iText";
+}
+<h1>Export grid to excel, pdf, txt (csv) demo</h1>
+<div class="expl">
+    This demo is showing how to build the grid model and use it to export the data in various formats (xls, pdf, txt) using external libraries and custom code.
+</div>
+<br />
+@*begin*@
+@{
+    var grid = "LunchGrid";
+}
+@(Html.Awe().Grid(grid)
+        .Url(Url.Action("GetItems"))
+        .Mod(o => o.ColumnsSelector())
+        .Persistence(Persistence.Session)
+        .Resizable()
+        .Height(350)
+        .Columns(
+        new Column { Bind = "Id", Width = 80 },
+        new Column { Bind = "Person" },
+        new Column { Bind = "Food" },
+        new Column { Bind = "Date", Width = 150 },
+        new Column { Bind = "Price", ClientFormatFunc = "priceFormat", Width = 110 },
+        new Column { Bind = "Country.Name", ClientFormat = ".(CountryName)", Header = "Country" },
+        new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef" },
+        new Column { Bind = "Location" }))
+
+<br />
+<div class="bar">
+    <button id="exportGrid" type="button" class="awe-btn">Export grid to excel</button>
+    <button id="exportGridPdf" type="button" class="awe-btn">Export grid to Pdf</button>
+    <button id="exportGridTxt" type="button" class="awe-btn">Export grid to txt (csv)</button>
+    <div style="padding: 0 1em; display: inline-block;">
+        <label>@Html.Awe().CheckBox("allPages") All pages</label>
+    </div>
+
+    <br />
+    <br />
+    <button id="exportAll" type="button" class="awe-btn">Export all records to excel</button>
+</div>
+<script>
+    $(function() {
+        $('#exportAll').click(function() {
+            getFile('@Url.Action("ExportAllToExcel", "GridExportToExcelDemo")');
+        });
+
+        $('#exportGrid').click(function() {
+            getFile('@Url.Action("ExportGridToExcel", "GridExportToExcelDemo")');
+        });
+
+        $('#exportGridPdf').click(function() {
+            getFile('@Url.Action("ExportGridToPdf", "GridExportToExcelDemo")');
+        });
+
+        $('#exportGridTxt').click(function() {
+            getFile('@Url.Action("ExportGridToTxt", "GridExportToExcelDemo")');
+        });
+
+        function getFile(url) {
+            var $form = $('<form method="post"/>').attr('action', url).appendTo('body');
+
+            var grid = $('#@(grid)');
+
+            // request parameters (sorting, grouping, any parent parameters)
+            var req = grid.data('api').getRequest();
+
+            // send visible columns info, binds to GridExpParams
+            var viscols = utils.getVisCols(grid);
+            awef.loop(viscols,
+                function(v) {
+                    $form.append("<input type='hidden' name='visNames' value='" + v + "'/>");
+                });
+
+            awef.loop(req,
+                function(val) {
+                    $form.append("<input type='hidden' name='" + val.name + "' value='" + val.value + "'/>");
+                });
+
+            $form.append($('#allPages').clone());
+            $form.submit();
+            $form.remove();
+        }
+    });
+
+    function priceFormat(lunch, prop) {
+        var price = lunch[prop];
+        return price + ' USD';
+    }
+</script>
+@*end*@
+<br />
+<br />
+<div class="tabs">
+    <div data-caption="description" class="expl">
+        Export the content of a grid to excel, pdf and txt file (csv).
+        To create an excel file we're using the <a href="https://github.com/tonyqus/npoi">NPOI library</a>.<br />
+        For exporting to Pdf the <a href="https://itextpdf.com/">iText7</a> library is used.<br />
+        To get the entire source code you can download this demo.
+    </div>
+    <div data-caption="view">@Html.Source("GridExportToExcelDemo/Index.cshtml")</div>
+    <div data-caption="controller">@Html.Code("Demos/Grid/GridExportToExcelDemoController.cs")</div>
+</div>

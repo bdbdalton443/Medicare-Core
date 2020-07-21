@@ -1,0 +1,16 @@
+@{
+    ViewBag.Title = "Ptest";
+}
+
+<script>
+    var items = [];
+    
+    for (var i = 0; i < 1000; i++) {
+        items.push({ k: i + 'k', c: 'item ' + i });
+    }
+
+    function getItems() {
+        return items;
+    }
+</script>
+@Html.Awe().AjaxRadioList("CatClient1").DataFunc("getItems").Odropdown()

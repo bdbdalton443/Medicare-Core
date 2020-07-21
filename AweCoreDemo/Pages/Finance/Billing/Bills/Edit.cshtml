@@ -1,0 +1,229 @@
+﻿@page
+@model AweCoreDemo.Pages.Finance.Billing.Bills.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Bill</h4>
+<hr />
+<div class="row">
+    <div class="col-md-3">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Bill.BIllID" />
+            <div class="form-group">
+                <label asp-for="Bill.Balance" class="control-label"></label>
+                <input asp-for="Bill.Balance" disabled class="form-control" />
+                <span asp-validation-for="Bill.Balance" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Bill.InitialPrint" /> @Html.DisplayNameFor(model => model.Bill.InitialPrint)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Bill.FinalPrint" /> @Html.DisplayNameFor(model => model.Bill.FinalPrint)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bill.BillStatusID" class="control-label"></label>
+                <select asp-for="Bill.BillStatusID" class="form-control" asp-items="ViewBag.BillStatusID"></select>
+                <span asp-validation-for="Bill.BillStatusID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bill.PatientID" class="control-label"></label>
+                <select asp-for="Bill.PatientID" class="form-control" disabled asp-items="ViewBag.PatientID"></select>
+                <span asp-validation-for="Bill.PatientID" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-9">
+        <form method="post">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="container">
+                            
+                            <div class="form-group">
+                                <label class="control-label" asp-for="Bill.BillStatusID"></label>
+                                <select id="billStatu" style="border-radius: 6px;" class="form-control" disabled asp-for="Bill.BillStatusID" asp-items="ViewBag.BillStatusID">
+                                </select>
+                                <label class="control-label" asp-for="ReceiptRoutine.Amount"></label>
+                                <input id="pReceived" class="form-control" placeholder="Received" runat="server" asp-for="ReceiptRoutine.Amount" />
+                            </div>
+                            <div class="form-group" style="background-color:lightcyan;font-size:small;" id="receiptDesign" runat="server">
+                                <div class="container">
+                                    <div class="row" style="font-size:small;">
+                                        <div class="col-sm-12">
+                                            <div class="row" style="">
+                                                <div class="col-sm-12">
+                                                    <label id="companyName" style="font-size:16px">@Model.Hospital.Name</label>
+                                                    <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+                                                    <span style="font-size:9px">No: </span><label id="receiptNumber" style="font-size:13px;color:black">@Model.ReceiptNumber</label>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="">
+                                                <div class="col-sm-12"><span style="font-size:12px">Tel: </span><label id="companyPhone" runat="server" style="font-size:12px">@Model.Hospital.ContactNumber</label></div>
+
+                                            </div>
+                                            <div class="row" style="">
+                                                <div class="col-sm-12">
+
+                                                    <span style="font-size:12px">Date:      </span><label id="receivedDate" runat="server" style="font-size:12px">@DateTime.Now</label>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="">
+                                                <div class="col-sm-12"><span style="font-size:12px">Paid By: </span><label id="paidBy" runat="server" style="font-size:12px"></label></div>
+
+                                            </div>
+
+                                            <div class="row" style="">
+                                                <div class="col-sm-12"><span style="font-size:12px">&nbsp&nbsp </span><label id="Label1" runat="server" style="font-size:12px">&nbsp&nbsp</label></div>
+                                            </div>
+                                            <div class="row" style="width:320px;">
+                                                <div class="col-sm-12" style="width:320px;">
+                                                    <table class="table">
+                                                        <thead style="background-color:black;color:white;">
+                                                            <tr>
+                                                                <th>
+                                                                    Item
+                                                                </th>
+                                                                <th>
+                                                                    Quantity
+                                                                </th>
+                                                                <th>
+                                                                    Unit Cost
+                                                                </th>
+                                                                <th>
+                                                                    Total
+                                                                </th>
+
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.Bill.Receipts)
+                                                            {
+                                                                if ((item.ReceiptID % 2) == 0)
+                                                                {
+                                                                    <tr style="background-color:lightblue;color:white;">
+                                                                        <td>
+                                                                            @if (item.Procedure == null)
+                                                                            {
+                                                                                Html.DisplayFor(modelItem => item.Treatment.Item.Name);
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                Html.DisplayFor(modelItem => item.Procedure.Test.Name);
+                                                                            }
+                                                                            @*@item.Procedure==null? Html.DisplayFor(modelItem => item.Treatment.Item.Name):Html.DisplayFor(modelItem => item.Procedure.Test.Name)*@
+                                                                        </td>
+                                                                        <td>
+                                                                            @Html.DisplayFor(modelItem => item.Amount)
+                                                                        </td>
+                                                                        <td>
+                                                                            @Html.DisplayFor(modelItem => item.Cost)
+                                                                        </td>
+                                                                        <td>
+                                                                            @Html.DisplayFor(modelItem => item.AdjustedCost)
+                                                                        </td>
+
+                                                                    </tr>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if (item.Procedure == null)
+                                                                            {
+                                                                                Html.DisplayFor(modelItem => item.Treatment.Item.Name);
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                Html.DisplayFor(modelItem => item.Procedure.Test.Name);
+                                                                            }
+                                                                            @*@item.Procedure==null? Html.DisplayFor(modelItem => item.Treatment.Item.Name):Html.DisplayFor(modelItem => item.Procedure.Test.Name)*@
+                                                                        </td>
+                                                                        <td>
+                                                                            @Html.DisplayFor(modelItem => item.Amount)
+                                                                        </td>
+                                                                        <td>
+                                                                            @Html.DisplayFor(modelItem => item.Cost)
+                                                                        </td>
+                                                                        <td>
+                                                                            @Html.DisplayFor(modelItem => item.AdjustedCost)
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-sm-12" style="text-align:right"><label style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-style:oblique; font-size:17px">Grand Total:</label><label id="gtotal" runat="server" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size:17px;font:bold">@Model.Bill.Total</label></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ReceiptRoutine.Description" class="control-label"></label>
+                                <textarea asp-for="ReceiptRoutine.Description" class="form-control"></textarea>
+                                <span asp-validation-for="ReceiptRoutine.Description" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4"><button id="btnPreview" class="btn btn-primary btn-block btn-sm btn-signin" runat="server" style="width:70%;margin:auto;height:30px;text-align:center;color:white" value="Preview" onclick="executePrint()">Preview</button></div>
+                                    <div class="col-md-4"><button id="btnPrint" class="btn btn-primary btn-block btn-sm btn-signin" type="submit" runat="server" style="width:70%;margin:auto;height:30px;text-align:center; color:white" value="Print" >Print</button></div>
+                                    <div class="col-md-4"><button id="btnSaveReceipt" class="btn btn-primary btn-block btn-sm btn-signin" type="submit" runat="server" style="width:70%;margin:auto;height:30px;text-align:center; color:white" disabled value="Print & Save">Print & Save</button></div>
+                                </div>                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    //function executePrint() {
+    //     alert("working");
+    //    $("#receiptDesign").printThis();
+    //}
+    function executePrint() {
+            var panel = document.getElementById("receiptDesign");
+            var printWindow = window.open('', '_blank');
+            printWindow.document.write('<html><head><title></title>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(panel.innerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            setTimeout(function () {
+                printWindow.print();
+            }, 500);
+            return false;
+        }
+</script>

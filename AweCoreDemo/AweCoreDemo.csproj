@@ -1,0 +1,235 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+<!--::livecons-->
+    <AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+<!--::livecone-->
+    </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Migrations\20200529223202_Migration1.cs" />
+    <Compile Remove="Migrations\20200529223202_Migration1.Designer.cs" />
+    <Compile Remove="Migrations\20200602181228_Migration2.cs" />
+    <Compile Remove="Migrations\20200602181228_Migration2.Designer.cs" />
+    <Compile Remove="Migrations\20200607113028_NewMigration3.cs" />
+    <Compile Remove="Migrations\20200607113028_NewMigration3.Designer.cs" />
+    <Compile Remove="Migrations\20200607152041_NewMigration4.cs" />
+    <Compile Remove="Migrations\20200607152041_NewMigration4.Designer.cs" />
+    <Compile Remove="Migrations\20200609114419_NewMigration5.cs" />
+    <Compile Remove="Migrations\20200609114419_NewMigration5.Designer.cs" />
+    <Compile Remove="Migrations\20200609180239_NewMigartion6.cs" />
+    <Compile Remove="Migrations\20200609180239_NewMigartion6.Designer.cs" />
+    <Compile Remove="Migrations\20200609181405_NewMigartion7.cs" />
+    <Compile Remove="Migrations\20200609181405_NewMigartion7.Designer.cs" />
+    <Compile Remove="Migrations\20200609184607_NewMigartion8.cs" />
+    <Compile Remove="Migrations\20200609184607_NewMigartion8.Designer.cs" />
+    <Compile Remove="Migrations\20200609211508_NewMigartion9.cs" />
+    <Compile Remove="Migrations\20200609211508_NewMigartion9.Designer.cs" />
+    <Compile Remove="Migrations\20200609214729_NewMigartion10.cs" />
+    <Compile Remove="Migrations\20200609214729_NewMigartion10.Designer.cs" />
+    <Compile Remove="Migrations\20200609223134_NewMigartion11.cs" />
+    <Compile Remove="Migrations\20200609223134_NewMigartion11.Designer.cs" />
+    <Compile Remove="Migrations\20200610170431_NewMigartion12.cs" />
+    <Compile Remove="Migrations\20200610170431_NewMigartion12.Designer.cs" />
+    <Compile Remove="Migrations\20200612132418_NewMigration13.cs" />
+    <Compile Remove="Migrations\20200612132418_NewMigration13.Designer.cs" />
+    <Compile Remove="Migrations\20200612145715_NewMigration14.cs" />
+    <Compile Remove="Migrations\20200612145715_NewMigration14.Designer.cs" />
+    <Compile Remove="Migrations\20200613122011_NewMigration15.cs" />
+    <Compile Remove="Migrations\20200613122011_NewMigration15.Designer.cs" />
+    <Compile Remove="Migrations\20200614202823_NewMigration16.cs" />
+    <Compile Remove="Migrations\20200614202823_NewMigration16.Designer.cs" />
+    <Compile Remove="Migrations\20200615194248_NewMigration17.cs" />
+    <Compile Remove="Migrations\20200615194248_NewMigration17.Designer.cs" />
+    <Compile Remove="Migrations\20200615203726_NewMigration18.cs" />
+    <Compile Remove="Migrations\20200615203726_NewMigration18.Designer.cs" />
+    <Compile Remove="Migrations\20200615222719_NewMigration19.cs" />
+    <Compile Remove="Migrations\20200615222719_NewMigration19.Designer.cs" />
+    <Compile Remove="Migrations\20200615223539_NewMigration20.cs" />
+    <Compile Remove="Migrations\20200615223539_NewMigration20.Designer.cs" />
+    <Compile Remove="Migrations\20200615224237_NewMigration22.cs" />
+    <Compile Remove="Migrations\20200615224237_NewMigration22.Designer.cs" />
+    <Compile Remove="Migrations\20200615230027_NewMigration23.cs" />
+    <Compile Remove="Migrations\20200615230027_NewMigration23.Designer.cs" />
+    <Compile Remove="Migrations\20200618131536_NewMigration24.cs" />
+    <Compile Remove="Migrations\20200618131536_NewMigration24.Designer.cs" />
+    <Compile Remove="Migrations\20200618132218_NewMigration25.cs" />
+    <Compile Remove="Migrations\20200618132218_NewMigration25.Designer.cs" />
+    <Compile Remove="Migrations\20200624192521_NewMigration25.cs" />
+    <Compile Remove="Migrations\20200624192521_NewMigration25.Designer.cs" />
+    <Compile Remove="Migrations\20200625224525_NewMigration26.cs" />
+    <Compile Remove="Migrations\20200625224525_NewMigration26.Designer.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.1" />
+    <PackageReference Include="Microsoft.AspNet.SignalR.JS" Version="2.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.435" />
+    <PackageReference Include="DotNetCore.NPOI" Version="1.2.2" />
+    <PackageReference Include="itext7" Version="7.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+    
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    
+    <PackageReference Include="Npm" Version="3.5.2" />
+    <PackageReference Include="ValueInjecter" Version="3.2.0" />
+  </ItemGroup>  
+  <ItemGroup>
+    <ProjectReference Include="..\Awem\Awem.csproj" />
+    <Reference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Identity.UI">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Identity.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Identity.UI.Views.V3">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Identity.UI.Views.V3.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Identity.UI.Views.V4">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Identity.UI.Views.V4.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Razor.Language">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Razor.Language.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Razor">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.CodeAnalysis.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.SqlClient">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.Data.SqlClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.DotNet.PlatformAbstractions">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.Abstractions">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.EntityFrameworkCore.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.Design">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.EntityFrameworkCore.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.Relational">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.SqlServer">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyModel">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.Extensions.DependencyModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Identity.Client">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.Identity.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Web.CodeGeneration">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.VisualStudio.Web.CodeGeneration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Web.CodeGeneration.Contracts">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Web.CodeGeneration.Core">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Web.CodeGeneration.Templating">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Web.CodeGeneration.Utils">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NuGet.Frameworks">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\NuGet.Frameworks.dll</HintPath>
+    </Reference>
+    <Reference Include="Omu.Awem">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Omu.Awem.dll</HintPath>
+    </Reference>
+    <Reference Include="Omu.AwesomeMvc">
+      <HintPath>..\libs\Omu.AwesomeMvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Omu.ValueInjecter">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\Omu.ValueInjecter.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.AttributedModel">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Composition.AttributedModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Convention">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Composition.Convention.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Hosting">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Composition.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Runtime">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Composition.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Composition.TypedParts.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration.ConfigurationManager">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Runtime.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.ProtectedData">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Security.Cryptography.ProtectedData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor">
+      <HintPath>..\..\..\RazorPagesDemo\AweRazorPages\AweRazorPages\bin\Debug\netcoreapp3.0\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+  </ItemGroup>  
+  <ItemGroup>
+    <Folder Include="Pages\Patients\PatientTypes\Army\Ranks\" />
+    <Folder Include="Pages\Patients\PatientTypes\Families\" />
+    <Folder Include="Pages\Patients\PatientTypes\Organisations\" />
+    <Folder Include="Pages\Shared\Procedures\" />
+  </ItemGroup>
+</Project>

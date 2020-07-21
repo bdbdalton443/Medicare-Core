@@ -1,0 +1,32 @@
+@model AweCoreDemo.ViewModels.Input.Lookup.LookupPopupInput
+@using (Html.Awe().BeginContext())
+{
+    <div class="bar">
+        @Html.Awe().TextBoxFor(o => o.Search).Placeholder("search...")
+    </div>
+    <div style="max-width: 900px">
+        @(Html.Awe().Grid("MealsGrid1")
+              .Mod(o => o.PageInfo().KeyNav().MovableRows(x => x.DropOn("MealsGrid1").DropOn("MealsGrid2")))
+              .CssClass("awe-srl")
+              .Parent(o => o.Search, "name")
+              .Columns(
+                  new Column { Bind = "Id", Width = 120, ClientFormat = GridUtils.MoveBtn() + " .(Id)"},
+                  new Column { Bind = "Name", Width = 150 }.Mod(o => o.Nohide()),
+                  new Column { Bind = "Description", CssClass = "txtlim" }.Mod(o => o.Autohide()))
+              .Url(Url.Action("MealsGridSearch", "Data"))
+              .Groupable(false)
+              .Height(350))
+        <br />
+        @(Html.Awe().Grid("MealsGrid2")
+              .Mod(o => o.PageInfo().KeyNav().MovableRows(x => x.DropOn("MealsGrid1").DropOn("MealsGrid2")))
+              .CssClass("awe-sel")
+              .Columns(
+                  new Column { Bind = "Id", Width = 120, ClientFormat = GridUtils.MoveBtn() + " .(Id)" },
+                  new Column { Bind = "Name", Width = 150 }.Mod(o => o.Nohide()),
+                  new Column { Bind = "Description", CssClass = "txtlim" }.Mod(o => o.Autohide()))
+              .Url(Url.Action("MealsGridSelected", "Data"))
+              .Groupable(false)
+              .Paging(false)
+              .Height(350))
+    </div>
+}

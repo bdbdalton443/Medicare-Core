@@ -1,0 +1,101 @@
+﻿@page
+@using AweCoreDemo.Utils
+@model AweCoreDemo.Pages.Finance.Billing.Bills.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+@{ 
+    var gridId = "bills";
+}
+
+<h1>Index</h1>
+<div class="row">
+    <div class="col-md-12" style="margin:auto;">
+        <div class="card shadow mb-12">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Bills</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink14">
+                        <div class="dropdown-header">Actions:</div>
+                        <a class="dropdown-item" href="#">Reset Form</a>
+                        <a class="dropdown-item" href="#">Save</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="bar">
+                                        <div style="float: right;">
+                                            @Html.Awe().TextBox("txtSearchInl").Placeholder("search Patient...").CssClass("searchtxt")
+                                        </div>
+
+                                        @Html.Awe().TextBox("txtSearchStatus").Placeholder("search Bill Status...").CssClass("searchtxt")
+
+
+                                        @*<button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn mbtn">Create</button>*@
+                                        @*<button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn">Create</button>*@
+                                    </div>
+
+                                    @(Html.Awe()
+                                        .InitPopupForm()
+                                        .Name("delete" + gridId)
+                                        .Group(gridId)
+                                        .Url(Url.Page("", "Delete"))
+                                        .Success("utils.itemDeleted('" + gridId + "')")
+                                        .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+                                        .Height(200)
+                                        .Modal())
+                                    @(Html.Awe().Grid(gridId)
+                                          .Url(Url.Page("", "GridGetItems"))
+                                          .Parent("txtSearchInl", "search")
+                                          .Parent("txtSearchStatus", "searchStatus")
+                                          .Height(350)
+                                          .Resizable()
+                                          .Reorderable()
+                                          .Selectable(SelectionType.Single)
+                                          
+                                        .Columns(
+                                              new Column { Bind = "BIllID", Width = 70, Header = "ID" }
+                                              .Mod(o => o.InlineId()),
+
+                                              new Column { Bind = "Patient.FullName", ClientFormat = ".(Patient)", Header = "Patient" },
+                                              new Column { Bind = "Balance", Header = "Balance", Width = 80 },
+                                              new Column { Bind = "BillStatus.Name", ClientFormat = ".(BillStatus)", Header = "BillStatus" },
+                                              new Column { Bind = "CreatedOn", Header = "Created On", Width = 120 },
+                                              new Column { Bind = "UpdatedOn", Header = "Updated On", Width = 120 },
+
+                                              new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+                                            new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 85 }))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#@gridId')
+        .on('aweselect', function () {
+        var selectedItems = $('#@gridId').data('api').getSelection();
+        var str = JSON.stringify(selectedItems);
+        var nstr = str.substring(1, str.length - 1);
+        var obj = JSON.parse(nstr);
+        window.location.href = '/Finance/Billing/Bills/Edit/?id=' + obj.BIllID;
+        });
+    });
+</script>

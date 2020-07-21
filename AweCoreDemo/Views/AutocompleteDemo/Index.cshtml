@@ -1,0 +1,162 @@
+@model AweCoreDemo.ViewModels.Input.AutocompleteDemoInput
+@using AweCoreDemo.Controllers.Awesome.Autocomplete
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "Autocomplete Helper";
+}
+<h1>Autocomplete</h1>
+<div class="example">
+    @*begin*@
+    Meal: @(Html.Awe().AutocompleteFor(o => o.Meal)
+                .Url(Url.Action("GetItems","MealAutocomplete"))
+                .Placeholder("try o"))
+    @*end*@
+    <br/>
+    <br/>
+    <div class="tabs">
+        <div class="expl" data-caption="description">
+            <p>
+                Autocomplete needs an url, controller or data function (js func) to get data from, by default convention it
+                will look for a controller with the same name as it + "Autocomplete"<br/>
+            </p>
+            <ul>
+                <li>
+                    <code>action GetItems</code> - gets the items for the autocomplete, it
+                    will receive a <code>v</code> parameter which represents the value of the textbox
+                </li>
+            </ul>
+        </div>
+        <div data-caption="view">@Html.Source("AutocompleteDemo/Index.cshtml")</div>
+        <div data-caption="controller">@Html.Code("Awesome/Autocomplete/MealAutocompleteController.cs")</div>
+    </div>
+</div>
+<div class="example">
+    <h3>Custom Item rendering</h3>
+    @*beginci*@
+    Meal: @(Html.Awe().Autocomplete("MealImgIt")
+                .ItemFunc("awem.imgItem")
+                .Url(Url.Action("GetMealsImgAutoc", "Data"))
+                .Placeholder("try o"))
+    @*endci*@
+    <br/>
+    <br/>
+    <div class="tabs">
+        <div data-caption="description" class="expl">
+            Achieving custom item rendering by setting <code>ItemFunc</code>,
+            we're reusing the awem.imgItem used by the imgDropdown but any js function that receives an object (KeyContent inheritant MealDisplay) and returns a string will do.
+        </div>
+        <div data-caption="view">@Html.Source("AutocompleteDemo/Index.cshtml", "ci")</div>
+        <div data-caption="controller">@Html.Csource("Awesome/DataController.cs", "aimg")</div>
+    </div>
+</div>
+<div class="example">
+    <h3>Storing selected value key in a separate field using .PropId</h3>
+    @*begin1*@
+    <div class="efield">
+        <div class="elabel">
+            Meal:    
+        </div>
+         @(Html.Awe().AutocompleteFor(o => o.Meal3).PropId(o => o.MealKey).Controller<MealAutocompleteController>())
+    </div>
+    <div class="efield">
+        <div class="elabel">Key:</div>
+        @Html.Awe().TextBoxFor(o => o.MealKey) 
+        <div class="awe-il">you can (should) use hidden input instead</div>
+    </div>
+    @*end1*@
+    <br />
+    <br />
+    <div class="tabs">
+        <div data-caption="description" class="expl">
+            when the user selects a value from the autocomplete lists the PropId will be assigned the key of the selected value, but if the user will type something into the autocomlete after that the propId value will clear
+        </div>
+        <div data-caption="view">
+            @Html.Source("AutocompleteDemo/Index.cshtml", 1)
+        </div>
+    </div>
+</div>
+<div class="example">
+    <h3>Using DataFunc and ItemFunc</h3>
+    @*begind*@
+    git repo: @(Html.Awe().Autocomplete("Repo")
+                    .DataFunc("getGit")
+                    .ItemFunc("site.gitItem"))
+    <script>
+        function getGit(v) {
+            return $.get('https://api.github.com/search/repositories', { q: v })
+                .then(function (data) {
+                    return $.map(data.items,
+                        function (item) {
+                            return { k: item.id, c: item.full_name, avatar: item.owner.avatar_url, desc: item.description };
+                        });
+                });
+        }
+    </script>
+    @*endd*@
+    <br />
+    <br />
+    <div class="tabs">
+        <div data-caption="description" class="expl">
+            using <code>DataFunc</code> to get data from github api, <code>ItemFunc</code> is used to set a custom js function that will render the item
+        </div>
+        <div data-caption="view">
+            @Html.Source("AutocompleteDemo/Index.cshtml", "d")
+        </div>
+    </div>
+</div>
+<div class="example">
+    <h3>Bound to parents</h3>
+    <div class="efield">
+        <div class="elabel">
+            Parent Categories:
+        </div>
+        <div class="einput">
+            @(Html.Awe().AjaxCheckboxListFor(o => o.CategoriesData)
+                  .Url(Url.Action("GetCategories", "Data"))
+                  .Multiselect(o => o.NoSelectClose())
+                  .Value(Db.Categories[0].Id))
+        </div>
+    </div>
+    <div class="efield">
+        <div class="elabel">
+            Child Meal:
+        </div>
+        <div class="einput">
+            @(Html.Awe().AutocompleteFor(o => o.ChildOfManyMeal)
+                  .Controller<MealChildAutocompleteController>()
+                  .Parent(o => o.CategoriesData))
+        </div>
+    </div>
+    autcomplete list limited to categories selected in the parent
+</div>
+<div class="example">
+    <h3>Numeric autocomplete</h3>
+    <div class="efield">
+        <div class="elabel">Prime number:</div>
+        <div class="einput">
+            @(Html.Awe().AutocompleteFor(o => o.PrimeNumber)
+                  .Url(Url.Action("GetItems", "PrimesAutocomplete"))
+                  .Numeric(true)
+                  .Placeholder("type a prime number"))
+        </div>
+    </div>
+</div>
+<div class="example">
+    @{
+        var cat1 = Db.Categories[0];
+        var cat2 = Db.Categories[1];
+        var cat3 = Db.Categories[2];
+    }
+    <h3>Using predefined parameters</h3>
+    <div class="efield">
+        <div class="elabel">
+            Meal2 (parent =
+            @string.Join(", ", cat1.Name, cat2.Name, cat3.Name)):
+        </div>
+        <div class="einput">
+            @(Html.Awe().AutocompleteFor(o => o.Meal2)
+              .Controller<MealChildAutocompleteController>()
+              .Parameter("parent", new[] { cat1.Id, cat2.Id, cat3.Id }))
+        </div>
+    </div>
+</div>

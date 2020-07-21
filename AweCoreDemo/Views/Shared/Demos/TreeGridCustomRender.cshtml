@@ -1,0 +1,78 @@
+<h2 data-u="@Url.Action("Index","GridCustomRender")">Tree grid with custom rendering</h2>
+@*begin*@
+@(Html.Awe().Grid("TreeGridCr")
+          .Url(Url.Action("SimpleTree", "TreeGrid"))
+          .Mod(o => o.CustomRender("crtree"))
+          .Columns(
+              new Column { Bind = "Name" },
+              new Column { Bind = "Id", Width = 100 }
+          )
+          .Persistence(Persistence.View)
+          .Groupable(false)
+          .PageSize(3)
+          .Height(400))
+<script>
+    function crtree(o) {
+        var api = o.api;
+        var fcol = utils.colf(o.columns).fcol;
+
+        // node content wrap
+        api.ncon = function (p) {
+            // don't wrap at level 0 and nodetype = items
+            if (!p.lvl || p.gv.nt == 2) return p.ren();
+            return '<div style="padding-left:' + p.lvl + 'em;" >' + p.ren() + '</div>';
+        };
+
+        // node
+        api.nodef = function (p) {
+            var attr = p.h ? 'style="display:none;"' : '';
+            if (p.lvl == 1) {
+                var res = '<div class="tgroot" ' + attr + '>' + p.ren() + '</div>';
+                return res;
+            }
+
+            return p.ren();
+        };
+
+        // group header content
+        api.ghead = function (g, lvl) {
+            return api.ceb() + g.c;
+        };
+
+        // render row
+        api.itmf = function (opt) {
+            function val(col) {
+                return utils.gcv(api, col, opt);
+            }
+
+            var content = '';
+            if (opt.con) {
+                content = opt.con;
+            } else {
+                if (opt.ceb) content += api.ceb();
+                content += val(fcol('Name'));
+            }
+
+            if (opt.ceb) {
+                opt.clss += ' tgitem awe-ceb';
+            } else {
+                opt.clss += ' tgitem';
+            }
+
+            var attr = opt.attr;
+            attr += ' class="' + opt.clss + '"';
+            opt.style && (attr += ' style="' + opt.style + '"');
+
+            return '<div ' + attr + '>' + content + '</div>';
+        };
+    }
+</script>
+@*end*@
+<br />
+<br />
+<div class="tabs">
+    <div data-caption="description" class="expl">
+        Using custom render mod to override api methods and render the grid using divs with padding instead of the default table.
+    </div>
+    <div data-caption="view">@Html.Source("Shared/Demos/TreeGridCustomRender.cshtml")</div>
+</div>

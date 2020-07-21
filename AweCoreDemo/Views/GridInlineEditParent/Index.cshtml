@@ -1,0 +1,42 @@
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "Grid Inline Editing Cascade using Parent";
+}
+<script>
+    var categories = @Html.Raw(DemoUtils.Encode(Db.Categories.Select(o => new KeyContent(o.Id, o.Name))));    
+</script>
+<h2>Grid inline editing, cascade using parent</h2>
+
+@{ var gridId = "gridInlPar"; }
+
+<div class="bar">
+    <button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn mbtn">Create</button>
+</div>
+
+@Html.InitDeletePopupForGrid(gridId, "GridInlineEditDemo")
+
+@(Html.Awe().Grid(gridId)
+      .Mod(o => o.PageInfo().InlineEdit(Url.Action("Create"), Url.Action("Edit")))
+      .Url(Url.Action("GridGetItems"))
+      .Height(350)
+      .Resizable()
+      .Reorderable()
+      .Columns(
+          new Column { Bind = "Id", Width = 75 }
+          .Mod(o => o.InlineId()),          
+          
+          new Column { Bind = "Category.Name", ClientFormat = ".CategoryName", Header = "Category" }
+            .Mod(o => o.Inline(
+                Html.Awe().AjaxRadioList("CategoryId")
+                .Odropdown()
+                .DataFunc("utils.getItems(categories)"))),
+          
+          new Column { Bind = "Meal.Name", ClientFormat = ".MealName", Header = "Meal" }
+            .Mod(o => o.Inline(
+                Html.Awe().AjaxRadioList("MealId")
+                .Odropdown()
+                .Url(Url.Action("GetMeals", "Data"))
+                .ParentInline("CategoryId", "categories"))),
+
+          new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+          new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 80 }))

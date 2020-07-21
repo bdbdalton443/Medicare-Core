@@ -1,0 +1,36 @@
+<div id="demoMenu">
+    @{
+        var action = ViewContext.RouteData.Values["Action"];
+        var controller = ViewContext.RouteData.Values["Controller"];
+    }
+
+    <input id="msearch" type="text" class="msearch awe-display awe-txt" placeholder="search..." data-brf="true" />
+    <nav role="navigation">
+        <div id="Menu"></div>
+    </nav>
+    <script>
+        var action = '@action';
+        var contr = '@controller';
+        document.action = action;
+        document.controller = contr;
+        $(function () {
+            var data = storg.getOrAddAndRun('sidemenu',
+                function () { return $.get('@Url.Action("GetMenuNodes", "Data")'); });
+
+            aweui.grid({
+                id: 'Menu',
+                mod: { loading: false, customRender: sideMenu.menutree },
+                rowClassClientFormat: '.(Selected)',
+                dataFunc: sideMenu.getMenuGridFunc(data),
+                parents: [{ id: 'msearch', name: 'search', load: false }],
+                showGroupBar: false,
+                showHeader: false,
+                showFooter: false,
+                height: 300,
+                columnWidth: 100,
+                columns: [{ id: 'col1' }]
+            });
+        });
+    </script>
+</div>
+@*tag.ItemsUrl is used in getMenuGridFunc (site.js) to load the items first time the user enters the site*@

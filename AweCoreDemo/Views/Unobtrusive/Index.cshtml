@@ -1,0 +1,48 @@
+@model AweCoreDemo.ViewModels.Input.UnobtrusiveInput
+@{
+    ViewBag.Title = "Unobtrusive validation demo";
+}
+<h1>Unobtrusive Validation Demo</h1>
+<div class="expl">
+    Awesome controls are designed to support jquery.validate and unobtrusive validation.<br />
+    The default date format and decimal separator are set in utils.js init method
+    (if jquery.validate is referenced, utils.init is called by Html.Awe().Init() in _Layout.cshtml). 
+</div>
+
+@*begin*@
+@using (Html.BeginForm())
+{
+    @Html.EditorFor(o => o.Name)
+    @Html.EditorFor(o => o.Number)
+    @Html.EditorFor(o => o.MealAuto)
+    @Html.EditorFor(o => o.Date)
+    @Html.EditorFor(o => o.Categories)
+    @Html.EditorFor(o => o.Category2)
+    @Html.EditorFor(o => o.CategoryFo)
+    @Html.EditorFor(o => o.Meal)
+    @Html.EditorFor(o => o.Meals)
+    @Html.EditorFor(o => o.MealsOdd)
+    @Html.EditorFor(o => o.CategoryBgrId)
+    @Html.EditorFor(o => o.CategoriesBgcIds)
+    @Html.EditorFor(o => o.CategoriesMultiIds)
+    @Html.EditorFor(o => o.ColorId)
+    @Html.EditorFor(o => o.MealComboId)
+    @Html.EditorFor(o => o.Organic)
+    @Html.EditorFor(o => o.Organic2)
+    @Html.EditorFor(o => o.Organic3)
+    @Html.EditorFor(o => o.OrganicSim)
+    @Html.AntiForgeryToken()
+    <div class="esubmit">
+        <input type="submit" value="submit" class="awe-btn" />
+    </div>
+}
+<h4>click the submit button to see the validation</h4>
+@*end*@
+<div class="tabs code">
+    <div data-caption="view">
+        @Html.Source("Unobtrusive/Index.cshtml")
+    </div>
+    <div data-caption="viewmodel">
+        @Html.Csrc("ViewModels/Input/UnobtrusiveInput.cs")
+    </div>
+</div>

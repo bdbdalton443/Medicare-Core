@@ -1,0 +1,56 @@
+﻿@page
+@model DemoHms.Pages.Items.ItemTypes.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ItemType</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemType.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ItemType.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemType.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ItemType.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemType.SubGroup)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ItemType.SubGroup)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemType.RefSubGroup)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ItemType.RefSubGroup)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemType.CompleteName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ItemType.CompleteName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemType.ItemSubGroup)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ItemType.ItemSubGroup.ItemSubGroupID)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.ItemType.ItemTypeID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

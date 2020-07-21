@@ -1,0 +1,74 @@
+﻿@page
+@using AweCoreDemo.Utils
+@model DemoHms.Pages.Patients.Assignments.Consultations.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Home.cshtml";
+    var gridId = "assignments";
+}
+
+<h1>Index</h1>
+<div class="row">
+    <div class="col-md-12">
+        <div class="bar">
+            <div style="float: right;">
+                @Html.Awe().TextBox("txtSearchInl").Placeholder("search Patient...").CssClass("searchtxt")
+            </div>
+
+            @Html.Awe().TextBox("txtSearchStatus").Placeholder("search Bill Status...").CssClass("searchtxt")
+
+
+            @*<button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn mbtn">Create</button>*@
+            @*<button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn">Create</button>*@
+        </div>
+
+        @(Html.Awe()
+            .InitPopupForm()
+            .Name("delete" + gridId)
+            .Group(gridId)
+            .Url(Url.Page("", "Delete"))
+            .Success("utils.itemDeleted('" + gridId + "')")
+            .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+            .Height(200)
+            .Modal())
+        @(Html.Awe().Grid(gridId)
+              .Url(Url.Page("", "GridGetItems"))
+              .Parent("txtSearchInl", "search")
+              .Parent("txtSearchStatus", "searchStatus")
+              .Height(350)
+              .Resizable()
+              .Reorderable()
+              .Selectable(SelectionType.Single)
+
+            .Columns(
+                  new Column { Bind = "AssignmentID", Width = 70, Header = "ID" }
+                  .Mod(o => o.InlineId()),
+
+                  new Column { Bind = "Patient.FullName", ClientFormat = ".(Patient)", Header = "Patient" },
+                  new Column { Bind = "Emergency", Header = "Emergency", Width = 30 },
+                   new Column { Bind = "LastVisted", Header = "LastVisited", Width = 80 },
+                   new Column { Bind = "Reported", Header = "Reported", Width = 80 },
+                  new Column { Bind = "ReferralStatus.Name", ClientFormat = ".(ReferralStatus)", Header = "ReferralStatus" },
+                  new Column { Bind = "PatientType.Name", ClientFormat = ".(PatientType)", Header = "PatientType" },
+                  new Column { Bind = "Doctor.FullName", ClientFormat = ".(Doctor)", Header = "Doctor" },
+                  new Column { Bind = "CreatedOn", Header = "Created On", Width = 120 },
+                  new Column { Bind = "UpdatedOn", Header = "Updated On", Width = 120 },
+
+                  new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+                new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 85 }))
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#@gridId')
+        .on('aweselect', function () {
+        var selectedItems = $('#@gridId').data('api').getSelection();
+        var str = JSON.stringify(selectedItems);
+        var nstr = str.substring(1, str.length - 1);
+        var obj = JSON.parse(nstr);
+        window.location.href = './Consultations/InlineEdit/?id=' + obj.AssignmentID;
+        });
+    });
+</script>
+

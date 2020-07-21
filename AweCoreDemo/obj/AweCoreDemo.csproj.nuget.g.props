@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
+    <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\user\.nuget\packages\;D:\Microsoft\Xamarin\NuGet\</NuGetPackageFolders>
+    <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">5.3.1</NuGetToolVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore.design\3.0.0\build\netcoreapp2.0\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore.design\3.0.0\build\netcoreapp2.0\Microsoft.EntityFrameworkCore.Design.props')" />
+  </ImportGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgNode_js Condition=" '$(PkgNode_js)' == '' ">C:\Users\user\.nuget\packages\node.js\0.12.7</PkgNode_js>
+    <PkgNoGit Condition=" '$(PkgNoGit)' == '' ">C:\Users\user\.nuget\packages\nogit\0.1.0</PkgNoGit>
+    <PkgNpm Condition=" '$(PkgNpm)' == '' ">C:\Users\user\.nuget\packages\npm\3.5.2</PkgNpm>
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\user\.nuget\packages\microsoft.codeanalysis.analyzers\2.9.3</PkgMicrosoft_CodeAnalysis_Analyzers>
+    <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\user\.nuget\packages\microsoft.entityframeworkcore.tools\3.0.0</PkgMicrosoft_EntityFrameworkCore_Tools>
+    <PkgjQuery Condition=" '$(PkgjQuery)' == '' ">C:\Users\user\.nuget\packages\jquery\1.6.4</PkgjQuery>
+    <PkgBuildBundlerMinifier Condition=" '$(PkgBuildBundlerMinifier)' == '' ">C:\Users\user\.nuget\packages\buildbundlerminifier\3.2.435</PkgBuildBundlerMinifier>
+  </PropertyGroup>
+</Project>

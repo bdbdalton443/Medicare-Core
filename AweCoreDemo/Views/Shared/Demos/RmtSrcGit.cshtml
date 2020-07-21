@@ -1,0 +1,30 @@
+<h3>Remote search, external api</h3>
+@*begin*@
+@(Html.Awe().AjaxRadioList("GitRepoOdropdown")
+          .Load(false)
+          .Odropdown(o =>
+            o.SearchFunc("site.gitRepoSearch", key: "g1")
+             .ItemFunc("site.gitItem")
+             .CaptionFunc("site.gitCaption")
+             .Caption("select a git repo")))
+<span class="hint">try 'valueinjecter'</span>
+<br/>
+<br/>
+@(Html.Awe().AjaxCheckboxList("GitRepoMultiselect")
+          .Load(false)
+          .Multiselect(o =>
+            o.SearchFunc("site.gitRepoSearch", key: "g1")
+            .ItemFunc("site.gitItem")
+            .CaptionFunc("site.gitCaption")
+            .Caption("select a git repo")))
+@*end*@
+<br/>
+<br/>
+<div class="tabs">
+    <div data-caption="description" class="expl">
+        Getting data from the git api on search using the <code>SearchFunc</code>. 
+        <code>ItemFunc</code> and <code>CaptionFunc</code> are used to specify custom rendering functions for the items and the caption.<br/>
+        Using the same cache key "g1", so searching in one control will fill the other as well.
+    </div>
+    <div data-caption="view">@Html.Source("Shared/Demos/RmtSrcGit.cshtml")</div>
+</div>

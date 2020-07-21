@@ -1,0 +1,86 @@
+﻿@page
+@model DemoHms.Pages.HospitalEntity.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Root.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Hospital</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.Location)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.Location)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.ContactNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.ContactNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.BoxNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.BoxNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.ContractLength)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.ContractLength)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.Color)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.Color)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.Status.StatusID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.EntityType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.EntityType.EntityTypeID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.CreatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.CreatedOn)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Hospital.UpdatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Hospital.UpdatedOn)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Hospital.HospitalID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

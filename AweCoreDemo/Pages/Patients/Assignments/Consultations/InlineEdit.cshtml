@@ -1,0 +1,355 @@
+﻿@page "{handler?}"
+@using AweCoreDemo.Utils
+@using AweCoreDemo.Models
+@using Microsoft.AspNetCore.Mvc
+
+@using DemoHms.Data
+@model AweRazorPages.Pages.InlineEdtModel
+@inject DemoHms.Data.ApplicationDbContext _context
+@{
+    ViewData["Title"] = "InlineEdit";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Grid Inline Edit</h1>
+<a href="@Url.Page("Index")">Back to main page</a>
+<br />
+<br />
+<script>
+    var rendered1 = false;
+    var rendered2 = false;
+    var rendered3 = false;
+    var items = @Html.Raw(DemoUtils.Encode(Model.Items.Select(o => new KeyContent(o.ItemID, o.Name))));
+</script>
+@{
+    var gridId = "treatments";
+}
+<div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Assignment.Description)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.Description)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Assignment.Emergency)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.Emergency)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Assignment.Recommendation)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.Recommendation)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Assignment.LastVisted)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.LastVisted)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Assignment.Reported)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.Reported)
+                </dd>
+                <dt class="col-sm-4">
+                    Patient
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.Patient.FullName)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Assignment.ReferralStatus)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.ReferralStatus.Name)
+                </dd>
+                <dt class="col-sm-4">
+                    Patient Type
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.Patient.PatientType.Name)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Assignment.Doctor)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.Doctor.FullName)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Assignment.CreatedOn)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.CreatedOn)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Assignment.UpdatedOn)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Assignment.UpdatedOn)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-9">
+            <div class="container">
+                <ul id="ul" class="nav nav-tabs" runat="server">
+                    <li class="nav-item" id="l1" runat="server"><a id="conDetails" class="nav-link active" role="tab" data-toggle="tab" href="#ass1">New Consultation<span id="assCount" runat="server" style="color:red"></span></a></li>
+                    <li class="nav-item"><a id="labDetails" class="nav-link" role="tab" data-toggle="tab" href="#ass2" runat="server">Requests FeedBack Details<span id="fdBackCount" runat="server" style="color:red"></span></a></li>
+                    <li class="nav-item"><a id="pendingExam" class="nav-link" role="tab" data-toggle="tab" href="#ass3">Pending Requests<span id="pendingEx" runat="server" style="color:red"></span></a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane container active" role="tabpanel" id="ass1" runat="server">
+                        <div class="card shadow mb-4" runat="server" visible="true">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Consultation Details</h6>
+                            </div>
+                            <div class="card-body">
+                                <form method="post">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <input type="hidden" asp-for="Assignment.AssignmentID" />
+                                    <div class="form-group">
+                                        <textarea id="admissionDesc" asp-for="Assignment.Description" runat="server" placeholder="Description" style="border-radius:6px;width:100%;"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <select id="billStatus" style="width: 100%; border-radius: 6px;" asp-for="Assignment.BillStatusID" asp-items="ViewBag.BillStatusID">
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select id="referalStatus" style="width: 100%; border-radius: 6px;" runat="server" asp-for="Assignment.ReferralStatusID" asp-items="ViewBag.ReferralStatusID" onchange="switchViewSection()">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea id="recommendation" runat="server" placeholder="Reported Issue or Recommendation" style="border-radius:6px;width:100%;" asp-for="Assignment.Recommendation"></textarea>
+                                    </div>
+                                    <div class="form-group" id="trtGrid">
+                                        <div class="bar">
+                                            <div style="float: right;">
+                                                @Html.Awe().TextBox("txtSearchInl").Placeholder("search...").CssClass("searchtxt")
+                                            </div>
+                                            <button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn mbtn">Create</button>
+                                            @*<button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn">Create</button>*@
+                                        </div>
+
+                                        @(Html.Awe()
+                                            .InitPopupForm()
+                                            .Name("delete" + gridId)
+                                            .Group(gridId)
+                                            .Url(Url.Page("", "Delete"))
+                                            .Success("utils.itemDeleted('" + gridId + "')")
+                                            .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+                                            .Height(200)
+                                            .Modal())
+
+                                        @(Html.Awe().Grid(gridId)
+                                              .Mod(o => o.PageInfo().InlineEdit(Url.Page("", "Create"), Url.Page("", "Edit")))
+                                              .Url(Url.Page("", "GridGetItems"))
+                                              .Parent("txtSearchInl", "search")
+                                              .Height(350)
+                                              .Resizable()
+                                              .Reorderable()
+                                            .Columns(
+                                                  new Column { Bind = "TreatmentID", Width = 45, Header = "ID" }
+                                                  .Mod(o => o.InlineId()),
+
+                                                  new Column { Bind = "Item.ExtendedName", ClientFormat = ".(Item)", Header = "Item", Width = 100 }
+                                                    .Mod(o => o.Inline(Html.Awe().AjaxRadioList("ItemID").Odropdown().DataFunc("utils.getItems(items)"), "ItemID")),
+
+                                                  new Column { Bind = "PreQuantity", Width = 70, Header = "Qty1" }
+                                                    .Mod(o => o.Inline(Html.Awe().TextBox("PreQuantity"))),
+
+                                                  new Column { Bind = "X", Width = 35, Header = "" },
+
+                                                  new Column { Bind = "PostQuantity", Width = 70, Header = "Qty2" }
+                                                    .Mod(o => o.Inline(Html.Awe().TextBox("PostQuantity"))),
+                                                  new Column { Bind = "Days", Width = 50 }
+                                                    .Mod(o => o.Inline(Html.Awe().TextBox("Days"))),
+                                                  new Column { Bind = "OriginalAmount", Width = 60, Header = "Init TT", ClientFormatFunc="formatColumn" }
+                                                    .Mod(o => o.Inline(Html.Awe().TextBox("OriginalAmount").Enabled(false))),
+                                                new Column { Bind = "AdjustedAmount", Width = 80, Header = "Adjusted TT" }
+                                                    .Mod(o => o.Inline(Html.Awe().TextBox("AdjustedAmount"))),
+                                                new Column { Bind = "Total", Width = 60, Hidden = true }
+                                                    .Mod(o => o.Inline(Html.Awe().TextBox("Total"))),
+                                                  new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 60 },
+                                                new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 40 }))
+                                    </div>
+                                    @*<input id="refvalue" type="hidden" asp-for=""/>*@
+                                    <div class="form-group" id="exmGrid">
+
+                                        <div id="importedGrid">
+
+                                        </div>
+                                        @*<partial name="_Examination" />*@
+                                        @*@await Html.PartialAsync("_Examination")*@
+                                    </div>
+                                    <input id="selectedStatus" type="hidden" />
+                                    <div class="form-group">
+                                        <input type="submit" value="Save" class="btn btn-primary" style="float:right" /><label style="float:left;font-size:x-large;font:900">Original Bill:   </label><label style="float:left;font-size:x-large;font:600" id="ttl"></label><label style="float:left;font-size:x-large;font:900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adjusted Bill:</label><label style="float:left;font-size:x-large;font:600" id="adjTtl"></label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+<br />
+<div class="expl">
+    grid inline editing, using razor pages to handle the ajax requests instead of mvc
+</div>
+<br />
+<br />
+<br />
+@{
+
+}
+<script>
+    function loadExternalGrid() {
+         var indx = 0;
+        var last = $('#importedGrid');
+        var url = '@Url.Action("Rend", "Data")';
+
+        site.loadWhenSeen(last, url, indx++, loadNext);
+
+                function loadNext(res)
+                {
+                    if (!res || res == 'end') return;
+
+                    var el = $('<div class="example" />').html(res);
+                    last.after(el);
+                    last = el;
+
+                    site.handleAnchors();
+                    site.handleTabs();
+                    site.parseCode();
+                    site.prettyPrint();
+
+                    site.loadWhenSeen(last, url, indx++, loadNext);
+        }
+        rendered1 = true;
+    }
+</script>
+@section HideSwitchSec1{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+           @{
+               var treatment1 = Model.Assignment.ReferralStatus !=null? Model.Assignment.ReferralStatus.Name:"";
+            }
+            var trt1 = '@treatment1';
+            if (trt1 == 'Treatment' || trt1 == '') {
+                 $("#trtGrid").show();
+            }
+            else
+            {
+                $("#trtGrid").hide();
+                if (!rendered1)
+                    loadExternalGrid();
+            }
+        });
+    </script>
+}
+<script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+             @{
+               var treatment2 = Model.Assignment.ReferralStatus !=null? Model.Assignment.ReferralStatus.Name:"";
+            }
+            var trt2 = '@treatment2';
+            if (trt2 == 'Treatment' || trt2 == '') {
+                 $("#trtGrid").show();
+            }
+            else
+            {
+                $("#trtGrid").hide();
+                if (!rendered1)
+                    loadExternalGrid();
+            }
+
+        });
+</script>
+@section HideSwitchSec2{
+    <script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+            @{
+               var examination1 = Model.Assignment.ReferralStatus !=null? Model.Assignment.ReferralStatus.Name:"";
+            }
+            var exm1 = '@examination1';
+            if( exm1 != 'Examination')
+                $("#exmGrid").hide();
+        });
+    </script>
+}
+<script type="text/javascript">
+        //this.ready
+    $(document).ready(function () {
+            @{
+               var examination2 = Model.Assignment.ReferralStatus !=null? Model.Assignment.ReferralStatus.Name:"";
+            }
+        var exm2 = '@examination2';
+            if( exm2 != 'Examination')
+                $("#exmGrid").hide();
+            //switchViewSection();
+        });
+</script>
+@section SwitchSec{
+    <script type="text/javascript">
+        function switchViewSection() {
+            
+            if ($('#referalStatus option:selected').text() == 'Examination') {
+                if (!rendered1)
+                    loadExternalGrid();
+                $("#trtGrid").hide();
+                $("#exmGrid").show();
+            }
+            else if ($('#referalStatus option:selected').text() == 'Treatment') {
+                $("#exmGrid").hide();
+                $("#trtGrid").show();
+            }
+        }
+    </script>
+}
+@section Scripts {
+
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+
+    <script>
+    $('#@gridId').on('aweload', function (event, data, requestData) {
+        rendered2 = true;
+        if (@Db.Total != 0)
+        {
+            document.getElementById("ttl").innerText = '@Db.Total'; 
+            document.getElementById("adjTtl").innerText = '@Db.Total';
+        }
+            
+    });
+    
+    function formatColumn(dinner)
+    {
+        if (rendered2==true) {
+            document.getElementById("ttl").innerText = dinner.Total;
+            document.getElementById("adjTtl").innerText = dinner.Total;
+        }          
+        return "<div>" + dinner.OriginalAmount + "</div>";
+    }
+
+    </script>
+}
+
+

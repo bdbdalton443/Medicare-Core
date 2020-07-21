@@ -1,0 +1,104 @@
+﻿@page
+@using DemoHms.Data
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext  _context
+@model DemoHms.Pages.HospitalEntity.Permissions.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    var user = _context.AppUsers.Include(a => a.EmployeeGroup).FirstOrDefault(U => U.Email.Equals(User.Identity.Name));
+    if(user.EmployeeGroup.Name=="Root")
+        Layout = "~/Pages/Shared/_Root.cshtml";
+    else
+        Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].CanEdit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].CanRead)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].CanDelete)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].CanAdd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].CanApprove)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].CanConfirm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].EmployeeGroup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].Activity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Permission[0].UpdatedOn)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Permission) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanEdit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanRead)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanDelete)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanAdd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanApprove)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanConfirm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeGroup.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activity.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedOn)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.PermissionID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.PermissionID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.PermissionID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

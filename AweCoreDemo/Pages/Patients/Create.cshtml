@@ -1,0 +1,256 @@
+﻿@page
+@model DemoHms.Pages.Patients.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Patient</h4>
+<hr />
+<div class="row">
+    <div class="col-md-11" style="margin:auto;">
+        <div class="card shadow mb-12">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">New Item Details</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink14">
+                        <div class="dropdown-header">Actions:</div>
+                        <a class="dropdown-item" href="#">Reset Form</a>
+                        <a class="dropdown-item" href="#">Save</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <form method="post" id="form1" onload="hideControls()">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.FirstName" class="control-label"></label>
+                                            <input asp-for="Patient.FirstName" class="form-control" />
+                                            <span asp-validation-for="Patient.FirstName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.MiddleName" class="control-label"></label>
+                                            <input asp-for="Patient.MiddleName" class="form-control" />
+                                            <span asp-validation-for="Patient.MiddleName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.LastName" class="control-label"></label>
+                                            <input asp-for="Patient.LastName" class="form-control" />
+                                            <span asp-validation-for="Patient.LastName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.PatientTypeID" class="control-label"></label>
+                                            <select asp-for="Patient.PatientTypeID" name="typeOfPatient" class="form-control" asp-items="ViewBag.PatientTypeID" onchange="showNext(this, '@Url.Action("Index","PatientType")')"></select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.Gender" class="control-label"></label>
+                                            <input asp-for="Patient.Gender" class="form-control" />
+                                            <span asp-validation-for="Patient.Gender" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.CardNO" class="control-label"></label>
+                                            <input asp-for="Patient.CardNO" class="form-control" />
+                                            <span asp-validation-for="Patient.CardNO" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.State" class="control-label"></label>
+                                            <input asp-for="Patient.State" class="form-control" />
+                                            <span asp-validation-for="Patient.State" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.Tel" class="control-label"></label>
+                                            <input asp-for="Patient.Tel" class="form-control" />
+                                            <span asp-validation-for="Patient.Tel" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="Patient.Country" class="control-label"></label>
+                                            <input asp-for="Patient.Country" class="form-control" />
+                                            <span asp-validation-for="Patient.Country" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.AccNumber" class="control-label"></label>
+                                            <input asp-for="Patient.AccNumber" class="form-control" />
+                                            <span asp-validation-for="Patient.AccNumber" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.Email" class="control-label"></label>
+                                            <input asp-for="Patient.Email" class="form-control" />
+                                            <span asp-validation-for="Patient.Email" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.City" class="control-label"></label>
+                                            <input asp-for="Patient.City" class="form-control" />
+                                            <span asp-validation-for="Patient.City" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.DOB" class="control-label"></label>
+                                            <input asp-for="Patient.DOB" class="form-control" />
+                                            <span asp-validation-for="Patient.DOB" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.NextOfKinID" class="control-label"></label>
+                                            <select asp-for="Patient.NextOfKinID" class="form-control" asp-items="ViewBag.NextOfKinID"></select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="Patient.HospitalID" class="control-label"></label>
+                                            <select asp-for="Patient.HospitalID" class="form-control" asp-items="ViewBag.HospitalID"></select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Patient.Address" class="control-label"></label>
+                                            <input asp-for="Patient.Address" class="form-control" />
+                                            <span asp-validation-for="Patient.Address" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="Patient.Occupation" class="control-label"></label>
+                                            <input asp-for="Patient.Occupation" class="form-control" />
+                                            <span asp-validation-for="Patient.Occupation" class="text-danger"></span>
+                                        </div>
+                                        <div id="armyNumber" class="form-group">
+                                            <label asp-for="Patient.ArmyNumber" class="control-label"></label>
+                                            <input asp-for="Patient.ArmyNumber" class="form-control" />
+                                            <span asp-validation-for="Patient.ArmyNumber" class="text-danger"></span>
+                                        </div>
+                                        <div id="armyServiceCode" class="form-group o-hidden">
+                                            <label asp-for="Patient.ServiceCodeID" class="control-label"></label>
+                                            <select asp-for="Patient.ServiceCodeID" class="form-control" asp-items="ViewBag.ServiceCodeID"></select>
+                                        </div>
+                                        <div id="armyStatus" class="form-group">
+                                            <label asp-for="Patient.ArmyStatusID" class="control-label"></label>
+                                            <select asp-for="Patient.ArmyStatusID" class="form-control" asp-items="ViewBag.ArmyStatusID"></select>
+                                        </div>
+                                        <div id="armyRank" class="form-group">
+                                            <label asp-for="Patient.RankID" class="control-label"></label>
+                                            <select asp-for="Patient.RankID" class="form-control" asp-items="ViewBag.RankID"></select>
+                                        </div>
+                                        <div id="armyUnit" class="form-group">
+                                            <label asp-for="Patient.ArmyUnitID" class="control-label"></label>
+                                            <select asp-for="Patient.ArmyUnitID" class="form-control" asp-items="ViewBag.ArmyUnitID"></select>
+                                        </div>
+                                        <div id="family" class="form-group">
+                                            <label asp-for="Patient.FamilyID" class="control-label"></label>
+                                            <select asp-for="Patient.FamilyID" class="form-control" asp-items="ViewBag.FamilyID"></select>
+                                        </div>
+                                        <div id="orgtn" class="form-group">
+                                            <label asp-for="Patient.OrganisationID" class="control-label"></label>
+                                            <select asp-for="Patient.OrganisationID" class="form-control" asp-items="ViewBag.OrganisationID"></select>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" value="Create" class="btn btn-primary" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+@section hideScripts1{
+    <script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+            $("#armyNumber").hide();
+        });
+    </script>
+}
+@section hideScripts2{
+    <script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+            $("#armyServiceCode").hide();
+        });
+    </script>
+}
+@section hideScripts3{
+    <script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+            $("#armyStatus").hide();
+        });
+    </script>
+}
+@section hideScripts4{
+    <script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+            $("#armyUnit").hide();
+        });
+    </script>
+}
+@section hideScripts5{
+    <script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+            $("#armyRank").hide();
+        });
+    </script>
+}
+@section hideScripts6{
+    <script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+            $("#family").hide();
+        });
+    </script>
+}
+@section hideScripts7{
+    <script type="text/javascript">
+        //this.ready
+        $(document).ready(function () {
+            $("#orgtn").hide();
+        });
+    </script>
+}
+<script type="text/javascript">
+    function showNext(item, baseUrl) {
+        if (item.value == '1') {
+            //$("#myCarousel").carousel(0);
+            //document.getElementById("armNumber").style.visibility = "hidden";
+            //document.getElementById("armNumber").style.visibility = "none";
+            $("#armyNumber").hide();
+            $("#armyServiceCode").hide();
+            $("#armyStatus").hide();
+            $("#armyUnit").hide();
+            $("#armyRank").hide();
+            $("#family").hide();
+            $("#orgtn").hide();
+        }
+        else if (item.value == '2') {
+            $("#armyNumber").show();
+            $("#armyServiceCode").show();
+            $("#armyStatus").show();
+            $("#armyUnit").show();
+            $("#armyRank").show();
+            $("#family").hide();
+            $("#orgtn").hide();
+        }
+    }
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

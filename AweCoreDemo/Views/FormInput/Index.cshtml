@@ -1,0 +1,84 @@
+@{
+    ViewBag.Title = "Form inputs, checkbox, toggle button";
+}
+
+<h1>Form inputs</h1>
+
+<h2>Checkbox</h2>
+<div class="example">
+    @*beginchk*@
+    <div class="efield">
+        <label>@Html.Awe().CheckBox("chk1").Ochk(false).Value(true) <span class="o-con">Checkbox</span></label>
+    </div>
+    <div class="efield">
+        <label>@Html.Awe().CheckBox("chk2").Ochk(false).Enabled(false).Value(true) <span class="o-con">Disabled</span></label>
+    </div>
+    @*endchk*@
+    <div class="expl">
+        Ochk checkbox mod in this demo is set globally in Application_Start so we are turning it off using Ochk(false) to show the basic checkbox
+    </div>
+    @Html.Source("FormInput/Index.cshtml", "chk")
+</div>
+
+<h2>Ochk</h2>
+<div class="example">
+    @*beginochk*@
+    <div class="efield">
+        <label>@Html.Awe().CheckBox("chk3").Value(true) <span class="o-con">Checkbox</span></label>
+    </div>
+    <div class="efield">
+        <label>@Html.Awe().CheckBox("chk4").Enabled(false).Value(true) <span class="o-con">Disabled</span></label>
+    </div>
+    <div class="efield">
+        <label>@Html.Awe().CheckBox("chk5").Enabled(false) <span class="o-con">Disabled</span></label>
+    </div>
+    @*endochk*@
+    @Html.Source("FormInput/Index.cshtml", "ochk")
+</div>
+
+<h2>Otoggl</h2>
+<div class="example">
+    @*beginotoggl*@
+    <div class="efield">
+        <label>@Html.Awe().CheckBox("chk6").Otoggl().Value(true) <span class="o-con">Checkbox</span></label>
+    </div>
+    <div class="efield">
+        <label>@Html.Awe().CheckBox("chk7").Otoggl().Enabled(false).Value(true) <span class="o-con">Disabled</span></label>
+    </div>
+    <div class="efield">
+        <label>@Html.Awe().CheckBox("chk8").Otoggl().Enabled(false) <span class="o-con">Disabled</span></label>
+    </div>
+    <div class="efield">
+        <label>
+            @Html.Awe().CheckBox("chk9").Otoggl(o => o.Width("7em").Yes("Enabled").No("Disabled")).Value(true)
+            <span class="o-con">with width, yes and no set</span>
+        </label>
+    </div>
+    <div class="efield">
+        <button type="button" class="awe-btn" onclick="toggleAll()">toggle enabled</button>
+    </div>
+    <script>
+        function toggleEnable(c) {
+            var o = c.data('o');
+            o.api.enable(!o.enb);
+        }
+
+        function toggleAll() {
+            toggleEnable($('#chk6'));
+            toggleEnable($('#chk7'));
+            toggleEnable($('#chk8'));
+            toggleEnable($('#chk9'));
+        }
+    </script>
+    @*endotoggl*@
+@Html.Source("FormInput/Index.cshtml", "otoggl", true)
+</div>
+
+<h2>Button</h2>
+<div class="example">
+    @*beginbtn*@
+    @Html.Awe().Button().Text("button")
+    @Html.Awe().Button().Text("disabled").Enabled(false)
+    @*endbtn*@
+    @Html.Source("FormInput/Index.cshtml", "btn")
+</div>

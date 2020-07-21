@@ -1,0 +1,224 @@
+@model AweCoreDemo.ViewModels.Input.DatePickerDemoInput
+@{
+    ViewBag.Title = "DatePicker Demo";
+}
+<h1>DatePicker</h1>
+
+<div class="efield">
+    <div class="elabel">
+        Date:
+    </div>
+    <div class="einput">
+        @*begin*@
+        @Html.Awe().DatePickerFor(o => o.Date).Value(new DateTime(2017, 11, 1))
+        @*end*@
+    </div>
+
+    @Html.Source("DatePickerDemo/Index.cshtml")
+</div>
+<h2>Inline Calendar</h2>
+<div class="efield">
+    <div class="elabel">
+        Date inline:
+    </div>
+    <div class="einput">
+        @*begininl*@
+        @Html.Awe().DatePickerFor(o => o.DateInline).InlineCalendar(true, true)
+        @*endinl*@
+    </div>
+
+    @Html.Source("DatePickerDemo/Index.cshtml", "inl")
+</div>
+
+<h2>With ChangeMonth and ChangeYear</h2>
+<div class="efield">
+    <div class="elabel">
+        Date:
+    </div>
+    <div class="einput">
+        @*begin1*@
+        @(Html.Awe().DatePickerFor(o => o.Date2)
+                    .ChangeMonth()
+                    .ChangeYear())
+        @*end1*@
+    </div>
+
+    @Html.Source("DatePickerDemo/Index.cshtml", "1")
+
+</div>
+<h2>Number of months, Min, max, default date, clear button </h2>
+<div class="efield">
+    <div class="elabel">
+        Date:
+    </div>
+    <div class="einput">
+        @*begin2*@
+        @(Html.Awe().DatePickerFor(o => o.Date3)
+              .NumberOfMonths(3)
+              .MinDate(DateTime.Now.AddDays(1))
+              .MaxDate(DateTime.Now.AddMonths(7))
+              .DefaultDate(DateTime.Now.AddDays(4))
+              .ClearButton())
+        @*end2*@
+    </div>
+
+    @Html.Source("DatePickerDemo/Index.cshtml", "2")
+</div>
+
+<h2>Date range</h2>
+<div class="efield">
+    @*beginrange*@
+    <div class="elabel">
+        From:
+    </div>
+    <div class="einput">
+        @(Html.Awe().DatePickerFor(o => o.DateFrom).NumberOfMonths(2).ChangeMonth().ChangeYear())
+    </div>
+    <div class="elabel">
+        To:
+    </div>
+    <div class="einput">
+        @(Html.Awe().DatePickerFor(o => o.DateTo).NumberOfMonths(2))
+    </div>
+    <script>
+        $(function () {
+            var from = $('#DateFrom');
+            var to = $('#DateTo');
+
+            from.change(function () {
+                to.data('o').p.min = from.val();
+            });
+
+            to.change(function () {
+                from.data('o').p.max = to.val();
+            });
+        });
+    </script>
+    @*endrange*@
+    @Html.Source("DatePickerDemo/Index.cshtml", "range", true)
+</div>
+
+<h2>Disable certain dates, change weekend days color</h2>
+<div class="expl">
+    If you need to disable certain dates, for example holidays, weekends, or just a specific period, you can use the <code>DayFunc</code> 
+    to set a custom js function where you can set <code>opt.dsb</code> to disable a date or add an additional css class to <code>opt.cls</code>.
+</div>
+@*beginw*@
+<script>
+    function dayf(opt) {
+        var date = opt.d.getDate();
+        var dayw = opt.d.getDay();
+
+        if (date >= 15 && date <= 20) {
+            opt.dsb = 1;
+        }
+
+        if (dayw == 0 || dayw == 6) {
+            opt.cls += ' weekend';
+        }
+    }
+</script>
+
+<style>
+    .weekend {
+        color: orangered;
+             }
+</style>
+
+<div class="efield">
+    <div class="elabel">
+        Date:
+    </div>
+    <div class="einput">
+        @Html.Awe().DatePicker("DateWeekend").DayFunc("dayf")
+    </div>
+</div>
+@*endw*@
+@Html.Source("DatePickerDemo/Index.cshtml", "w", true)
+
+<h2>Right to left </h2>
+
+@*begin3*@
+<div class="einput" style="direction: rtl;">
+    @Html.Awe().DatePickerFor(o => o.Date4).ChangeMonth().ChangeYear()
+</div>
+@*end3*@
+
+@Html.Source("DatePickerDemo/Index.cshtml", "3")
+
+<h2>Datepicker Api</h2>
+<div class="efield">
+    <div class="elabel">
+        Datepicker:
+    </div>
+    @*beginapi*@
+    <div class="einput">
+        @Html.Awe().DatePicker("DateApi")
+    </div>
+    <br />
+    <br />
+    <div>
+    <button type="button" class="awe-btn" onclick="setToday()">set today</button>
+    <button type="button" class="awe-btn" onclick="nextDay()">next day</button>
+    <button type="button" class="awe-btn" onclick="getDate()">get date</button>
+    <button type="button" class="awe-btn" onclick="formatNow()">format now as dd-mm-yy</button>
+    <button type="button" class="awe-btn" onclick="parseToDate()">parse 31-01-2012 to date</button>
+
+        <div id="apilog"></div>
+    </div>
+    <script>
+        var log = $('#apilog');
+        var dtp = $('#DateApi');
+
+        function getDate() {
+            var date = dtp.data('api').getDate();
+            var sval = date ? dtp.data('api').getDate().toString() : '';
+            awe.flash(log.html(sval));
+        }
+
+        function setToday() {
+            dtp.data('api').setDate(new Date());
+        }
+
+        function nextDay() {
+            var date = dtp.data('api').getDate() || new Date();
+            date.setDate(date.getDate() + 1);
+            dtp.data('api').setDate(date);
+        }
+
+        function formatNow() {
+            var str = awem.formatDate('dd-mm-yy', new Date());
+            awe.flash(log.html(str));
+        }
+
+        function parseToDate() {
+            var date = awem.parseDate('dd-mm-yy', '31-01-2012');
+            awe.flash(log.html(date.toString()));
+        }
+    </script>
+    @*endapi*@
+    <br />
+    
+    <div class="tabs">
+        <div class="expl" data-caption="description">
+            DatePicker api can be called to get or set date, or if you just need to parse or format a date.<br />
+            <code>$('#id').data('api')</code> - get datepicker api<br />
+            <code>api.getDate()</code> - get datepicker value as Date object<br />
+            <code>api.setDate(date)</code> - set datepicker value with a Date type parameter<br />
+            <code>awem.formatDate(format, val)</code> - format Date value to string using provided format<br />
+            <code>awem.parseDate(format, strval)</code> - parse string value to Date type
+        </div>
+        <div data-caption="view">
+            @Html.Source("DatePickerDemo/Index.cshtml", "api")
+        </div>
+    </div>
+    
+</div>
+
+<h2>TimePicker</h2>
+
+@*begin4*@
+@Html.Awe().TimePicker("tmp1")
+@*end4*@
+
+@Html.Source("DatePickerDemo/Index.cshtml", "4")

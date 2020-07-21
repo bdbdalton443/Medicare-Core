@@ -1,0 +1,43 @@
+﻿@page
+@model DemoHms.Pages.HospitalEntity.Branches.BranchTypes.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Root.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BranchType[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BranchType[0].Code)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.BranchType) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.BranchTyeID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.BranchTyeID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.BranchTyeID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

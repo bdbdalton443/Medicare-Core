@@ -1,0 +1,29 @@
+@model AweCoreDemo.ViewModels.Input.Lookup.LookupPopupInput
+@using (Html.Awe().BeginContext())
+{
+    var gridId = "DinnersGrid";
+
+    @Html.InitCrudPopupsForGrid(gridId, "DinnersGridCrud")
+
+    <div class="bar">
+        <div style="float: right;">
+            @Html.Awe().TextBoxFor(o => o.Search).Placeholder("search...").CssClass("searchtxt")
+        </div>
+        @Html.CreateButtonForGrid(gridId)
+    </div>
+
+    @(Html.Awe().Grid(gridId)
+      .Mod(o => o.PageInfo().ColumnsSelector().KeyNav().ColumnsAutohide())
+      .Url(Url.Action("GridGetItems", "DinnersGridCrud"))
+      .Parent(o => o.Search, "search")
+      .Selectable(SelectionType.Single)
+      .Height(350)
+      .Columns(
+          new Column { Bind = "Id", Width = 55 },
+          new Column { Bind = "Name" },
+          new Column { Bind = "Date" },
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef" },
+          new Column { ClientFormat = ".Meals", Header = "Meals" },
+          new Column { ClientFormat = Html.EditFormatForGrid(gridId, nofocus: true), Width = 50 }.Mod(o => o.Nohide()),
+          new Column { ClientFormat = Html.DeleteFormatForGrid(gridId, nofocus: true), Width = 50 }.Mod(o => o.Nohide())))
+}

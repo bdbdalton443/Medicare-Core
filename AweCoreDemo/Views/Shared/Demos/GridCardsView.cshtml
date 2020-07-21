@@ -1,0 +1,81 @@
+<h2 data-u="@Url.Action("Index","GridCustomRender")">Grid Cards View</h2>
+@*begin*@
+@(Html.Awe().Grid("GridCardsView")
+      .CssClass("scrlh") // scrollbar for grid header when needed
+      .Reorderable()
+      .Mod(o => o.PageInfo().PageSize().AutoMiniPager().ColumnsSelector().CustomRender("cardsview"))
+      .Columns(
+          new Column { Bind = "Id", Width = 75, Groupable = false, Resizable = false },
+          new Column { Bind = "Person" }.Mod(o => o.Nohide()),
+          new Column { Bind = "Food" },
+          new Column { Bind = "Location" },
+          new Column { Bind = "Date", Width = 120 }.Mod(o => o.Autohide()),
+          new Column { Bind = "Country.Name", ClientFormat = ".(CountryName)", Header = "Country" },
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef" })
+      .Url(Url.Action("GetItems", "LunchGrid"))
+      .Resizable()
+      .Height(450))
+<script>
+    function cardsview(o) {
+        var api = o.api;
+
+        // node content add wrap for padding
+        api.ncon = function(p) {
+            if (!p.lvl) return p.ren();
+            return '<div style="padding-left:' + p.lvl + 'em;" >' + p.ren() + '</div>';
+        };
+
+        // group header content
+        api.ghead = function(g) {
+            return api.ceb() + g.c;
+        };
+
+        // render item
+        api.itmf = function (opt) {
+            var columns = o.columns;
+
+            var content = '';
+            if (opt.con) {
+                content = opt.con;
+            } else {
+                for (var i = 0; i < columns.length; i++) {
+                    var col = columns[i];
+                    
+                    // is column hidden
+                    if (api.ich(col)) continue;
+                    content += '<div class="elabel">'+ (col.H ? col.H +': ' : '') + '</div>' + utils.gcvw(api, col, opt) + '</br>';
+                }
+            }
+
+            if (opt.ceb) {
+                opt.clss += ' cardhead';
+                opt.style += 'margin-left:' + opt.ind + 'em;';
+            } else {
+                opt.clss += ' itcard';
+            }
+
+            var attr = opt.attr;
+            attr += ' class="' + opt.clss + '"';
+            opt.style && (attr += ' style="'+opt.style+'"');
+
+            return '<div ' + attr + '>' + content + '</div>';
+        };
+
+        // ignore columns width for grid content
+        o.syncon = 0;
+
+        // no alt rows
+        o.alt = 0;
+    }
+</script>
+@*end*@
+<br/>
+<br/>
+<div class="tabs">
+    <div data-caption="description" class="expl">
+        Grid cards view achieved by overriding api methods, columns can be reordered, hidden/shown, and the changes will be reflected in the rendered card. 
+        The column headers width is ignored for calculating grid content width, so when you shrink the browser window the grid content won't get a horizontal scrollbar.
+        On touch you can scroll the grid header horizontally by dragging from the left an right sides of the grid header.
+    </div>
+    <div data-caption="view">@Html.Source("Shared/Demos/GridCardsView.cshtml")</div>
+</div>

@@ -1,0 +1,33 @@
+
+@{
+    ViewBag.Title = "Popup1";
+}
+
+<h2>dropmenu inside popup</h2>
+
+<div class="example">
+    <div id="popupArea1" class="area">
+        <div class="msg">click here</div>
+    </div>
+    <script>
+        $(function () {
+            var div = $('#popupArea1');
+            var msg = div.find('.msg');
+            var items = [{ k: 1, c: 'item 1' }, { k: 2, c: 'item 2' }, { k: 3, c: 'item 3' }];
+
+            var dd = awem.dropmenu({ df: getData, select: select });
+
+            div.click(function (e) {
+                dd.open({ xy: { y: e.clientY, x: e.clientX }, hpos: $(e.target) });
+            });
+
+            function select(it) {
+                msg.html('you clicked ' + it.c);
+            }
+
+            function getData() {
+                return items;
+            }
+        });
+    </script>
+</div>

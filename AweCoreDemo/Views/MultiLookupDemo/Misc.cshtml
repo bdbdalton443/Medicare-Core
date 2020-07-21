@@ -1,0 +1,116 @@
+@model AweCoreDemo.ViewModels.Input.MultiLookupDemoInput
+@using AweCoreDemo.Controllers.Awesome.MultiLookup
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "MultiLookup Demo Misc";
+}
+
+<div class="example">
+    <h3>MultiLookup Grid</h3>
+    <div class="efield">
+        <div class="elabel">
+            Meal:
+        </div>
+        <div class="einput">
+            @*begin*@
+            @(Html.Awe().MultiLookupFor(o => o.MealCustomPopup)
+                  .MultiLookupGrid(Url.Action("MealMultiLookup"))
+                  .Height(500)
+                  .Width(500)
+                  .Controller("MealsMultiLookup"))
+            @*end*@
+        </div>
+    </div>
+
+    <br />
+    @(Html.Awe().Tabs().Add("description", 
+@<text>MultiLookup with grids inside the popup, done using the MultiLookupGrid mod that also uses PopupUrl extension.</text>, "expl")
+        .Add("view", Html.Source("MultiLookupDemo/Misc.cshtml"))
+        .Add("multilookup controller", Html.Csource("Awesome/MultiLookup/MealsMultiLookupController.cs"))
+        .Add("popup view", Html.Source("MultiLookupDemo/MealMultiLookup.cshtml")))
+</div>
+
+<div class="example">
+    <h3>
+        MultiLookup with custom Items Layout
+    </h3>
+    <div class="efield">
+        <div class="elabel">
+            Meals:
+        </div>
+        <div class="einput">
+            @*beginci*@
+            @(Html.Awe().MultiLookupFor(o => o.MealsCustomItem)
+                  .Controller<MealsCustomItemMultiLookupController>()
+                  .Mod(o => o.ShowHeader())
+                  .CustomSearch()
+                  .Height(700)
+                  .HighlightChange())
+            @*endci*@
+        </div>
+    </div>
+    <br />
+    @(Html.Awe().Tabs().Add("view", Html.Source("MultiLookupDemo/Misc.cshtml", "ci"))
+                     .Add("controller", Html.Csource("Awesome/MultiLookup/MealsCustomItemMultiLookupController.cs"))
+                     .Add("search form view", Html.Source("MealsCustomItemMultiLookup/SearchForm.cshtml"))
+                     .Add("items view", Html.Source("MealsCustomItemMultiLookup/Items.cshtml")))
+</div>
+
+<div class="example">
+    <h3>MultiLookup bound to many parents</h3>
+    <div class="efield">
+        <div class="elabel">
+            Parent Categories:
+        </div>
+        <div class="einput">
+            @(Html.Awe().MultiLookupFor(o => o.CategoriesData)
+                          .Controller<CategoriesMultiLookupController>()
+                          .ClearButton())
+        </div>
+    </div>
+    <div class="efield">
+        <div class="elabel">
+            Parent Category:
+        </div>
+        <div class="einput">
+            @Html.Awe().AjaxDropdownFor(o => o.Category).Url(Url.Action("GetCategories", "Data"))
+        </div>
+    </div>
+    <div class="efield">
+        <div class="elabel">
+            Child Meals:
+        </div>
+        <div class="einput">
+            @(Html.Awe().MultiLookupFor(o => o.ChildOfMany)
+              .Parent(o => o.CategoriesData, "categories")
+              .Parent(o => o.Category, "categories")
+              .Controller<MealsCustomSearchMultiLookupController>()
+            )
+        </div>
+    </div>
+</div>
+
+<div class="example">
+    <h3>Setting predefined parameters</h3>
+    @{
+        var category1 = Db.Categories[0];
+        var category2 = Db.Categories[1];
+    }
+    <div class="efield">
+        <div class="elabel">
+            Meals (categories =
+            @category1.Name):
+        </div>
+        <div class="einput">
+            @(Html.Awe().MultiLookupFor(o => o.Meals2)
+                          .Parameter("categories", new[] { category1.Id })
+                          .Controller<MealsCustomSearchMultiLookupController>()
+                          .ParameterFunc("giveParams"))
+        </div>
+    </div>
+    <script>
+        function giveParams() {
+            return { categories: @(category2.Id) };
+        }
+    </script>
+</div>

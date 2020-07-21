@@ -1,0 +1,240 @@
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "aweui.js ui components library";
+}
+<h1>aweui.js ui components library</h1>
+<p class="expl">
+    You can use the awesome controls without the use of server side html helpers by using the aweui.js library.
+</p>
+<div class="example">
+    <h2>Grid remote data</h2>
+    @*begin*@
+    <div class="bar">
+        <input type="text" placeholder="search..." id="txtSearchGrid1">
+    </div>
+    <div id="grid1"></div>
+    <script>
+        $(function () {
+            aweui.grid({
+                id: 'grid1',
+                dataFunc: getGridData,
+                height: 350,
+                columns: [
+                    { bind: 'Id', width: 75, groupable: false },
+                    { bind: 'Person' },
+                    { bind: 'Food' },
+                    { bind: 'CountryName', header: 'Country' },
+                    { bind: 'Date', width: 120,  mod: { nohide: true } },
+                    { bind: 'Location' },
+                    { bind: "ChefName", header: "Chef" }
+                ],
+                parents: [
+                    { id: 'txtSearchGrid1', name: 'search' }
+                ],
+                mod: {
+                    pageSize: true,
+                    columnsSelector: true,
+                    pageInfo: true,
+                    loading: true,
+                    columnsAutohide: true
+                }
+            });
+        });
+
+        function getGridData(sgp) {
+            return $.when($.get('@Url.Action("LunchesUi", "Data")', sgp))
+                .then(function (res) {
+                    var gp = utils.getGridParams(sgp);
+
+                    // build grid model
+                    return utils.gridModelBuilder(
+                        {
+                            key: "Id",
+                            gp: gp,
+                            pageItems: res.items,
+                            itemsCount: res.count
+                        });
+                });
+        }
+    </script>
+    @*end*@
+    <br />
+    <div class="tabs">
+        <div class="expl" data-caption="description">
+            In this demo on the server side we query, order the data and select the items for the current page, while on the client we build the grid model.
+            The <code>count</code> (total items count) is sent from the server so the grid would know how many pages there are in total.
+        </div>
+        <div data-caption="view">@Html.Source("Aweui/Index.cshtml")</div>
+        <div data-caption="controller">@Html.Code("Awesome/DataController.cs").Action("LunchesUi")</div>
+    </div>
+</div>
+
+<div class="example">
+    <h2>Odropdown</h2>
+    @*beginodd*@
+    <input type="hidden" id="mealOdd">
+    <br />
+    <br />
+    <script>
+        $(function () {
+            aweui.radioList({
+                id: 'mealOdd',
+                url: '@Url.Action("GetAllMeals", "Data")',
+                odropdown: {
+                    autoSelectFirst: true
+                }
+            });
+        });
+    </script>
+    @*endodd*@
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("Aweui/Index.cshtml", "odd")</div>
+        <div data-caption="controller">@Html.Code("Awesome/DataController.cs").Action("GetAllMeals")</div>
+    </div>
+</div>
+<div class="example">
+    <h2>RadioList, CheckboxList, Multiselect</h2>
+    @*beginrdl*@
+    <div class="ib arl">
+        <input type="hidden" id="rdl1" value="@Db.Categories[1].Id">
+    </div>
+    <div class="ib arl">
+        <input type="hidden" id="chkl1">
+    </div>
+    <div class="ib arl">
+        <input type="hidden" id="multi1" value="[@Db.Categories[1].Id, @Db.Categories[2].Id]">
+    </div>
+
+    <script>
+        $(function() {
+            aweui.radioList({
+                id: 'rdl1',
+                //url: '@Url.Action("GetCategories", "Data")',
+                dataFunc: getCategories,
+                ochk: true
+            });
+
+            aweui.checkboxList({
+                id: 'chkl1',
+                dataFunc: getCategories,
+                ochk: true
+            });
+
+            aweui.checkboxList({
+                id: 'multi1',
+                dataFunc: getCategories,
+                multiselect: true
+            });
+
+            var loadedItems = null;
+
+            function getCategories() {
+                if (!loadedItems) {
+                    loadedItems = $.when($.get('@Url.Action("GetCategories", "Data")'))
+                        .then(function(res) {
+                            loadedItems = res;
+                            return res;
+                        });
+                }
+
+                return loadedItems;
+            }
+        });
+    </script>
+    @*endrdl*@
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("Aweui/Index.cshtml", "rdl")</div>
+        <div data-caption="controller">@Html.Code("Awesome/DataController.cs").Action("GetCategories")</div>
+    </div>
+</div>
+<div class="example">
+    <h2>Checkbox</h2>
+    @*beginchk*@
+    <label>ochk: <input type="hidden" id="chk1" value="true"></label>
+    <label>otoggl: <input type="hidden" id="toggl1" name="toggl1" value="true"></label>
+    <script>
+        $(function () {
+            aweui.chk({ id: 'chk1', ochk: true });
+            aweui.chk({ id: 'toggl1', otoggl: true });
+        });
+    </script>
+    @*endchk*@
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("Aweui/Index.cshtml", "chk")</div>
+    </div>
+</div>
+
+<div class="example">
+    <h2>Textbox</h2>
+    @*begintxt*@
+    <input type="hidden" id="txt1" value="10" />
+    <script>
+        $(function() {
+            aweui.txt({
+                id: 'txt1',
+                numeric: {
+                    max: 100
+                }
+            });
+        });
+    </script>
+    @*endtxt*@
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("Aweui/Index.cshtml", "txt")</div>
+    </div>
+</div>
+<div class="example">
+    <h2>Popups</h2>
+    @*beginpf*@
+    <script>
+        $(function() {
+            aweui.initPopupForm({
+                id: 'popupForm1',
+                height: 200,
+                setCont: function(sp, o) {
+                    var str = '<form>' +
+                        'name: <input type="text" name="name" />' +
+                        '</form>';
+                    o.scon.html(str);
+                },
+                postFunc: function(sp) {
+                    var prm = utils.getParams(sp);
+                    return { name: prm.name };
+                },
+                success: function(res) {
+                    awem.notif('name = ' + res.name);
+                }
+            });
+        });
+    </script>
+    <button type="button" class="awe-btn" onclick="aweui.open('popupForm1', {}, event)">open PopupForm</button>
+    @*endpf*@
+    <div class="tabs code">
+        <div data-caption="view">@Html.Source("Aweui/Index.cshtml", "pf")</div>
+    </div>
+</div>
+
+@*beginchl*@
+<button type="button" class="awe-btn" id="btnFrench" onclick="goFrench()">change aweui to French</button>
+<script>
+    function goFrench() {
+        $.ajax(document.root + '/js/awedict/awedict.fr.js',
+            {
+                dataType: "script",
+                cache: true,
+                success: function () {
+                    aweui.init();
+                    aweui.rebuildAll();
+                }
+            });
+    }
+</script>
+@*endchl*@
+<div class="tabs code">
+    <div data-caption="view">@Html.Source("Aweui/Index.cshtml", "chl")</div>
+</div>
+<br />
+<br />
+<p>
+    For more aweui demos visit <a href="https://aweui.aspnetawesome.com">aweui.aspnetawesome.com</a>
+</p>

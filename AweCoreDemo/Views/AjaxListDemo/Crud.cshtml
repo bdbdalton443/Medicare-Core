@@ -1,0 +1,30 @@
+@{
+    ViewBag.Title = "AjaxList CRUD Demo using PopupForm";
+}
+<h1>AjaxList CRUD demo</h1>
+@*begin*@
+@{
+    var ajl = "DinnersList1";
+}
+@Html.InitCrudPopupsForAjaxList(ajl, "AjaxListCrud", "Dinner")
+
+<div class="bar">
+    <div style="float: right;">
+        @Html.Awe().TextBox("txtName").Placeholder("search...").CssClass("searchtxt")
+    </div>
+
+    <button type="button" class="awe-btn mbtn" onclick="awe.open('createDinner')">Create</button>
+</div>
+
+@(Html.Awe().AjaxList(ajl)
+    .Url(Url.Action("GetDinners", "AjaxListCrud"))
+    .TableLayout(true)
+    .Parent("txtName", "search"))
+@*end*@
+<br />
+
+<div class="tabs">
+    <div data-caption="view">@Html.Source("AjaxListDemo/Crud.cshtml")</div>
+    <div data-caption="controller">@Html.Csource("Demos/AjaxList/AjaxListCrudController.cs")</div>
+    <div data-caption="Dinner list item view">@Html.Source("Shared/ListItems/Dinner.cshtml")</div>
+</div>

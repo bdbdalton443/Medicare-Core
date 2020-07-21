@@ -1,0 +1,112 @@
+﻿@page
+@using AweCoreDemo.Models;
+@using AweCoreDemo.Utils
+@model AweCoreDemo.Pages.Lab.Examinations.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+@{
+    var gridId = "exams";
+}
+
+<h1>Index</h1>
+<script>
+    @*var bstatuses =@Html.Raw(DemoUtils.Encode(Model.BillStatuses.Select(B=>new KeyContent(B.BillStatusID, B.Name))));
+    var estatuses =@Html.Raw(DemoUtils.Encode(Model.ExaminationStatuses.Select(E=>new KeyContent(E.ExaminationStatusID, E.Name))));
+    var patients=@Html.Raw(DemoUtils.Encode(Model.BillStatuses.Select(B=>new KeyContent(B.BillStatusID, B.Name))));*@
+</script>
+<div class="form-group" id="trtGrid">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="bar">
+                <div style="float: right;">
+                    @Html.Awe().TextBox("txtSearchInl").Placeholder("search...").CssClass("searchtxt")
+                </div>
+                <button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn mbtn">Create</button>
+                @*<button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn">Create</button>*@
+            </div>
+
+            @(Html.Awe()
+                .InitPopupForm()
+                .Name("delete" + gridId)
+                .Group(gridId)
+                .Url(Url.Page("", "Delete"))
+                .Success("utils.itemDeleted('" + gridId + "')")
+                .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+                .Height(200)
+                .Modal())
+
+            @(Html.Awe().Grid(gridId)
+                  .Url(Url.Page("", "GridGetItems"))
+                  .Parent("txtSearchInl", "search")
+                  .Height(350)
+                  .Resizable()
+                  .Reorderable()
+                  .Selectable(SelectionType.Single)
+                .Columns(
+                      new Column { Bind = "ExaminationID", Width = 70, Header = "ID" }
+                      .Mod(o => o.InlineId()),
+
+                      new Column { Bind = "Patient.Name", ClientFormat = ".(Patient)", Header = "Patient" },
+                      new Column { Bind = "BillStatus.Name", ClientFormat = ".(BillStatus)", Header = "BillStatus" },
+                      new Column { Bind = "ExaminationStatus.Name", ClientFormat = ".(ExaminationStatus)", Header = "ExaminationStatus" },
+                      new Column { Bind = "Code", Header = "Code" },
+                      new Column { Bind = "Description", Header = "Description", Width = 150 },
+
+                      new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+                    new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 85 }))
+        </div>
+        <div class="col-md-2">
+            <label id="DisplayMessages">Hello</label>
+        </div>
+    </div>
+
+</div>
+<div>
+    @*<input type="button" value="submit" id="sendButton" onclick="sendMessage()"/>*@
+</div>
+<script>
+    $(function () {
+        $('#@gridId')
+            .on('aweselect', function () {
+                var selectedItems = $('#@gridId').data('api').getSelection();
+                var str = JSON.stringify(selectedItems);
+                var nstr = str.substring(1, str.length - 1);
+                var obj = JSON.parse(nstr);
+                window.location.href = '/Lab/Examinations/Edit/?id=' + obj.ExaminationID;
+            });
+    });
+</script>
+
+@section Scripts {
+
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/syncHub").build();//new signalR.HubConnection("/syncHub", { transport: signalR.TransportType.LongPolling });
+
+         connection.on("ReceiveMessage", function (message) {
+            document.getElementById("DisplayMessages").innerText=message;
+    });
+   
+            connection.start().then(() => connection.invoke('SendMessage', ''));
+
+            function sendMessage() {
+               // var msg = "Messages";//document.getElementById("txtMessage").value;
+                 var msg = '@Db.Message';
+               connection.invoke("SendMessage", msg).catch(err => console.error(err));
+            }
+        </script>
+
+<script>
+    $('#@gridId').on('aweload', function (event, data, requestData) {
+        if('@Db.Message' != '')
+            sendMessage();
+    });
+</script>
+
+}
+@*<script src="~/lib/signalr/dist/browser/signalr.min.js"></script>*@
+

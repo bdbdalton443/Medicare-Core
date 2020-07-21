@@ -1,0 +1,63 @@
+﻿@page
+@model AweCoreDemo.Pages.Finance.Billing.Bills.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Bill</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Bill.Balance" class="control-label"></label>
+                <input asp-for="Bill.Balance" class="form-control" />
+                <span asp-validation-for="Bill.Balance" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Bill.InitialPrint" /> @Html.DisplayNameFor(model => model.Bill.InitialPrint)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Bill.FinalPrint" /> @Html.DisplayNameFor(model => model.Bill.FinalPrint)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bill.BillStatusID" class="control-label"></label>
+                <select asp-for="Bill.BillStatusID" class ="form-control" asp-items="ViewBag.BillStatusID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bill.PatientID" class="control-label"></label>
+                <select asp-for="Bill.PatientID" class ="form-control" asp-items="ViewBag.PatientID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bill.CreatedOn" class="control-label"></label>
+                <input asp-for="Bill.CreatedOn" class="form-control" />
+                <span asp-validation-for="Bill.CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bill.UpdatedOn" class="control-label"></label>
+                <input asp-for="Bill.UpdatedOn" class="form-control" />
+                <span asp-validation-for="Bill.UpdatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

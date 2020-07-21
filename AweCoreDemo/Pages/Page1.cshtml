@@ -1,0 +1,89 @@
+﻿@page
+@model AweRazorPages.Pages.Page1Model
+@{
+    ViewData["Title"] = "Send ajax request to page handlers instead of controllers";
+}
+
+<h1>Send ajax request to page handlers instead of controllers</h1>
+<a href="@Url.Page("Index")">Back to main page</a>
+
+<h2>AjaxDropdown</h2>
+@Html.Awe().AjaxDropdown("Category").Url(Url.Page("Page1", "GetCategories"))
+@Html.Awe().AjaxDropdown("Meal").Url(Url.Page("Page1", "GetMeals")).Parent("Category")
+
+<h2>AjaxRadioList and AjaxCheckboxList</h2>
+<div class="o-pad awe-il">
+    @Html.Awe().AjaxRadioList("Category1").Url(Url.Page("", "GetCategories")).Ochk()
+</div>
+<div class="o-pad awe-il">
+    @Html.Awe().AjaxRadioList("Meal1").Url(Url.Page("", "GetMeals")).Parent("Category1").Ochk()
+</div>
+<div class="o-pad awe-il">
+    @Html.Awe().AjaxCheckboxList("Meals").Url(Url.Page("", "GetMeals")).Parent("Category1").Ochk()
+</div>
+
+<h2>Checkbox</h2>
+<label>
+    @Html.Awe().CheckBox("chk1").Value(true).Ochk() <span class="chkLbl">label text</span>
+</label>
+<br />
+<br />
+@Html.Awe().CheckBox("chk2").Value(true).Otoggl()
+
+<h2>Odropdown</h2>
+@Html.Awe().AjaxRadioList("MealsOdropdown").Odropdown().Url(Url.Page("", "GetAllMeals"))
+
+<h2>Combobox</h2>
+@Html.Awe().AjaxRadioList("MealCombo").Combobox().Url(Url.Page("", "GetAllMeals"))
+
+<h2>ColorPicker</h2>
+@Html.Awe().AjaxRadioList("Color").ColorDropdown(o => o.AutoSelectFirst())
+
+<h2>TimePicker</h2>
+@Html.Awe().AjaxRadioList("Time1").TimePicker(o => o.AutoSelectFirst())
+
+<h2>Multiselect</h2>
+@Html.Awe().AjaxCheckboxList("CategoriesMulti").Multiselect().Url(Url.Page("", "GetAllMeals")).HtmlAttributes(new { style = "width:300px;" })
+<br />
+<br />
+<h2>ButtonGroup</h2>
+@Html.Awe().AjaxRadioList("CategoryButtonGroup").ButtonGroup().Url(Url.Page("", "GetCategories"))
+
+<h2>Lookup</h2>
+@Html.Awe().Lookup("MealLookup").Controller("MealLookup")
+
+<h2>MultiLookup</h2>
+@Html.Awe().MultiLookup("MealsMultiLookup").Controller("MealsMultiLookup")
+
+<h2>Autocomplete</h2>
+@Html.Awe().Autocomplete("MealsAuto").Url(Url.Page("", "GetMealsAuto")).Placeholder("try mango, apple ...")
+
+<h2>Datepicker</h2>
+@Html.Awe().DatePicker("Date").ChangeMonth().ChangeYear()
+
+<h2>Timepicker</h2>
+@Html.Awe().TimePicker("Time2")
+
+<h2>Textbox</h2>
+@Html.Awe().TextBox("txt1").Placeholder("text")
+
+<h2>Numeric Textbox</h2>
+@Html.Awe().TextBox("Number").Numeric().Placeholder("number")
+
+<h2>Grid</h2>
+@(Html.Awe().Grid("DinnersGrid")
+        .Mod(o => o.PageInfo().PageSize().ColumnsSelector().ColumnsAutohide())
+        .Url(Url.Page("","GridGetItems"))
+        .Height(400)
+        .Columns(
+        new Column { Bind = "Name" }.Mod(o => o.NoAutohide()),
+        new Column { Bind = "Country.Name", ClientFormat = ".CountryName", Header = "Country" },
+        new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef" },
+        new Column { Bind = "Date" }))
+
+<h2>AjaxList</h2>
+@Html.Awe().TextBox("searchMeal").Placeholder("search for a meal...")
+
+<div style="min-height:400px;margin-top: 5px;">
+    @Html.Awe().AjaxList("mealsList").Url(Url.Page("", "GetMealsAjaxList")).Parent("searchMeal")
+</div>

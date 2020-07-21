@@ -1,0 +1,26 @@
+﻿@page
+@model DemoHms.Pages.Bills.BillStatuses.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>BillStatus</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BillStatus.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BillStatus.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.BillStatus.BillStatusID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

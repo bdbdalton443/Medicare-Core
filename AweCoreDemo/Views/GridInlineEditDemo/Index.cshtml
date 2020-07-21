@@ -1,0 +1,90 @@
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "Grid inline editing";
+}
+<script>
+    var meals = @Html.Raw(DemoUtils.Encode(Db.Meals.Select(o => new KeyContent(o.Id, o.Name))));
+</script>
+<div class="example">
+    @await Html.PartialAsync("Demos/GridInlineCrud")
+</div>
+<div class="example">
+    <h2>Edit on row click</h2>
+    @*begin2*@
+    @{ var grid2Id = "DinnersGrid2"; }
+    <div class="bar">
+        <div style="float: right;">
+            @Html.Awe().TextBox("txtSearch2").Placeholder("search...").CssClass("searchtxt")
+        </div>
+        <button type="button" onclick="$('#@grid2Id').data('api').inlineCreate()" class="awe-btn">Create</button>
+    </div>
+
+    @Html.InitDeletePopupForGrid(grid2Id, "GridInlineEditDemo")
+
+    @(Html.Awe().Grid(grid2Id)
+      .Mod(o => o.PageInfo().InlineEdit(Url.Action("Create"), Url.Action("Edit"), rowClickEdit: true))
+      .Url(Url.Action("GridGetItems"))
+      .Parent("txtSearch2", "search")
+      .Height(350)
+      .Resizable()
+      .Reorderable()
+      .Attr("data-syncg", "dinner")
+      .Columns(
+          new Column { Bind = "Id", Width = 75 }
+          .Mod(o => o.InlineId()),
+
+          new Column { Bind = "Name" }
+          //.Mod(o => o.Inline(Html.Awe().TextBox("Name"))),
+          .Mod(o => o.Inline(
+              Html.Awe().Autocomplete("Name")
+                .CacheKey("atcmeals")
+                //.Url(Url.Action("GetItems", "MealAutocomplete"))
+                .DataFunc("utils.getItems(meals)"))),
+
+          new Column { Bind = "Date", Width = 160 }
+          .Mod(o => o.Inline(Html.Awe().DatePicker("Date").ReadonlyInput().ChangeYear().ChangeMonth())),
+
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef", MinWidth = 170 }
+            .Mod(o => o.Inline(Html.Awe().Lookup("Chef").Controller("ChefLookup"), "ChefId")),
+
+          new Column { ClientFormat = ".(Meals)", Header = "Meals", MinWidth = 250 }
+            .Mod(o => o.Inline(Html.Awe().AjaxCheckboxList("Meals").Multiselect().DataFunc("utils.getItems(meals)"), "MealsIds")),
+
+          new Column { Bind = "BonusMeal.Name", ClientFormat = ".(BonusMeal)", Header = "Bonus Meal" }
+            .Mod(o => o.Inline(Html.Awe().AjaxRadioList("BonusMealId").Odropdown().DataFunc("utils.getItems(meals)"), "BonusMealId")),
+
+          new Column { Bind = "Organic", Width = 90, ClientFormat = ".(DispOrganic)" }
+            .Mod(o => o.Inline(Html.Awe().CheckBox("Organic").Otoggl())),
+
+          new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+          new Column { ClientFormat = Html.InlineDeleteFormatForGrid(grid2Id), Width = 85 }))
+    @*end2*@
+    <br />
+    <div class="tabs">
+        <div data-caption="description" class="expl">
+            Edit on row click, and save when clicking out if there is are any changes. <br />
+            In case of validation errors grid loading (go to another page, sort, group) will be prevented.
+        </div>
+        <div data-caption="view">@Html.Source("GridInlineEditDemo/Index.cshtml", "2")</div>
+    </div>
+</div>
+<div class="example">
+    @await Html.PartialAsync("Demos/GridInlineCrudCustomRender")
+</div>
+
+@(Html.Awe().InitPopup()
+      .Name("inlineEdit")
+      .Url(Url.Action("Popup"))
+      .MaxWidth(1450)
+      .LoadOnce()
+      .Modal())
+<nav class="example">
+    <button type="button" class="awe-btn" onclick="awe.open('inlineEdit')">Inline edit inside a popup</button>
+    <br />
+    <br />
+    See also:
+    <br />
+    <a href="@Url.Action("ConditionalDemo")">Grid inline editing conditional demo</a><br />
+    <a href="@Url.Action("MultiEditorsDemo")">Grid inline multiple editors demo</a><br />
+    <a href="https://www.youtube.com/watch?v=bBbtZEgytxg">Grid inline editing Video Tutorial</a>
+</nav>

@@ -1,0 +1,113 @@
+﻿@page
+@model AweCoreDemo.Pages.Patients.NextOfKins.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>NextOfKin</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.MiddleName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.MiddleName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.Guid)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.Guid)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.Gender)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.Gender)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.DOB)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.DOB)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.Tel)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.Tel)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.Occupation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.Occupation)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.Country)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.Country)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.City)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.NOKRelationship)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.NOKRelationship.NOKRelationshipID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.CreatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.CreatedOn)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextOfKin.UpdatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextOfKin.UpdatedOn)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="NextOfKin.NextOfKinID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

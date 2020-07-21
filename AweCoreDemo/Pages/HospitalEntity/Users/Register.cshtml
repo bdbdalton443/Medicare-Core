@@ -1,0 +1,165 @@
+﻿@page
+@using DemoHms.Data
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext _context
+@model DemoHms.Pages.HospitalEntity.Users.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    var user = _context.AppUsers.Include(a => a.EmployeeGroup).FirstOrDefault(U => U.Email.Equals(User.Identity.Name));
+    if(user.EmployeeGroup.Name=="Root")
+        Layout = "~/Pages/Shared/_Root.cshtml";
+    else
+        Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Register</h1>
+<div class="row">
+    <div class="col-md-11" style="margin:auto;">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow mb-12">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">New Item Details</h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink14">
+                                <div class="dropdown-header">Actions:</div>
+                                <a class="dropdown-item" href="#">Reset Form</a>
+                                <a class="dropdown-item" href="#">Save</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                                <h4>Create a new account.</h4>
+                                <hr />
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Input.FirstName"></label>
+                                    <input asp-for="Input.FirstName" class="form-control-sm" style="width:100%" />
+                                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Input.LastName"></label>
+                                    <input asp-for="Input.LastName" class="form-control-sm" style="width:100%" />
+                                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ApplicationUser.HospitalId"></label>
+                                    <select asp-for="ApplicationUser.HospitalId" class="form-control" asp-items="ViewBag.HospitalId"></select>
+                                    <span asp-validation-for="ApplicationUser.HospitalId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ApplicationUser.EmployeeGroupID"></label>
+                                    <select asp-for="ApplicationUser.EmployeeGroupID" class="form-control" asp-items="ViewBag.EmployeeGroupID"></select>
+                                    <span asp-validation-for="ApplicationUser.EmployeeGroupID" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ApplicationUser.DepartmentID"></label>
+                                    <select asp-for="ApplicationUser.DepartmentID" class="form-control" asp-items="ViewBag.DepartmentID"></select>
+                                    <span asp-validation-for="ApplicationUser.DepartmentID" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Input.Email"></label>
+                                    <input asp-for="Input.Email" class="form-control" />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Input.Password"></label>
+                                    <input asp-for="Input.Password" class="form-control" />
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Input.ConfirmPassword"></label>
+                                    <input asp-for="Input.ConfirmPassword" class="form-control" />
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card shadow mb-12">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">New Item Details</h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink14">
+                                <div class="dropdown-header">Actions:</div>
+                                <a class="dropdown-item" href="#">Reset Form</a>
+                                <a class="dropdown-item" href="#">Save</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.AppUsers[0].FullName)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.AppUsers[0].Email)
+                                        </th>
+                                        <th>
+                                           Contact
+                                        </th>
+                                        <th>
+                                            Branch
+                                        </th>
+                                        <th>
+                                            Department
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.AppUsers)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.FullName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Department.Branch.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Department.Name)
+                                            </td>
+                                            <td>
+                                                <a asp-page="/HospitalEntity/Users/EditUser" asp-route-id="@item.Id">Edit</a> |
+                                                <a asp-page="/HospitalEntity/Users/Register" asp-route-id="@item.Id">Details</a> |
+                                                <a asp-page="/HospitalEntity/Users/Register" asp-route-id="@item.Id">Delete</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

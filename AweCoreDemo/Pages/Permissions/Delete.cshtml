@@ -1,0 +1,89 @@
+﻿@page
+@model DemoHms.Pages.Permissions.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Permission</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanEdit)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanEdit)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanRead)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanRead)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanDelete)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanDelete)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanAdd)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanAdd)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanApprove)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanApprove)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CanConfirm)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CanConfirm)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.EmployeeGroup)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.EmployeeGroup.EmployeeGroupID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.Activity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.Activity.ActivityID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.CreatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.CreatedOn)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Permission.UpdatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Permission.UpdatedOn)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Permission.PermissionID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

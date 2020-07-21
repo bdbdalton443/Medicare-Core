@@ -1,0 +1,47 @@
+@model AweCoreDemo.ViewModels.Input.Lookup.LookupPopupInput
+@using (Html.Awe().BeginContext())
+{
+    var grid1 = "DinnersGrid1";
+    var grid2 = "DinnersGrid2";
+
+    @Html.InitCrudPopupsForGrid(grid1, "DinnersGridCrud")
+    @Html.InitCrudPopupsForGrid(grid2, "DinnersGridCrud")
+
+    <div class="bar">
+        <div style="float: right;">
+            @Html.Awe().TextBoxFor(o => o.Search).Placeholder("search...").CssClass("searchtxt")
+        </div>
+        @Html.CreateButtonForGrid(grid1)
+    </div>
+
+    @(Html.Awe().Grid(grid1)
+      .Mod(o => o.PageInfo().KeyNav().MovableRows(x => x.DropOn("DinnersGrid1").DropOn("DinnersGrid2")).ColumnsAutohide())
+      .CssClass("awe-srl")
+      .Url(Url.Action("DinnersGridSearch"))
+      .Parent(o => o.Search, "search")
+      .Height(200)
+      .Groupable(false)
+      .Columns(new Column { Bind = "Id", Width = 120, ClientFormat = GridUtils.MoveBtn() + " .Id" }.Mod(o => o.Nohide()),
+              new Column { Bind = "Name" }.Mod(o => o.Nohide()),
+              new Column { Bind = "Date" },
+              new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef" },
+              new Column { ClientFormat = ".Meals", Header = "Meals" },
+              new Column { ClientFormat = Html.EditFormatForGrid(grid1, nofocus:true), Width = 50 }.Mod(o => o.Nohide()),
+              new Column { ClientFormat = Html.DeleteFormatForGrid(grid1, nofocus: true), Width = 50 }.Mod(o => o.Nohide())))
+    <br />
+
+    @(Html.Awe().Grid(grid2)
+      .Mod(o => o.PageInfo().KeyNav().MovableRows(x => x.DropOn("DinnersGrid1").DropOn("DinnersGrid2")).ColumnsAutohide())
+      .CssClass("awe-sel")
+      .Url(Url.Action("DinnersGridSelected"))
+      .Height(200)
+      .Groupable(false)
+      .Paging(false)
+      .Columns(new Column { Bind = "Id", Width = 120, ClientFormat = GridUtils.MoveBtn() + " .Id" }.Mod(o => o.Nohide()),
+              new Column { Bind = "Name" }.Mod(o => o.Nohide()),
+              new Column { Bind = "Date" },
+              new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef" },
+              new Column { ClientFormat = ".Meals", Header = "Meals" },
+              new Column { ClientFormat = Html.EditFormatForGrid(grid2, nofocus: true), Width = 50 }.Mod(o => o.Nohide()),
+              new Column { ClientFormat = Html.DeleteFormatForGrid(grid2, nofocus:true), Width = 50 }.Mod(o => o.Nohide())))
+}

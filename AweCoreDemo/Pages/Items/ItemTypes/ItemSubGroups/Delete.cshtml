@@ -1,0 +1,41 @@
+﻿@page
+@model DemoHms.Pages.Items.ItemTypes.ItemSubGroups.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ItemSubGroup</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemSubGroup.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ItemSubGroup.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemSubGroup.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ItemSubGroup.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemSubGroup.ItemSuperType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ItemSubGroup.ItemSuperType.Name)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="ItemSubGroup.ItemSubGroupID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

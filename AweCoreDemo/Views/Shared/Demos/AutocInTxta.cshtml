@@ -1,0 +1,88 @@
+<h3 data-u="@Url.Action("Index", "Dropmenu")">Autocomplete in textarea</h3>
+<div class="csettings">
+    <label>Use @@: @Html.Awe().CheckBox("chkUseAt")</label>
+    <label>min len: @Html.Awe().TextBox("txtMinLen").Numeric(o => o.Min(1).Max(5)).Value(1)</label>
+    <label>filter using starts with: @Html.Awe().CheckBox("chkFstart")</label>
+</div>
+@*begin*@
+<textarea id="text1" style="width: 100%" placeholder="try mango onion banana"></textarea>
+<script>
+        $(function () {
+            var useAt = 0;
+            var minLen = 1;
+            var txt = $('#text1');
+            var items = [];
+            var word = '';
+            var fstart;
+            var dd;
+
+            init();
+
+            $.get('@Url.Action("GetAllMeals", "Data")', function (res) {
+                items = res;
+                dd.render();
+            });
+
+            function init() {
+                if (dd) {
+                    dd.destroy();
+                }
+
+                dd = awem.dropmenu({
+                    df: getData,
+                    opnlc: txt,
+                    hpos: txt,
+                    select: select,
+                    clsempt: 1,
+                    flts: fstart, // filter using startsWith
+                    srctxt: txt,
+                    gterm: getSrcTerm,
+                    combo: 1
+                });
+            }
+
+            function getSrcTerm() {
+                // func in site.js
+                word = site.getCaretWord(txt[0]);
+                var res = -1;
+                if (word.length >= minLen) {
+                    if (useAt) {
+                        if (word[0] == '@@') {
+                            res = word.substr(1);
+                        }
+                    } else {
+                        res = word;
+                    }
+                }
+
+                return res;
+            }
+
+            function getData() {
+                return items;
+            }
+
+            function select(item) {
+                // func in site.js
+                site.replaceInTexarea(txt[0], (useAt ?  '@@' : '') + item.c, word);
+            }
+
+            // settings
+            $('#chkUseAt').change(function () {
+                useAt = $(this).val() == 'true';
+            });
+
+            $('#txtMinLen').change(function () {
+                minLen = Number($(this).val());
+            });
+
+            $('#chkFstart').change(function () {
+                fstart = $(this).val() == 'true';
+                init();
+            });
+        });
+</script>
+@*end*@
+<div class="code">
+    @Html.Source("Shared/Demos/AutocInTxta.cshtml")
+</div>

@@ -1,0 +1,23 @@
+@using AweCoreDemo.Controllers.Awesome.Lookup
+@using AweCoreDemo.Models
+
+@{
+    ViewBag.Title = "Test";
+    var rnd = new Random();
+    var meals = Db.Meals.Select(o => new KeyContent(o.Id, o.Name));
+}
+<script>
+    var meals = @Html.Raw(DemoUtils.Encode(meals));
+</script>
+
+<h2>Test</h2>
+@for (var i = 0; i < 100; i++)
+{
+    <p>
+        @(Html.Awe().Lookup("lookup" + i).Controller<MealLookupController>().Value(Db.Meals[rnd.Next(20)].Id))
+    </p>
+    <p>
+        @(Html.Awe().AjaxDropdown("add"+i)
+            .DataFunc("utils.getItems(meals)"))
+    </p>
+}

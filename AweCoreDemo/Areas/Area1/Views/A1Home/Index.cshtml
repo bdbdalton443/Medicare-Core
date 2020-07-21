@@ -1,0 +1,157 @@
+@using AweCoreDemo.Helpers.Awesome
+@using AweCoreDemo.Models
+@using AweCoreDemo.Utils
+@using Omu.Awem.Helpers
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Welcome to Area1</h2>
+@Html.ViewData["result"]
+<br />
+<br />
+<div id="part1"></div>
+<script>
+    $(function() {
+        $.get('@Url.Action("GetPart")', function(res) {
+            $('#part1').html(res);
+        });
+    });
+</script>
+
+<br/>
+<br/>
+@using (Html.BeginForm())
+{
+    @Html.Awe().TextBox("Name")<br/><br/>
+    @Html.Awe().Lookup("Meal")
+    <br /><br />
+    <input type="submit" value="submit" class="awe-btn"/>
+}
+
+<h2> Grid inline editing</h2>
+<script>
+    var meals = @Html.Raw(DemoUtils.Encode(Db.Meals.Select(o => new KeyContent(o.Id, o.Name))));
+</script>
+@{
+    var gridId = "DinnersInlineCrudGrid";
+    var initObj = new
+    {
+        Name = DemoUtils.RndName(),
+        Date = DateTime.Now.ToShortDateString(),
+        ChefId = Db.Chefs.First().Id,
+        MealsIds = Db.Meals.Take(2).Select(o => o.Id).ToArray()
+    };
+}
+<div class="bar">
+    <div style="float: right;">
+        @Html.Awe().TextBox("txtSearchInl").Placeholder("search...").CssClass("searchtxt")
+    </div>
+    <button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn mbtn">Create</button>
+
+    @Html.InlineCreateButtonForGrid(gridId, initObj, "Create with predefined values")
+</div>
+
+@Html.InitDeletePopupForGrid(gridId, "GridInlineEditDemo", area: "")
+
+@(Html.Awe().Grid(gridId)
+      .Mod(o => o.PageInfo().InlineEdit(Url.Action("Create", "GridInlineEditDemo", new { area = "" }), Url.Action("Edit", "GridInlineEditDemo", new { area = "" })))
+      .Url(Url.Action("GridGetItems", "GridInlineEditDemo", new { area = "" }))
+      .Parent("txtSearchInl", "search")
+      .Height(350)
+      .Resizable()
+      .Reorderable()
+      .Attr("data-syncg", "dinner") // crud sync using signalr in site.js
+      .Columns(
+          new Column { Bind = "Id", Width = 75 }
+          .Mod(o => o.InlineId()),
+
+          new Column { Bind = "Name" }
+          //.Mod(o => o.Inline(Html.Awe().TextBox("Name"))),
+          .Mod(o => o.Inline(
+              Html.Awe().Autocomplete("Name")
+                .CacheKey("atcmeals") // set to share cache with all rows
+                                      //.Url(Url.Action("GetItems", "MealAutocomplete"))
+                .DataFunc("utils.getItems(meals)"))),
+
+          new Column { Bind = "Date", Width = 170 }
+          .Mod(o => o.Inline(Html.Awe().DatePicker("Date").ReadonlyInput().ChangeYear().ChangeMonth())),
+
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef", Width = 200 }
+            .Mod(o => o.Inline(Html.Awe().Lookup("Chef").Controller("ChefLookup"), "ChefId")),
+
+          new Column { ClientFormat = ".Meals", Header = "Meals", Width = 250 }
+            .Mod(o => o.Inline(Html.Awe().AjaxCheckboxList("Meals").Multiselect().DataFunc("utils.getItems(meals)"), "MealsIds")),
+
+          new Column { Bind = "BonusMeal.Name", ClientFormat = ".BonusMeal", Header = "Bonus Meal" }
+            .Mod(o => o.Inline(Html.Awe().AjaxRadioList("BonusMealId").Odropdown().DataFunc("utils.getItems(meals)"), "BonusMealId")),
+
+          new Column { Bind = "Organic", Width = 100, ClientFormat = ".DispOrganic" }
+            .Mod(o => o.Inline(Html.Awe().CheckBox("Organic").Otoggl())),
+
+          new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+          new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 80 }))
+
+<h2>Grid in nest editing</h2>
+
+@{
+    var grid3 = "NestDinnersGrid";
+}
+@Html.InitCrudForGridNest(grid3, "DinnersGridCrud")
+
+<div class="bar">
+    <button type="button" onclick="utils.nestCreate('@grid3', 'create@(grid3)')" class="awe-btn mbtn">Create</button>
+</div>
+
+@(Html.Awe().Grid(grid3)
+      .Url(Url.Action("GridGetItems", "DinnersGridCrud", new {area = "" }))
+      .Attr("data-syncg", "dinner")
+      .Mod(o => o.ColumnsAutohide())
+      .PageSize(10)
+      .Nests(
+          new Nest { Name = "editnst", GetFunc = "utils.loadNestPopup('edit" + grid3 + "')" },
+          new Nest { Name = "delnst", GetFunc = "utils.loadNestPopup('delete" + grid3 + "')" })
+      .Columns(
+          new Column { Bind = "Id", Width = 70 },
+          new Column { Bind = "Name" }.Mod(o => o.NoAutohide()),
+          new Column { Bind = "Date" },
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef" },
+          new Column { ClientFormat = ".Meals", Header = "Meals" },
+          new Column { ClientFormat = GridUtils.EditGridNestFormat(), Width = 55 }.Mod(o => o.Nohide()),
+          new Column { ClientFormat = GridUtils.DeleteGridNestFormat(), Width = 55 }.Mod(o => o.Nohide())))
+
+<style>
+    .editnst-on .editnst, .delnst-on .delnst {
+        outline: gray auto 5px;
+    }
+</style>
+
+
+<h2>Grid crud</h2>
+
+@Html.InitCrudPopupsForGrid("DinnersGrid", "DinnersGridCrud", area: "")
+
+<div class="bar">
+    <div style="float: right;">
+        @Html.Awe().TextBox("txtSearch").Placeholder("search...").CssClass("searchtxt")
+    </div>
+
+    @(Html.Awe().Button()
+          .Text("Create")
+          .OnClick(Html.Awe().OpenPopup("createDinnersGrid")))
+</div>
+
+@(Html.Awe().Grid("DinnersGrid")
+      .Mod(o => o.ColumnsSelector().ColumnsAutohide().PageInfo())
+      .Url(Url.Action("GridGetItems", "DinnersGridCrud", new { area = "" }))
+      .Parent("txtSearch", "search")
+      .Attr("data-syncg", "dinner")
+      .Height(350)
+      .Columns(
+          new Column { Bind = "Id", Width = 75 },
+          new Column { Bind = "Name" }.Mod(o => o.Nohide()),
+          new Column { Bind = "Date" },
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef" },
+          new Column { ClientFormat = ".Meals", Header = "Meals" },
+          new Column { ClientFormat = Html.EditFormatForGrid("DinnersGrid"), Width = 55 }.Mod(o => o.Nohide()),
+          new Column { ClientFormat = Html.DeleteFormatForGrid("DinnersGrid"), Width = 55 }.Mod(o => o.Nohide())))

@@ -1,0 +1,32 @@
+﻿@page
+@model AweCoreDemo.Pages.Patients.NextOfKins.NOKRelationships.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>NOKRelationship</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NOKRelationship.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NOKRelationship.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NOKRelationship.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NOKRelationship.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.NOKRelationship.NOKRelationshipID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

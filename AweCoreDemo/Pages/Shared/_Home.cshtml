@@ -1,0 +1,498 @@
+﻿@using  DemoHms.Data
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext _context
+@{
+    ViewData["Title"] = "_Home";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@{
+    var emgroup = _context.AppUsers.Include(A => A.EmployeeGroup).FirstOrDefault(U => U.Email == User.Identity.Name).EmployeeGroup;
+    var permissios = _context.Permissions.Include(a => a.Activity).Where(P => P.EmployeeGroupID == emgroup.EmployeeGroupID);
+    var p = permissios.FirstOrDefault(P => P.Activity.Name == "Permissions Settings");
+}
+@RenderSection("head", required: false)
+<div style="width:100%; background-color:burlywood; text-align:justify;">
+    <div class="row" style="width:100%">
+        <div class="col-lg-12">
+
+            <div id="wrapper">
+                <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color:lightblue" runat="server">
+
+                    <!-- Sidebar - Brand -->
+                    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                        <div class="sidebar-brand-text mx-3"><span style="font:bold;">@_context.AppUsers.Include(a => a.EmployeeGroup).FirstOrDefault(U => U.Email.Equals(User.Identity.Name)).EmployeeGroup.Name</span> </div>
+                    </a>
+
+                    <!-- Divider -->
+                    <hr class="sidebar-divider my-0" />
+
+                    <!-- Nav Item - Dashboard -->
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-page="/Pages/Dashboard">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <!-- Divider -->
+                    <hr class="sidebar-divider" />
+
+                    <!-- Heading -->
+                    <div class="sidebar-heading">
+                        Main
+                    </div>
+                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Medical Management") != null)
+                    {
+                        <!-- Nav Item - Pages Collapse Menu -->
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" runat="server" id="medicalManagement">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Medical Management<span id="mmCount" runat="server" style="color:red"></span></span>
+                            </a>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                                <div class="py-2 collapse-inner rounded" id="mc" runat="server" style="">
+                                    <h6 class="collapse-header">General:</h6>
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Patient Registry") != null)
+                                    {
+                                        <a id="prt" runat="server" class="collapse-item" asp-area="" asp-page="/Patients/PatientOps/Index" visible="true">Patient Registry<span id="Span3" runat="server" style="color:red"></span></a>
+                                    }
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Patient Receiptions") != null)
+                                    {
+                                        <a id="schedular" class="collapse-item" asp-area="" asp-page="/Patients/Assignments/PatientList" visible="true">Reception<span id="Span4" runat="server" style="color:red"></span></a>
+                                    }
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Doctors Prescriptions") != null)
+                                    {
+                                        <a id="consult" class="collapse-item" asp-area="" asp-page="/Patients/Assignments/Consultations/Index">Consultancy<span id="consultcount" runat="server" style="color:red"></span></a>
+                                    }
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Department Data") != null)
+                                    {
+                                        <a id="departs" class="collapse-item" data-target="#myCarousel" data-slide-to="11" runat="server" visible="false">Medical Departments<span id="Span5" runat="server" style="color:red"></span></a>
+                                    }
+                                    <a id="itreq" class="collapse-item" asp-area="" asp-page="/Items/Requests/Index" visible="true">Item Request<span id="Span6" runat="server" style="color:red"></span></a>
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Laboratory Tests") != null)
+                                    {
+                                        <a id="examinations" class="collapse-item" asp-area="" asp-page="/Lab/Examinations/Index">Examinations<span id="examsCount" runat="server" style="color:red"></span></a>
+                                    }
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "In-Patient Management") != null)
+                                    {
+                                        <a class="collapse-item" href="#" data-toggle="collapse" data-target="#test1" id="inpatManagement" visible="false">In-Patient Management:<span id="inPatCount" runat="server" style="color:red"></span></a>
+                                        <ul id="test1" class="collapse" aria-labelledby="headingTwo" data-parent="#collapseTwo" title="In-Patioent" visible="true">
+                                            <li><a id="wardadmission" class="collapse-item" data-target="#myCarousel" data-slide-to="22" runat="server" visible="true">Ward Admissions</a></li>
+                                            <li><a id="nursing" class="collapse-item" data-target="#myCarousel" data-slide-to="23" runat="server" visible="true">Nursing</a></li>
+                                            <li><a id="doctorfollowup" class="collapse-item" data-target="#myCarousel" data-slide-to="24" runat="server" visible="true">Doctor Followup<span id="docCaseCount" runat="server" style="color:red"></span></a></li>
+                                        </ul>
+                                    }
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Dispensory Data") != null)
+                                    {
+                                        <a class="collapse-item" href="#" data-toggle="collapse" data-target="#dispensary" visible="false"> Dispensary<span id="dispCount" runat="server" style="color:red"></span></a>
+                                        <ul id="dispensary" class="collapse" aria-labelledby="headingTwo" data-parent="#collapseTwo" title="In-Patioent">
+                                            <li><a id="mainPharmercy" class="collapse-item" data-target="#myCarousel" data-slide-to="28" runat="server" visible="true">Main Pharmercy<span id="mPharmCount" runat="server" style="color:red"></span></a></li>
+                                            <li><a id="opdDispensary" class="collapse-item" asp-page="/Dispensory/Index">OPD Dispensary<span id="opdDispCount" runat="server" style="color:red"></span></a></li>
+                                        </ul>
+                                    }
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Stock Management") != null)
+                                    {
+                                        <a class="collapse-item" data-target="#myCarousel" data-slide-to="29" runat="server" visible="true">Stock Management:<span id="Span21" runat="server" style="color:red"></span></a>
+                                    }
+
+                                </div>
+                            </div>
+                        </li>
+                    }
+
+                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Accounts Management") != null)
+                    {
+                        <!-- Nav Item - Accounts Managemen Collapse Menu -->
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                                <i class="fas fa-fw fa-wrench"></i>
+                                <span>Accounts Management</span>
+                            </a>
+                            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                                <div class="py-2 collapse-inner rounded" id="ac" runat="server" style="">
+                                    <h6 class="collapse-header">Actions and Sections:</h6>
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Bill Payments") != null)
+                                    {
+                                        <a id="billing" class="collapse-item" asp-page="/Finance/Billing/Bills/Index" visible="true">Billing</a>
+                                    }
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Accounts Data") != null)
+                                    {
+                                        <a id="accs" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server" visible="false">Accounts</a>
+                                        <a id="txes" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server" visible="false">Taxes</a>
+                                        <a id="loans" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server" visible="false">Loans</a>
+                                        <a id="capital" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server" visible="false">Capital</a>
+                                        <a id="evaluation" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server" visible="false">Evaluation</a>
+                                        <a id="assetreg" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server" visible="false">Asset Registry</a>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Logistics Management") != null)
+                    {
+                        <!-- Nav Item - Logistics Management Collapse Menu -->
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogistics" aria-expanded="true" aria-controls="collapseLogistics">
+                                <i class="fas fa-fw fa-wrench"></i>
+                                <span>Logistics Management</span>
+                            </a>
+                            <div id="collapseLogistics" class="collapse" aria-labelledby="headingLogistics" data-parent="#accordionSidebar">
+                                <div class="py-2 collapse-inner rounded" id="lc" runat="server" style="">
+                                    <h6 class="collapse-header">Actions and Sections:</h6>
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Item Registry") != null)
+                                    {
+                                        <a id="itemreg" class="collapse-item" asp-area="" asp-page="/Items/Index">Item Registry</a>
+                                    }
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Purchasing") != null)
+                                    {
+                                        <a id="purchasing" class="collapse-item" asp-page="/Items/Stocks/Index">Purchasing</a>
+                                    }
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Transfers") != null)
+                                    {
+                                        <a id="suppliers" class="collapse-item" data-target="#myCarousel" data-slide-to="8" runat="server">Suppliers</a>
+                                        <a id="inventory" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Inventory</a>
+                                        <a id="issuing" class="collapse-item" data-target="#myCarousel" data-slide-to="13" runat="server">Issues</a>
+                                        <a id="transfers" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Transfers</a>
+                                        <a id="returnables" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Returnables</a>
+                                        <a id="statsdata" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Statistical Data</a>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Human Resource Management") != null)
+                    {
+                        <!-- Nav Item - Logistics Management Collapse Menu -->
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHR" aria-expanded="true" aria-controls="collapseHR">
+                                <i class="fas fa-fw fa-wrench"></i>
+                                <span>Human Resource</span>
+                            </a>
+                            <div id="collapseHR" class="collapse" aria-labelledby="headingHR" data-parent="#accordionSidebar">
+                                <div class="py-2 collapse-inner rounded" id="hc" runat="server" style="">
+                                    <h6 class="collapse-header">Actions and Sections:</h6>
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Employee Data") != null)
+                                    {
+                                        <a id="employees" class="collapse-item" asp-area="" asp-page="/HospitalEntity/Users/Register">Employee</a>
+                                    }
+                                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Deployment Data") != null)
+                                    {
+                                        <a id="deployment" class="collapse-item" data-target="#myCarousel" data-slide-to="15" runat="server">Deployment</a>
+                                        <a id="renum" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Renumeration</a>
+                                        <a id="benefits" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Benefits</a>
+                                        <a id="appraisals" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Appraisals</a>
+                                        <a id="payroll" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Payroll</a>
+                                        <a id="displinery" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Displinery</a>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Divider -->
+                        <hr class="sidebar-divider" />
+                    }
+                    @if (permissios.FirstOrDefault(P => P.Activity.Name == "Settings") != null)
+                    {
+                        <!-- Heading -->
+                        <div class="sidebar-heading">
+                            Settings
+                        </div>
+
+                        <!-- Nav Item - Pages Collapse Menu -->
+                        @*<li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>User</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="py-2 collapse-inner rounded" id="uc" runat="server" style="">
+                        <h6 class="collapse-header">User Login:</h6>
+                        <a id="loggin" class="collapse-item" href="#" runat="server">Login</a>
+                        <a id="register" class="collapse-item" href="#" runat="server">Register</a>
+                        <a id="resetpass" class="collapse-item" href="forgot-password.html" runat="server">Forgot Password</a>
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">User Profile:</h6>
+                        <a class="collapse-item" href="404.html">404 Page</a>
+                        <a class="collapse-item" href="blank.html">Blank Page</a>
+                    </div>
+                </div>
+            </li>*@
+                        if (permissios.FirstOrDefault(P => P.Activity.Name == "Organisation Settings") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#organization" aria-expanded="true" aria-controls="collapsePermissions">
+                                    <i class="fas fa-fw fa-wrench"></i>
+                                    <span>Organizational Settings</span>
+                                </a>
+                                <div id="organization" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                    <div class="py-2 collapse-inner rounded" id="oc" runat="server" style="">
+                                        <h6 class="collapse-header">Branch Settings:</h6>
+                                        @*<%--<a class="collapse-item" href="login.html">Login</a>--%>*@
+                                        <a id="nbranch" class="collapse-item" data-target="#myCarousel" data-slide-to="12" runat="server">New Branch</a>
+                                        <a id="ebranch" class="collapse-item" data-target="#myCarousel" data-slide-to="4" runat="server">Modify Branch Details</a>
+                                        <a id="rbranch" class="collapse-item" data-target="#myCarousel" data-slide-to="5" runat="server">Report View</a>
+                                        <div class="collapse-divider"></div>
+                                        <h6 class="collapse-header">Department Settings:</h6>
+                                        <a id="ndepartment" class="collapse-item" data-target="#myCarousel" data-slide-to="11" runat="server">New Department</a>
+                                        <a id="section" class="collapse-item" data-target="#myCarousel" data-slide-to="20" runat="server">Room</a>
+                                        <a id="mdepartment" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Modify Department</a>
+                                        <a id="rdepartment" class="collapse-item" data-target="#myCarousel" data-slide-to="1" runat="server">Report View</a>
+                                        <div class="collapse-divider"></div>
+                                        <h6 class="collapse-header">Ward Settings:</h6>
+                                        <a id="newWard" class="collapse-item" data-target="#myCarousel" data-slide-to="11" runat="server">New Ward</a>
+                                        <a id="newRoom" class="collapse-item" data-target="#myCarousel" data-slide-to="20" runat="server">New Room</a>
+                                        <a id="newBed" class="collapse-item" data-target="#myCarousel" data-slide-to="27" runat="server">New Bed</a>
+                                        <div class="collapse-divider"></div>
+                                        <h6 class="collapse-header">Hospital Services Settings:</h6>
+                                        <a id="newService" class="collapse-item" data-target="#myCarousel" data-slide-to="36" runat="server">New Service</a>
+
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        if (permissios.FirstOrDefault(P => P.Activity.Name == "Human Resource Settings") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#hrsettings" aria-expanded="true" aria-controls="collapsePermissions">
+                                    <i class="fas fa-fw fa-wrench"></i>
+                                    <span>Human Resource Settings</span>
+                                </a>
+                                <div id="hrsettings" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                    <div class="py-2 collapse-inner rounded" id="Div1" runat="server" style="">
+                                        <h6 class="collapse-header">Groups:</h6>
+                                        @*<%--<a class="collapse-item" href="login.html">Login</a>--%>*@
+                                        <a id="ruGroup" class="collapse-item" asp-area="" asp-page="/EmployeeGroups/Index">Register User Roles</a>
+                                        <a id="muGroup" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Modify Groups</a>
+                                        <div class="collapse-divider"></div>
+                                        <h6 class="collapse-header">Specializations:</h6>
+                                        <a id="specializationSettings" class="collapse-item" data-target="#myCarousel" data-slide-to="21" runat="server">New Specialization</a>
+                                        <a id="A6" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Modify Specialization</a>
+                                        <a id="A7" class="collapse-item" data-target="#myCarousel" data-slide-to="0" runat="server">Report View</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+                        if (permissios.FirstOrDefault(P => P.Activity.Name == "Patient Settings") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#patientsettings" aria-expanded="true" aria-controls="collapsePermissions">
+                                    <i class="fas fa-fw fa-wrench"></i>
+                                    <span>Patient Settings</span>
+                                </a>
+                                <div id="patientsettings" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                    <div class="py-2 collapse-inner rounded" id="Div2" runat="server" style="">
+                                        <h6 class="collapse-header">Type Settings:</h6>
+                                        <a id="patType" class="collapse-item" data-target="#myCarousel" data-slide-to="16" runat="server">Patient Type</a>
+
+                                        <a id="armyUnitCarousel" class="collapse-item" asp-area="" asp-page="/Patients/PatientTypes/Index">Patient Type</a>
+                                        <a id="serviceCarousel" class="collapse-item" data-target="#myCarousel" data-slide-to="17" runat="server">Service Codes</a>
+                                        <a id="rankCarousel" class="collapse-item" data-target="#myCarousel" data-slide-to="18" runat="server">Ranks</a>
+                                        <div class="collapse-divider"></div>
+                                        <h6 class="collapse-header">NOK Settings:</h6>
+                                        <a id="A9" class="collapse-item" asp-area="" asp-page="/Patients/NextOfKins/NOKRelationships/Index">NOK Relationships</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+                        @if (permissios.FirstOrDefault(P => P.Activity.Name == "Permissions Settings") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePermissions" aria-expanded="true" aria-controls="collapsePermissions">
+                                    <i class="fas fa-fw fa-wrench"></i>
+                                    <span>Permissions</span>
+                                </a>
+                                <div id="collapsePermissions" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                    <div class="py-2 collapse-inner rounded" id="pc" runat="server" style="">
+                                        <h6 class="collapse-header">Grant Permissions:</h6>
+                                        <a id="apermission" class="collapse-item" asp-area="" asp-page="/HospitalEntity/Permissions/Index">Add Permissions</a>
+                                        <a id="mpermission" class="collapse-item" data-target="#myCarousel" data-slide-to="" runat="server">Modify Permissions</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        @if (permissios.FirstOrDefault(P => P.Activity.Name == "Logistic Settings") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#logistics" aria-expanded="true" aria-controls="collapsePermissions">
+                                    <i class="fas fa-fw fa-wrench"></i>
+                                    <span>Logistics Settings</span>
+                                </a>
+                                <div id="logistics" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                    <div class="py-2 collapse-inner rounded" id="lsc" runat="server" style="">
+                                        <h6 class="collapse-header">Item Registry Settings:</h6>
+                                        <a id="sigroup" class="collapse-item" asp-area="" asp-page="/Items/ItemTypes/ItemSubGroups/ItemSuperGroups/Index" runat="server">Super Item Group</a>
+                                        <a id="igroup" class="collapse-item" asp-area="" asp-page="/Items/ItemTypes/ItemSubGroups/Index">Item Group</a>
+                                        <a id="itype" class="collapse-item" asp-area="" asp-page="/Items/ItemTypes/Index">Item Types</a>
+                                        <a id="imunits" class="collapse-item" asp-area="" asp-page="/Items/ItemUnits/Index">Item Measurable Units</a>
+                                        <div class="collapse-divider"></div>
+                                        <h6 class="collapse-header">Stock Settings:</h6>
+                                        <a id="edsigroup" class="collapse-item" asp-area="" asp-page="/Items/Stocks/StockRoutines/RoutineTypes/Index">RoutineTypes</a>
+                                        <a id="eigroup" class="collapse-item" data-target="#myCarousel" data-slide-to="1" runat="server">Item Group</a>
+                                        <a id="eitype" class="collapse-item" data-target="#myCarousel" data-slide-to="1" runat="server">Item Types</a>
+                                        <a id="eimunits" class="collapse-item" data-target="#myCarousel" data-slide-to="1" runat="server">Item Types</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        @if (permissios.FirstOrDefault(P => P.Activity.Name == "Examinations Settings") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#examinationsSettings" aria-expanded="true" aria-controls="collapsePermissions">
+                                    <i class="fas fa-fw fa-wrench"></i>
+                                    <span>Examinations Settings</span>
+                                </a>
+                                <div id="examinationsSettings" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                    <div class="py-2 collapse-inner rounded" id="Div4" runat="server" style="">
+                                        <h6 class="collapse-header">Test Settings:</h6>
+                                        <a id="A1" class="collapse-item" asp-page="/Lab/Tests/Index">New Test</a>
+                                        <a id="A2" class="collapse-item" asp-page="/Lab/Statuses/Index">New Status</a>
+                                        <a id="A3" class="collapse-item" data-target="#myCarousel" data-slide-to="26" runat="server">Edit Equipments</a>
+                                        <a id="A25" class="collapse-item" data-target="#myCarousel" data-slide-to="32" runat="server">Add New Vital</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        @if (permissios.FirstOrDefault(P => P.Activity.Name == "Examinations Settings") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#financialSettings" aria-expanded="true" aria-controls="collapsePermissions">
+                                    <i class="fas fa-fw fa-wrench"></i>
+                                    <span>Finance Settings</span>
+                                </a>
+                                <div id="financialSettings" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                    <div class="py-2 collapse-inner rounded" id="Div7" runat="server" style="">
+                                        <h6 class="collapse-header">Billing Settings:</h6>
+                                        @*<%--<a class="collapse-item" href="login.html">Login</a>--%>*@
+                                        <a id="billItem" class="collapse-item" asp-area="" asp-page="/Finance/FinanceSettings/BillItemTypes/Index">New Bill ItemType</a>
+                                        <a id="A17" class="collapse-item" asp-page="/Finance/FinanceSettings/Index">New Bill Item</a>
+                                        <a id="A18" class="collapse-item" asp-area="" asp-page="/Bills/BillStatuses/Index">Bill Statuses</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+
+                        <!-- Nav Item - Tables -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="tables.html">
+                                <i class="fas fa-fw fa-table"></i>
+                                <span>Tables</span>
+                            </a>
+                        </li>
+
+                    }
+
+                    <!-- Divider -->
+                    <hr class="sidebar-divider d-none d-md-block" />
+
+                    <!-- Sidebar Toggler (Sidebar) -->
+                    <div class="text-center d-none d-md-inline">
+                        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                    </div>
+
+                </ul>
+
+                <div id="content-wrapper" class="d-flex flex-column " style="background-color:white">
+
+                    <!-- Main Content -->
+                    <div id="content">
+                        <!-- Topbar -->
+                        @RenderBody()
+
+                        <!-- Begin Page Content -->
+                        <div class="row">
+                            <div class="col-12">
+                                <main role="main" class="pb-lg-5">
+
+                                </main>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="col-md-6 col-md-offset-2">
+                <section>
+                    <h4>Use another service to log in.</h4>
+                    <hr />
+                    @{
+                        if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                        {
+                            <div>
+                                <p>
+                                    There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                                    for details on setting up this ASP.NET application to support logging in via external services.
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                <div>
+                                    <p>
+                                        @foreach (var provider in Model.ExternalLogins)
+                                        {
+                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                        }
+                                    </p>
+                                </div>
+                            </form>
+                        }
+                    }
+                </section>
+            </div>*@
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/jquery.easing.min.js"></script>
+<script src="~/js/chart-area-demo.js"></script>
+<script src="~/js/chart-pie-demo.js"></script>
+@*Custom scripts for all pages*@
+<script src="~/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="~/js/Chart.min.js"></script>
+@*<script src="@Url.Content("~/lib/Scripts/jquery-1.4.4.min.js")"
+    type="text/javascript"></script>*@
+@*<script src="@Url.Content("~/lib/Scripts/jquery.dataTables.min.js")"
+    type="text/javascript"></script>*@
+@*<script src="@Url.Content("~/lib/Scripts/jquery.jeditable.js")"
+            type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/Scripts/jquery-ui.js")"
+            type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/Scripts/jquery.validate.js")"
+            type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/Scripts/jquery.dataTables.editable.js")"
+            type="text/javascript"></script>*@
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+@section Styles {
+    <link href="@Url.Content("~/css/Google-Style-Login.css")" rel="stylesheet" type="text/css" />
+}
+@section Styles1 {
+    <link href="@Url.Content("~/css/sb-admin-2.min.css")" rel="stylesheet" type="text/css" />
+}
+@section Styles2 {
+    <link href="@Url.Content("~/css/all.min.css")" rel="stylesheet" type="text/css" />
+}
+@RenderSection("Scripts", required: false)
+@RenderSection("Styles3", required: false)
+@RenderSection("TablesCripts", required: false)
+@RenderSection("hideScripts1", required: false)
+@RenderSection("hideScripts2", required: false)
+@RenderSection("hideScripts3", required: false)
+@RenderSection("hideScripts4", required: false)
+@RenderSection("hideScripts5", required: false)
+@RenderSection("hideScripts6", required: false)
+@RenderSection("hideScripts7", required: false)
+@RenderSection("hideScripts8", required: false)
+@RenderSection("HideSwitchSec1", required: false)
+@RenderSection("HideSwitchSec2", required: false)
+@RenderSection("SwitchSec", required: false)

@@ -1,0 +1,62 @@
+@using AweCoreDemo.Models
+@using DemoHms.Data
+@inject ApplicationDbContext _context
+@*<h2 data-u="@Url.Action("Index","GridInlineEditDemo")">Grid inline editing demo</h2>*@
+@*begin*@
+@{
+    var gridId = "DinnersInlineCrudGrid";
+    //var initObj = new
+    //{
+    //    Name = DemoUtils.RndName(),
+    //    Date = DateTime.Now.ToShortDateString(),
+    //    ChefId = Db.Chefs.First().Id,
+    //    MealsIds = Db.Meals.Take(2).Select(o => o.Id).ToArray()
+    //};
+    Db.IsLab = false;
+}
+<script>
+    var tests = @Html.Raw(DemoUtils.Encode(_context.Tests.Select(o => new KeyContent(o.TestID, o.Name))));
+</script>
+<div class="bar">
+    <div style="float: right;">
+        @Html.Awe().TextBox("txtSearchInl").Placeholder("search...").CssClass("searchtxt")
+    </div>
+    <button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn mbtn">Create</button>
+</div>
+@(Html.Awe()
+        .InitPopupForm()
+        .Name("delete" + gridId)
+        .Group(gridId)
+        .Url(Url.Action("Delete", "Procedures"))
+        .Success("utils.itemDeleted('" + gridId + "')")
+        .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+        .Height(200)
+        .Modal())
+@*@Html.InitDeletePopupForGrid(gridId, "GridInlineEditDemo")*@
+
+@(Html.Awe().Grid(gridId)
+      .Mod(o => o.PageInfo().InlineEdit(Url.Action("Create", "Procedures"), Url.Action("Edit", "Procedures")))
+      .Url(Url.Action("GridGetItems", "Procedures"))
+      .Parent("txtSearchInl", "search")
+      .Height(350)
+      .Resizable()
+      .Reorderable()
+      .Attr("data-syncg", "procedure") // crud sync using signalr in site.js
+      .Columns(
+         new Column { Bind = "ProcedureID", Width = 70, Header = "ID" }.Mod(o => o.InlineId()),
+
+        new Column { Bind = "Test.Name", ClientFormat = ".(Test)", Header = "Test", Width=100 }
+        .Mod(o => o.Inline(Html.Awe().AjaxRadioList("TestID").Odropdown().DataFunc("utils.getItems(tests)"), "TestID")),
+
+        new Column { Bind = "Description", Width = 200 }
+        .Mod(o => o.Inline(Html.Awe().TextBox("Description"))),
+        new Column { Bind = "OriginalAmount", Width = 95, Header="Original TT" }
+        .Mod(o => o.Inline(Html.Awe().TextBox("OriginalAmount"))),
+        new Column { Bind = "AdjustedAmount", Width = 100, Header="Adjusted TT" }
+        .Mod(o => o.Inline(Html.Awe().TextBox("AdjustedAmount"))),
+        new Column { Bind = "Findings", Width = 95},
+        
+          new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 60 },
+          new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 65 }))
+@*end*@
+<br />

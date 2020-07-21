@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+@using DemoHms.Data
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext _context
+@{
+    string name = "";
+    if (User != null)
+    {
+        var email = User.Identity.Name;
+        if (!string.IsNullOrWhiteSpace(email))
+        {
+            var AppUser = _context.AppUsers.Include(h => h.Hospital).FirstOrDefault(a => a.Email == User.Identity.Name);
+            if (AppUser != null)
+            {
+                var hospital = _context.AppUsers.Include(h => h.Hospital).FirstOrDefault(a => a.Email == User.Identity.Name).Hospital;
+                if (hospital != null)
+                {
+                    name = hospital.Name;
+                }
+            }
+        }
+    }
+}
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hms</title>
+
+    @*<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Roboto" rel="stylesheet">*@
+    <link href="~/css/themes/mui/AwesomeMvc.css" rel="stylesheet" type="text/css" id="aweStyle" />
+    <link rel="stylesheet" href="~/css/site.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @*jquery needs to be at the top, for document.ready $(function(){ ... })*@
+</head>
+<body style="width:100%; background-color:cadetblue;">
+    <header style="margin:auto; width:100%;">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="background-color:cyan;width:100%">
+            <a class="nav-link" href="#" id="userDropdown" role="button" data-toggle="collapse" aria-haspopup="false" style="float:left">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="usersname" runat="server"></span>
+                <img class="img-profile rounded-circle" src="#">
+            </a>
+            <a class="navbar-brand" asp-area="" asp-page="/Index" style="text-align:left;margin-left:0px; float: left">@name</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <partial name="_LoginPartial" />
+            </div>
+           
+        </nav>
+    </header>
+    <div class="container" style="width:100%; background-color:brown; min-width:100%;">
+        <main role="main" class="pb-lg-5">
+            @RenderBody()
+        </main>
+    </div>
+
+    @*jquery-validate is not required*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+
+    @*install Bundler & Minifier vsx for the site.min.js to update on save*@
+    <script src="~/js/site.min.js"></script>
+
+    @*calling init after utils.js and validate.js*@
+    @Html.Awe().Init()
+
+    @*used in utils.init and sent on all post requests made by awe*@
+    @Html.AntiForgeryToken()
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js" async></script>
+    @RenderSection("Scripts", required: false)
+    @RenderSection("Styles", required: false)
+    @RenderSection("Styles1", required: false)
+    @RenderSection("Styles2", required: false)
+    @RenderSection("SignalSection", required: false)
+</body>
+</html>

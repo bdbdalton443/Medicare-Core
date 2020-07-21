@@ -1,0 +1,16 @@
+@using AweCoreDemo.Controllers.Awesome.MultiLookup
+@model AweCoreDemo.ViewModels.Input.MultiLookupDemoCfgInput
+<div class="efield">
+    <div class="elabel">
+        Pick some Meals:</div>
+    <div class="einput">
+        @*begin*@
+        @(Html.Awe().MultiLookupFor(o => o.Meals)
+              .Controller<MealsMultiLookupController>()
+              .ClearButton(Model.ClearButton)
+              .HighlightChange(Model.HighlightChange)
+              .DragAndDrop(Model.DragAndDrop)
+              .Fullscreen(Model.Fullscreen))
+        @*end*@
+    </div>
+</div>

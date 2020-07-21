@@ -1,0 +1,54 @@
+@model AweCoreDemo.ViewModels.Input.Settings.SettingsVal
+<div id="header">
+    <nav role="navigation" class="navmain">
+        <ul class="menu mainmenu">
+            <li style="margin: 0;">
+                <a href="@Url.Action("Index", "Home")" id="btnLogo">
+                    <i class="logo"></i>
+                </a>
+            </li>
+            <li>
+                <button type="button" id="btnMenuToggle" class="" style="margin-bottom: 5px;">
+                    <i class="iconGuide"></i>
+                    <i class="o-caret guideCaret"></i>
+                </button>
+            </li>
+            <li><a href="@Url.Action("Index", "Home", new {area = ""})">Home</a></li>
+            <li><a href="@Url.Action("About", "Home", new {area = ""})">About</a></li>
+        </ul>
+        <div class="stgpnl">
+            <div class="setting fmMenu"><input id="ddlFmw" type="hidden" value="https://demo.aspnetawesome.com" /></div>
+            <div class="setting">
+                <input type="hidden" id="chTheme" value="@Model.Theme" />
+            </div>
+            <div class="setting">
+                <input type="hidden" id="ddlDownloads" />
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </nav>
+</div>
+<script>
+    $(function() {
+        aweui.radioList({
+            id: 'chTheme',
+            dataFunc: site.getThemes,
+            odropdown: {
+                openOnHover: true,
+                inLabel: 'Theme: '
+            }
+        });
+
+        aweui.radioList({
+            id: 'ddlDownloads',
+            dataFunc: site.getDownloads,
+            menuDropdown: {
+                caption: 'Downloads',
+                autoSearch:false,
+                popupClass: 'downlMenu',
+                popupMaxHeight: 0,
+                openOnHover: true
+            }
+        });
+    });
+</script>

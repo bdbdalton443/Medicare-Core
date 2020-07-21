@@ -1,0 +1,37 @@
+﻿@page
+@model DemoHms.Pages.Patients.PatientTypes.Army.ArmyStatuses.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArmyStatus[0].Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ArmyStatus) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ArmyStatusID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ArmyStatusID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ArmyStatusID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

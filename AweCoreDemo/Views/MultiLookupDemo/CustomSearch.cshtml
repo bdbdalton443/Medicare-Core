@@ -1,0 +1,28 @@
+@model AweCoreDemo.ViewModels.Input.MultiLookupDemoCfgInput
+@{
+    ViewBag.Title = "MultiLookup with Custom Search Demo";
+}
+<h1>
+    MultiLookup Custom Search
+</h1>
+<div class="efield">
+    <div class="elabel">
+        Meals:
+    </div>
+    <div class="einput">
+        @*begin*@
+        @(Html.Awe().MultiLookup("MealsCustomSearch")
+            .CustomSearch())
+        @*end*@
+    </div>
+</div>
+<br />
+<div class="expl">
+    Custom search is achieved by setting <code>.CustomSearch(true)</code> and adding a <code>SearchForm</code> action in the Lookup controller which will render the custom SearchForm view
+</div>
+<br />
+<div class="tabs">
+    <div data-caption="view">@Html.Source("MultiLookupDemo/CustomSearch.cshtml")</div>
+    <div data-caption="controller">@Html.Csource("Awesome/MultiLookup/MealsCustomSearchMultiLookupController.cs")</div>
+    <div data-caption="SearchForm view">@Html.Source("MealsCustomSearchMultiLookup/SearchForm.cshtml")</div>
+</div>

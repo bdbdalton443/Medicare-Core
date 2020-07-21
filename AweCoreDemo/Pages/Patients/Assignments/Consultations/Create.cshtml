@@ -1,0 +1,86 @@
+﻿@page
+@model DemoHms.Pages.Patients.Assignments.Consultations.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Assignment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Assignment.Description" class="control-label"></label>
+                <input asp-for="Assignment.Description" class="form-control" />
+                <span asp-validation-for="Assignment.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Assignment.Emergency" /> @Html.DisplayNameFor(model => model.Assignment.Emergency)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.Recommendation" class="control-label"></label>
+                <input asp-for="Assignment.Recommendation" class="form-control" />
+                <span asp-validation-for="Assignment.Recommendation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.LastVisted" class="control-label"></label>
+                <input asp-for="Assignment.LastVisted" class="form-control" />
+                <span asp-validation-for="Assignment.LastVisted" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Assignment.Deleted" /> @Html.DisplayNameFor(model => model.Assignment.Deleted)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.Reported" class="control-label"></label>
+                <input asp-for="Assignment.Reported" class="form-control" />
+                <span asp-validation-for="Assignment.Reported" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.PatientID" class="control-label"></label>
+                <select asp-for="Assignment.PatientID" class ="form-control" asp-items="ViewBag.PatientID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.ReferralStatusID" class="control-label"></label>
+                <select asp-for="Assignment.ReferralStatusID" class ="form-control" asp-items="ViewBag.ReferralStatusID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.PatientTypeID" class="control-label"></label>
+                <select asp-for="Assignment.PatientTypeID" class ="form-control" asp-items="ViewBag.PatientTypeID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.DoctorID" class="control-label"></label>
+                <select asp-for="Assignment.DoctorID" class ="form-control" asp-items="ViewBag.DoctorID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.CreatedOn" class="control-label"></label>
+                <input asp-for="Assignment.CreatedOn" class="form-control" />
+                <span asp-validation-for="Assignment.CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.UpdatedOn" class="control-label"></label>
+                <input asp-for="Assignment.UpdatedOn" class="form-control" />
+                <span asp-validation-for="Assignment.UpdatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

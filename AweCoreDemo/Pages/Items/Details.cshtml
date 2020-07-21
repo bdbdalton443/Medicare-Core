@@ -1,0 +1,74 @@
+﻿@page
+@model DemoHms.Pages.Items.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Item</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Item.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Item.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Item.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Item.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Item.TradeName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Item.TradeName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Item.PackageName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Item.PackageName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Item.PackageDesc)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Item.PackageDesc)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Item.Manufacturer)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Item.Manufacturer)
+        </dd>       
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Item.ItemsPerPkg)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Item.ItemsPerPkg)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Item.Supplier)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Item.Supplier.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Item.ItemType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Item.ItemType.ItemTypeID)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Item.ItemID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

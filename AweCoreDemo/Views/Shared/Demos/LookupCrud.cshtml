@@ -1,0 +1,20 @@
+<h3 data-u="@Url.Action("Index","CrudInLookup")">Lookup with CRUD in Popup</h3>
+<div class="expl">using a grid with CRUD functionality in the lookup popup</div>
+<div class="efield">
+    <div class="elabel">
+        Lookup:
+    </div>
+    <div class="einput">@*begin*@
+        @(Html.Awe().Lookup("DinnerCrudLookup")
+              .Mod(o => o.ShowHeader())
+              .LookupGrid(Url.Action("DinnerLookup","CrudInLookup"))
+              .GetItemUrl(Url.Action("GetDinnerItem", "Data"))
+              .Modal()
+              .Fullscreen())
+            @*end*@
+    </div>
+</div>
+<div class="tabs code">
+    <div data-caption="view">@Html.Source("Shared/Demos/LookupCrud.cshtml")</div>
+    <div data-caption="dinner lookup view">@Html.Source("CrudInLookup/DinnerLookup.cshtml")</div>
+</div>

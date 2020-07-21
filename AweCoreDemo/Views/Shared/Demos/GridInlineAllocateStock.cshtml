@@ -1,0 +1,72 @@
+@using AweCoreDemo.Models
+@using DemoHms.Data
+@inject ApplicationDbContext _context
+@*<h2 data-u="@Url.Action("Index","GridInlineEditDemo")">Grid inline editing demo</h2>*@
+@*begin*@
+@{
+    var gridId = "allocateStockGrid";
+    //var initObj = new
+    //{
+    //    Name = DemoUtils.RndName(),
+    //    Date = DateTime.Now.ToShortDateString(),
+    //    ChefId = Db.Chefs.First().Id,
+    //    MealsIds = Db.Meals.Take(2).Select(o => o.Id).ToArray()
+    //};
+    //Db.IsLab = false;
+}
+<script>
+    var items = @Html.Raw(DemoUtils.Encode(_context.Items.Select(o => new KeyContent(o.ItemID, o.Name))));
+    var departments = @Html.Raw(DemoUtils.Encode(_context.Departments.Select(d => new KeyContent(d.DepartmentID, d.Name))));
+</script>
+@{
+    //var gridId = "gridStock";
+}
+@*<div class="form-group" id="stockGrid">*@
+
+    <div class="bar">
+        <div style="float: right;">
+            @Html.Awe().TextBox("txtSearchInl").Placeholder("search...").CssClass("searchtxt")
+        </div>
+        <button type="button" onclick="" class="awe-btn mbtn">Create</button>
+        @*<button type="button" onclick="$('#grdOpeningStk').data('api').inlineCreate()" class="awe-btn">Create</button>*@
+    </div>
+
+    @(Html.Awe()
+        .InitPopupForm()
+        .Name("delete" + gridId)
+        .Group(gridId)
+        .Url(Url.Action("Delete", "StockAllocation"))
+        .Success("utils.itemDeleted('" + gridId + "')")
+        .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+        .Height(200)
+        .Modal())
+
+    @(Html.Awe().Grid(gridId)
+          .Mod(o => o.PageInfo().InlineEdit(Url.Action("Create", "StockAllocation"), Url.Action("Edit", "StockAllocation")))
+          .Url(Url.Action("GridGetItems", "StockAllocation"))
+          .Parent("txtSearchInl", "search")
+          .Height(500)
+          .Resizable()
+          .Reorderable()
+          .Attr("data-syncg", "stock")
+        .Columns(
+            new Column { Bind = "StockID", Width = 70, Header = "ID" }
+            .Mod(o => o.InlineId()),
+
+            new Column { Bind = "Item.Name", ClientFormat = ".(Item)", Header = "Item" }
+            .Mod(o => o.Inline(Html.Awe().AjaxRadioList("ItemID").Odropdown().DataFunc("utils.getItems(items)"), "ItemID")),
+
+            new Column { Bind = "Quantity", Header = "Quantity" }
+            .Mod(o => o.Inline(Html.Awe().TextBox("Quantity"))),
+
+            new Column { Bind = "Department.Name", ClientFormat = ".(Department)", Header = "Department" }
+            .Mod(o => o.Inline(Html.Awe().AjaxRadioList("DepartmentID").Odropdown().DataFunc("utils.getItems(departments)").Enabled(false), "DepartmentID")),
+
+            new Column { Bind = "Description", Header = "Description" }
+            .Mod(o => o.Inline(Html.Awe().TextBox("Description"))),
+
+            new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+            new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 85 }))
+
+@*</div>*@
+<br />

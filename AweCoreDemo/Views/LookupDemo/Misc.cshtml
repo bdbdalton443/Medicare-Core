@@ -1,0 +1,120 @@
+@model AweCoreDemo.ViewModels.Input.LookupDemoInput
+
+@using AweCoreDemo.Controllers.Awesome.Lookup
+@using AweCoreDemo.Controllers.Awesome.MultiLookup
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "Lookup helper demo";
+}
+
+<div class="example">
+    <h3>Lookup Grid</h3>
+    <div class="efield">
+        <div class="elabel">
+            Meal:
+        </div>
+        <div class="einput">
+            @*begin*@
+            @(Html.Awe().LookupFor(o => o.MealCustomPopup)
+                        .LookupGrid(Url.Action("MealLookup"))
+                        .Controller("MealLookup"))
+            @*end*@
+        </div>
+    </div>
+
+    <br />
+    @(Html.Awe().Tabs().Add("description", @<text>
+        Lookup with grid inside the popup, done using the lookupgrid mod that also uses PopupUrl extension.</text>, "expl")
+                     .Add("view", Html.Source("LookupDemo/Misc.cshtml"))
+                     .Add("lookup controller", Html.Csource("Awesome/Lookup/MealLookupController.cs"))
+                     .Add("popup view", Html.Source("LookupDemo/MealLookup.cshtml")))
+</div>
+
+<div class="example">
+    <h3>Lookup with Custom Items template</h3>
+    <div class="efield">
+        <div class="elabel">
+            Meal:
+        </div>
+        <div class="einput">
+            @*beginci*@
+            @(Html.Awe().LookupFor(o => o.MealCustomItem)
+                  .CustomSearch())
+            @*endci*@
+        </div>
+    </div>
+    <br />
+    @(Html.Awe().Tabs().Add("description",
+        @<text>The Search action of the LookupController returns json of AjaxListResult,
+            we need to set the string AjaxListResult.Content instead of Items in order to achieve
+            Custom Item Template, exactly the same as for the AjaxList helper.</text>, "expl")
+                       .Add("view", Html.Source("LookupDemo/Misc.cshtml", "ci"))
+                       .Add("lookup controller", Html.Csource("Awesome/Lookup/MealCustomItemLookupController.cs"))
+                       .Add("search form view", Html.Source("MealCustomItemLookup/SearchForm.cshtml"))
+                       .Add("items view", Html.Source("MealCustomItemLookup/Items.cshtml")))
+</div>
+
+<div class="example">
+    <h3>Lookup bound to parents</h3>
+    @*beginbp*@
+    <div class="efield">
+        <div class="elabel">
+            Parent Categories:
+        </div>
+        <div class="einput">
+            @(Html.Awe().MultiLookupFor(o => o.CategoriesData)
+                  .Controller<CategoriesMultiLookupController>()
+                  .ClearButton())
+        </div>
+    </div>
+    <div class="efield">
+        <div class="elabel">
+            Parent Category:
+        </div>
+        <div class="einput">
+            @Html.Awe().AjaxDropdownFor(o => o.Category).Url(Url.Action("GetCategories", "Data"))
+        </div>
+    </div>
+    <div class="efield">
+        <div class="elabel">
+            Child Meal:
+        </div>
+        <div class="einput">
+            @(Html.Awe().LookupFor(o => o.ChildOfMany)
+                  .Parent(o => o.CategoriesData, "categories")
+                  .Parent(o => o.Category, "categories")
+                  .Controller<MealCustomSearchLookupController>())
+        </div>
+    </div>
+    @*endbp*@
+    <br />
+    @(Html.Awe().Tabs().Add("description",
+          @<text>Binding to parents and setting predefined parameters is done the same as for
+              the AjaxDropdown using .Parent() and .Parameter(), values are passed to both GetItem and Search actions.<br />
+              Unlike other controls the Lookup won't change its value when the value of the parent is changed.</text>, "expl")
+          .Add("view", Html.Source("LookupDemo/Misc.cshtml", "bp")))
+</div>
+
+<div class="example">
+    <h3>Setting predefinded parameters</h3>
+    @{
+        var cat0 = Db.Categories[0];
+        var cat1 = Db.Categories[1];
+    }
+    <div class="efield">
+        <div class="elabel">
+            Meal1 (categories = {@cat0.Name, @cat1.Name}):
+        </div>
+        <div class="einput">
+            @(Html.Awe().LookupFor(o => o.Meal2)
+                .Parameter("categories", new[] { cat0.Id })
+                .Controller<MealCustomSearchLookupController>()
+                .ParameterFunc("giveParams"))
+        </div>
+    </div>
+    <script>
+        function giveParams() {
+            return { categories: @(cat1.Id) };
+        }
+    </script>
+</div>

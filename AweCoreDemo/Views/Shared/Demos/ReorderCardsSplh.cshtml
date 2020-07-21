@@ -1,0 +1,59 @@
+<h2 data-u="@Url.Action("Index","DragAndDropDemo")">Sticky placeholder, drag reorder and drop while outside of the drop area </h2>
+<div class="expl">
+    Cards can be reordered using drag and drop, you can drag and drop the card while dragging outside and around of the drop area.<br />
+    Used for the multiselect to reorder selected items.
+</div>
+@*begin*@
+<script>
+    $(function () {
+        awem.dragReor({
+            from: $('#board0'),
+            to: 'body', // execute drop/hover over body
+            sel: '.mcard',
+            splh: 1, // sticky placeholder
+            gcon: function (cx) {
+                // get drop/hov container ( default was 'body' (to) )
+                return $('#board0');
+            }
+        });
+    });
+</script>
+
+<div class="board" id="board0">
+    <div class="mcard">
+        <div class="big">A</div>
+    </div>
+    <div class="mcard">
+        <div class="big">B</div>
+    </div>
+    <div class="mcard">
+        <div class="big">C</div>
+    </div>
+
+    <div class="mcard">
+        <div class="big">X</div>
+    </div>
+    <div class="mcard">
+        <div class="big">Y</div>
+    </div>
+    <div class="mcard">
+        <div class="big">Z</div>
+    </div>
+</div>
+
+<style>
+    #board0 {
+        max-width: 26em;
+    }
+
+    .mcard.o-plh {
+        background: #f8da4e !important;
+        color: #915608 !important;
+    }
+</style>
+@*end*@
+<div class="code">
+    <div data-caption="view">
+@Html.Source("Shared/Demos/ReorderCardsSplh.cshtml")
+    </div>
+</div>

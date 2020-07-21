@@ -1,0 +1,28 @@
+@model AweCoreDemo.ViewModels.Input.RestaurantInput
+@using (Html.Awe().BeginContext())
+{
+    var gridId = "AddressesGrid";
+    using (Html.BeginForm())
+    {
+        @Html.EditorFor(o => o.Id)
+        @Html.EditorFor(o => o.Name)
+    }
+
+    @Html.InitCrudPopupsForGrid(gridId, "AddressesGridCrud", 230)
+    
+    <div class="bar">
+        @Html.CreateButtonForGrid(gridId, new { restaurantId = Model.Id}, "Add address")
+    </div>
+    <div>
+        @(Html.Awe().Grid(gridId).Url(Url.Action("GridGetItems", "AddressesGridCrud"))
+              .Parameter("restaurantId", Model.Id)
+              .Attr("data-syncg","addr")
+              .Height(230)
+              .Groupable(false)
+              .Columns(
+                  new Column { Bind = "Line1,Line2", ClientFormat = ".(Line1) .(Line2)", Header = "Address" },
+                  new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef" },
+                  new Column { ClientFormat = Html.EditFormatForGrid(gridId), Width = 52 },
+                  new Column { ClientFormat = Html.DeleteFormatForGrid(gridId), Width = 52 }))
+    </div>
+}

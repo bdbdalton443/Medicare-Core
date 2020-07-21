@@ -1,0 +1,50 @@
+@{
+    ViewBag.Title = "Init Call";
+}
+<h1>Init Call</h1>
+<br />
+@*begin*@
+@Html.Awe().InitCall("callHi").Url(Url.Action("SayHi")).Success("echo")
+@Html.Awe().InitCall("callName").Url(Url.Action("SayName")).Parent("txtName", "name").Success("echo")
+@Html.Awe().InitCall("callName2").Url(Url.Action("SayName")).Parent("txtName", "name")
+
+<p>
+    <button type="button" class="awe-btn" onclick="awe.oc('callHi')">Click to call</button>
+</p>
+<p>
+    <button type="button" class="awe-btn" onclick="awe.oc('callName', { params: { id: 15 } })">Call with parameters</button>
+    <button type="button" class="awe-btn foo">Call 2</button>
+</p>
+
+@Html.Awe().TextBox("txtName").Placeholder("write a name here").Value("Art Vandelay")
+
+<script>
+    function echo(res) {
+        awe.flash(awem.notif(res));
+    }
+
+    $(function() {
+        $(document).on('click', '.foo', function() {
+            var btn = $(this);
+            var xhr = awe.oc('callName2', { params: { id: 20 } });
+
+            $.when(xhr).done(function(res) {
+                var msg = $('<span> ' + res + '</span>');
+                btn.after(msg);
+                awe.flash(msg);
+                setTimeout(function () {
+                    msg.fadeOut(function () { msg.remove(); });
+                }, 1000);
+            });
+        });
+    });
+</script>
+@*end*@
+<br />
+<br />
+
+@(Html.Awe().Tabs().Add("description", @<text>
+The InitCall html helper initiates a server call that can be executed using <code>awe.oc(name, opt)</code> js function,
+            similar to awe.open(name, opt) used for opening popups.</text>, "expl")
+        .Add("view", Html.Source("CallDemo/Index.cshtml"))
+        .Add("controller", Html.Code("Demos/Helpers/CallDemoController.cs")))

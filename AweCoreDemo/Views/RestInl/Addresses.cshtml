@@ -1,0 +1,27 @@
+@{
+    var restId = ViewData["Id"];
+    var gridId = "AddrGrid-" + restId;
+}
+
+@Html.InitDeletePopupForGrid(gridId, "AddressesGridCrud")
+
+<div style="padding: .5em;">
+    <div class="bar">
+        <button type="button" class="awe-btn mbtn" onclick="$('#@gridId').data('api').inlineCreate()">Create</button>
+    </div>
+    @(Html.Awe().Grid(gridId)
+          .Url(Url.Action("GridGetItems", "AddressesGridCrud"))
+          .Mod(o => o.InlineEdit(Url.Action("Create", "AddrInlGrid"), Url.Action("Edit", "AddrInlGrid"), rowClickEdit:true))
+          .Parameter("restaurantId", restId)
+          .Attr("data-syncg", "addr")
+          .Height(200)
+          .Groupable(false)
+          .Columns(
+              new Column { Bind = "Id", Hidden = true }.Mod(o => o.InlineReadonly()),
+              new Column { Bind = "Line1", ClientFormat = ".(Line1)", Header = "Line 1" }
+                .Mod(o => o.Inline(Html.Awe().TextBox("Line1"))),
+              new Column { Bind = "Line2", ClientFormat = ".(Line2)", Header = "Line 2" }
+                .Mod(o => o.Inline(Html.Awe().TextBox("Line2"))),
+              new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+              new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 80 }))
+</div>

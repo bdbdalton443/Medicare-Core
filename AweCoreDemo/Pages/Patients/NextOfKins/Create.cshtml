@@ -1,0 +1,96 @@
+﻿@page
+@model AweCoreDemo.Pages.Patients.NextOfKins.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>NextOfKin</h4>
+<hr />
+<div style="margin-left:6px;">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-4">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="NextOfKin.FirstName" class="control-label"></label>
+                    <input asp-for="NextOfKin.FirstName" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NextOfKin.MiddleName" class="control-label"></label>
+                    <input asp-for="NextOfKin.MiddleName" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.MiddleName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NextOfKin.LastName" class="control-label"></label>
+                    <input asp-for="NextOfKin.LastName" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NextOfKin.Gender" class="control-label"></label>
+                    <input asp-for="NextOfKin.Gender" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NextOfKin.Country" class="control-label"></label>
+                    <input asp-for="NextOfKin.Country" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.Country" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NextOfKin.Email" class="control-label"></label>
+                    <input asp-for="NextOfKin.Email" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="NextOfKin.DOB" class="control-label"></label>
+                    <input asp-for="NextOfKin.DOB" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.DOB" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NextOfKin.Address" class="control-label"></label>
+                    <input asp-for="NextOfKin.Address" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NextOfKin.Tel" class="control-label"></label>
+                    <input asp-for="NextOfKin.Tel" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.Tel" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NextOfKin.Occupation" class="control-label"></label>
+                    <input asp-for="NextOfKin.Occupation" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.Occupation" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="NextOfKin.City" class="control-label"></label>
+                    <input asp-for="NextOfKin.City" class="form-control-sm" style="width:100%; border-radius:6px" />
+                    <span asp-validation-for="NextOfKin.City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NextOfKin.NOKRelationshipID" class="control-label"></label>
+                    <select asp-for="NextOfKin.NOKRelationshipID" class="form-control" asp-items="ViewBag.NOKRelationshipID"></select>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

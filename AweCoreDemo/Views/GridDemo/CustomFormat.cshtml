@@ -1,0 +1,125 @@
+@{
+    ViewBag.Title = "Grid Custom Formatting";
+}
+<h1>Grid Custom Formatting</h1>
+@*begin*@
+@{
+    var btnFormat = Html.Awe().Button()
+            .Text("details")
+            .CssClass("o-pad")
+            .OnClick(Html.Awe().OpenPopup("details")
+            .Params(new { id = ".(Id)" }))
+            .ToString();
+
+    var linkFormat = "<a href='" + Url.Action("OpenDetails", "GridDemo", new { id = ".(Id)" }) + "'>open</a>";
+}
+
+@(Html.Awe().Grid("CustomFormatGrid")
+        .Url(Url.Action("CustomFormatGrid", "GridDemo"))
+        .Mod(o => o.ColumnsSelector())
+        .Persistence(Persistence.Session)
+        .Height(350)
+        .RowClassClientFormat(".(RowClass)")
+        .Columns(
+        new Column { Bind = "Person", ClientFormat = ".(Person) was at .(Location)", HeaderCssClass = "boldh" },
+        new Column { Bind = "Food", ClientFormat = ".(Food)", CssClass = "bluev" },
+        new Column { Bind = "Price", ClientFormatFunc = "formatPrice", Width = 100 },
+        new Column { Bind = "Organic", ClientFormatFunc = "toggle", Width = 90 },
+        new Column { Bind = "Date", CssClass = "bgdate" },
+        new Column { ClientFormatFunc = "useTemplate('template1')" },
+        new Column { ClientFormat = linkFormat, Width = 90, CssClass = "center" },
+        new Column { ClientFormat = btnFormat, Width = 90 }))
+
+@Html.Awe().InitPopup().Name("details").Url(Url.Action("Details", "GridDemo")).Mod(o => o.Dropdown()).Modal()
+
+@{
+    var orgFormat = Html.Awe().CheckBox("org")
+                .Prefix(".(Id)")
+                .Otoggl(cssClass: ".(Chked)")
+                .Svalue(".(Organic)")
+                .Enabled(false)
+                .ToString();
+}
+
+<script type="text/javascript">
+    function toggle(lunch) {
+        var str = @Html.Raw(DemoUtils.Encode(orgFormat));
+        var chkd = lunch.Organic ? 'o-chked' : '';
+
+        str = str.split('.(Id)').join(lunch.Id).split('.(Organic)').join(lunch.Organic).split('.(Chked)').join(chkd);
+        return str;
+    }
+
+    function formatPrice(lunch, prop) {
+        var color = 'navy';
+        var price = lunch[prop];
+        if (price < 20) color = 'green';
+        if (price > 50) color = 'red';
+        return "<div style='color:" + color + ";text-width:bold;'>" + price + " &pound; </div>";
+    }
+
+    function useTemplate(id) {
+        return function (model) {
+            var str = $('#' + id).html();
+            for (var name in model) {
+                var val = model[name];
+                if (val == null) val = '';
+                str = str.replace(".(" + name + ")", val);
+            }
+            return str;
+        };
+    }
+</script>
+<style>
+    .date1 .bgdate {
+        background: #efd2e8;
+    }
+
+    .boldh .awe-col, .boldh {
+        color: navy;
+    }
+
+    .bluev {
+        color: blueviolet;
+    }
+
+    .pinkb {
+        background: pink !important;
+        color: black;
+    }
+
+    .greenb {
+        background: #f0f9f7 !important;
+        color: black;
+    }
+
+    .awe-grid .pinkb a, .awe-grid .greenb a {
+        color: blue;
+    }
+</style>
+<div id="template1" style="display: none">
+    .(Person) spent .(Price) &pound;
+</div>
+@*end*@
+<br />
+
+@(Html.Awe().Tabs().Add("description",
+    @<text>Cell values can be evaluated on the client side using templates and js functions or on the server side using Map and setting a custom value (as shown here for the Date column).
+        The group header value can also be set on the server side, same applies for the footer.<br />
+        <br />
+        <ul>
+            <li>
+                <code>Column.ClientFormat</code> - Client format for the column defined as a string using <code>.(ModelPropertyName)</code> for including values of the row model.
+            </li>
+            <li>
+                <code>Column.ClientFormatFunc</code> - Defines the Name of a javascript function that will receive as a parameter the model (or mapped model) of the grid row and must return a string
+                which will be used a value for the cell. The result of the javascript function will not be encoded.
+            </li>
+            <li>
+                <code>RowClassClientFormat</code> - used to set a css class to grid rows
+            </li>
+        </ul></text>, "expl")
+          .Add("view", Html.Source("GridDemo/CustomFormat.cshtml"))
+          .Add("controller", Html.Csource("Demos/Grid/GridDemoController.cs", "format"))
+          .Add("popup view", Html.Source("GridDemo/Details.cshtml"))
+          .Add("open view", Html.Source("GridDemo/OpenDetails.cshtml")))

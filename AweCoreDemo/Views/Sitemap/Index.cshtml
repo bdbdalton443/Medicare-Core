@@ -1,0 +1,29 @@
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "Sitemap";
+}
+<h2>All demos</h2>
+<div id="sitemap">
+    @{ foreach (var root in MySiteMap.GetAll().Where(o => o.Parent == null))
+       { 
+        <div class="mgroup">
+            @await Html.PartialAsync("parent", root)
+        </div>
+       } 
+    }
+</div>
+
+<style>
+    #sitemap li
+    {
+        list-style: none;
+        padding: 5px 0;
+    }
+
+    .mgroup
+    {
+        float: left;
+        vertical-align: top;
+        margin: 10px;
+    }
+</style>

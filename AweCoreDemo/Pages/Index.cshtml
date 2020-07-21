@@ -1,0 +1,120 @@
+﻿@page
+@model AweRazorPages.IndexModel
+@{
+    ViewData["Title"] = "Default page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<div>
+    <a href="@Url.Page("Page1")">send ajax requests to page handlers demo</a> |
+    <a href="@Url.Action("Index", "Home")">Grid Inline Edit Demo</a>
+</div>*@
+    <div id="system"></div>
+<div class="row" style="margin:0px 0px 0px 0px;">
+    <div class="col-md-2">
+        <section>
+            
+        </section>
+    </div>
+    <div class="col-md-8">
+        <section>
+            
+            <div class="login-card">
+                <img src="~/img/hms.png" class="profile-img-card" style="width:150px;
+  height:150px;margin:auto;border-radius:6px;" />
+                <p class="profile-name-card"></p>
+                <form id="account" method="post">
+                    <hr />
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Input.Email"></label>
+                        <input asp-for="Input.Email" class="form-control" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Password"></label>
+                        <input asp-for="Input.Password" class="form-control" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label asp-for="Input.RememberMe">
+                                <input asp-for="Input.RememberMe" />
+                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Log in</button>
+                    </div>
+                    <div class="form-group">
+                        <p>
+                            <a id="forgot-password" asp-page="./Areas/Pages/Account/ForgotPassword">Forgot your password?</a>
+                        </p>
+                        @*<p>
+                        <button type="submit" asp-page-handler="SendVerificationEmail" class="btn-link" style="padding:0px;margin:0px;border:0px">Resend email confirmation</button>
+                    </p>*@
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-2">
+        <section></section>
+    </div>
+    @*<div class="col-md-6 col-md-offset-2">
+            <section>
+                <h4>Use another service to log in.</h4>
+                <hr />
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        <div>
+                            <p>
+                                There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                                for details on setting up this ASP.NET application to support logging in via external services.
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in Model.ExternalLogins)
+                                    {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
+                }
+            </section>
+        </div>*@
+</div>
+
+<script>
+    import React from "react"
+    import ReactDOM from "react-dom"
+
+    ReactDOM.render(<h1>Hospital Management</h1>, document.getElementById("system"))
+</script>
+@section Scripts {
+    <script>
+        import React from "react"
+        import ReactDOM from "react-dom"
+
+        ReactDOM.render(<h1>Hospital Management</h1>, document.getElementById("system"))
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
+@section Styles {
+    <link href="@Url.Content("~/css/Google-Style-Login.css")" rel="stylesheet" type="text/css" />
+}
+@section Styles1 {
+    <link href="@Url.Content("~/css/sb-admin-2.min.css")" rel="stylesheet" type="text/css" />
+}
+@section Styles2 {
+    <link href="@Url.Content("~/css/all.min.css")" rel="stylesheet" type="text/css" />
+}

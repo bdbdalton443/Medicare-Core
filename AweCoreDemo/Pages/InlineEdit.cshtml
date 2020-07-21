@@ -1,0 +1,76 @@
+﻿@page
+@using AweCoreDemo.Models
+@using AweCoreDemo.Utils
+@model AweRazorPages.Pages.InlineEditModel
+@{
+    ViewData["Title"] = "InlineEdit";
+     Layout = "~/Pages/Shared/_Home.cshtml";
+}
+
+<h1>Grid Inline Edit</h1>
+<a href="@Url.Page("Index")">Back to main page</a>
+<br />
+<br />
+<script>
+    var meals = @Html.Raw(DemoUtils.Encode(Db.Meals.Select(o => new KeyContent(o.Id, o.Name))));
+</script>
+@{
+    var gridId = "DinnersInlineCrudGrid";
+}
+<div class="bar">
+    <div style="float: right;">
+        @Html.Awe().TextBox("txtSearchInl").Placeholder("search...").CssClass("searchtxt")
+    </div>
+    <button type="button" onclick="$('#@gridId').data('api').inlineCreate()" class="awe-btn">Create</button>
+</div>
+
+@(Html.Awe()
+    .InitPopupForm()
+    .Name("delete" + gridId)
+    .Group(gridId)
+    .Url(Url.Page("", "Delete"))
+    .Success("utils.itemDeleted('" + gridId + "')")
+    .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+    .Height(200)
+    .Modal())
+
+@(Html.Awe().Grid(gridId)
+      .Mod(o => o.PageInfo().InlineEdit(Url.Page("", "Create"), Url.Page("", "Edit")))
+      .Url(Url.Page("", "GridGetItems"))
+      .Parent("txtSearchInl", "search")
+      .Height(350)
+      .Resizable()
+      .Reorderable()
+    .Columns(
+          new Column { Bind = "Id", Width = 75 }
+          .Mod(o => o.InlineId()),
+
+          new Column { Bind = "Name" }
+            .Mod(o => o.Inline(Html.Awe().TextBox("Name"))),
+
+          new Column { Bind = "Date", Width = 160 }
+            .Mod(o => o.Inline(Html.Awe().DatePicker("Date").ReadonlyInput().ChangeYear().ChangeMonth())),
+
+          new Column { Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".(ChefName)", Header = "Chef", MinWidth = 170 }
+            .Mod(o => o.Inline(Html.Awe().Lookup("Chef").Controller("ChefLookup"), "ChefId")),
+
+          new Column { ClientFormat = ".(Meals)", Header = "Meals", MinWidth = 250 }
+            .Mod(o => o.Inline(Html.Awe().AjaxCheckboxList("Meals").Multiselect().DataFunc("utils.getItems(meals)"), "MealsIds")),
+
+          new Column { Bind = "BonusMeal.Name", ClientFormat = ".(BonusMeal)", Header = "Bonus Meal" }
+            .Mod(o => o.Inline(Html.Awe().AjaxRadioList("BonusMealId").Odropdown().DataFunc("utils.getItems(meals)"), "BonusMealId")),
+
+          new Column { Bind = "Organic", Width = 90, ClientFormat = ".(DispOrganic)" }
+            .Mod(o => o.Inline(Html.Awe().CheckBox("Organic").Otoggl())),
+
+          new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+        new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 85 }))
+<br />
+<br />
+<br />
+<div class="expl">
+    grid inline editing, using razor pages to handle the ajax requests instead of mvc
+</div>
+<br />
+<br />
+<br />

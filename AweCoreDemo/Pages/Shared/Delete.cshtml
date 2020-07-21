@@ -1,0 +1,9 @@
+@model AweCoreDemo.ViewModels.Input.DeleteConfirmInput
+<div style="padding: 0 3em;">
+    @using (Html.BeginForm())
+    {
+    }
+    Are you sure you want to delete @Model.Type <b>@Model.Name</b> ?
+    @*used by the popupform .OnLoad func*@
+    <input type="hidden" name="key" value="@(Model.Id)"/>
+</div>

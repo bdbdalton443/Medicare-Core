@@ -1,0 +1,86 @@
+﻿@page
+@model DemoHms.Pages.HospitalEntity.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/Shared/_Root.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Hospital</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Hospital.HospitalID" />
+            <div class="form-group">
+                <label asp-for="Hospital.Name" class="control-label"></label>
+                <input asp-for="Hospital.Name" class="form-control" />
+                <span asp-validation-for="Hospital.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hospital.Location" class="control-label"></label>
+                <input asp-for="Hospital.Location" class="form-control" />
+                <span asp-validation-for="Hospital.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hospital.ContactNumber" class="control-label"></label>
+                <input asp-for="Hospital.ContactNumber" class="form-control" />
+                <span asp-validation-for="Hospital.ContactNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hospital.BoxNumber" class="control-label"></label>
+                <input asp-for="Hospital.BoxNumber" class="form-control" />
+                <span asp-validation-for="Hospital.BoxNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hospital.Email" class="control-label"></label>
+                <input asp-for="Hospital.Email" class="form-control" />
+                <span asp-validation-for="Hospital.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hospital.ContractLength" class="control-label"></label>
+                <input asp-for="Hospital.ContractLength" class="form-control" />
+                <span asp-validation-for="Hospital.ContractLength" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hospital.Color" class="control-label"></label>
+                <input type="color" asp-for="Hospital.Color" class="form-control" />
+                <span asp-validation-for="Hospital.Color" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hospital.StatusID" class="control-label"></label>
+                <select asp-for="Hospital.StatusID" class="form-control" asp-items="ViewBag.StatusID"></select>
+                <span asp-validation-for="Hospital.StatusID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hospital.EntityTypeID" class="control-label"></label>
+                <select asp-for="Hospital.EntityTypeID" class="form-control" asp-items="ViewBag.EntityTypeID"></select>
+                <span asp-validation-for="Hospital.EntityTypeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hospital.CreatedOn" class="control-label"></label>
+                <input asp-for="Hospital.CreatedOn" class="form-control" />
+                <span asp-validation-for="Hospital.CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hospital.UpdatedOn" class="control-label"></label>
+                <input asp-for="Hospital.UpdatedOn" class="form-control" />
+                <span asp-validation-for="Hospital.UpdatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

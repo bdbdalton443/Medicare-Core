@@ -1,0 +1,169 @@
+@using AweCoreDemo.Models
+@{
+    ViewBag.Title = "Editor controls disabled state";
+}
+<script>
+    var categories = @Html.Raw(DemoUtils.Encode(Db.Categories.Select(o => new KeyContent(o.Id, o.Name))));
+</script>
+<h1>Disabled editor controls</h1>
+@*begin*@
+<div id="disbDemo">
+    <div class="example">
+        <h3>Lookup</h3>
+        @(Html.Awe().Lookup("lkp")
+          .Controller("MealLookup")
+          .Value(Db.Meals[0].Id)
+          .ClearButton()
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h3>MultiLookup</h3>
+        @(Html.Awe().MultiLookup("mlkp")
+          .Controller("MealsMultiLookup")
+          .Value(new[] { Db.Meals[0].Id, Db.Meals[1].Id })
+          .ClearButton()
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h2>AjaxDropdown</h2>
+
+        @(Html.Awe().AjaxDropdown("add")
+          .DataFunc("utils.getItems(categories)")
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h2>AjaxRadioList</h2>
+
+        @(Html.Awe().AjaxRadioList("arl")
+          .DataFunc("utils.getItems(categories)")
+          .Value(Db.Categories[1].Id)
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h2>AjaxCheckboxList</h2>
+
+        @(Html.Awe().AjaxCheckboxList("achkl")
+          .DataFunc("utils.getItems(categories)")
+          .Value(new[] { Db.Categories[0].Id, Db.Categories[1].Id })
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h2>AjaxRadioList Ochk</h2>
+
+        @(Html.Awe().AjaxRadioList("arlOchk")
+          .DataFunc("utils.getItems(categories)")
+          .Ochk()
+          .Value(Db.Categories[1].Id)
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h2>AjaxCheckBoxList Ochk</h2>
+
+        @(Html.Awe().AjaxCheckboxList("aclOchk")
+          .DataFunc("utils.getItems(categories)")
+          .Ochk()
+          .Value(Db.Categories[1].Id)
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h2>Odropdown</h2>
+
+        @(Html.Awe().AjaxRadioList("odd")
+          .Odropdown()
+          .DataFunc("utils.getItems(categories)")
+          .Value(Db.Categories[1].Id)
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h2>Combobox</h2>
+
+        @(Html.Awe().AjaxRadioList("combo")
+          .Combobox()
+          .Url(Url.Action("GetCategories", "Data"))
+          .Value(Db.Categories[1].Id)
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h2>Multiselect</h2>
+
+        @(Html.Awe().AjaxCheckboxList("multi")
+          .Multiselect()
+          .DataFunc("utils.getItems(categories)")
+          .Value(new[] { Db.Categories[0].Id, Db.Categories[1].Id })
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h2>Buttongroup</h2>
+
+        @(Html.Awe().AjaxRadioList("btng")
+          .ButtonGroup()
+          .DataFunc("utils.getItems(categories)")
+          .Value(Db.Categories[1].Id)
+          .Enabled(false))
+    </div>
+
+    <div class="example">
+        <h2>DatePicker</h2>
+        @Html.Awe().DatePicker("dtp").Enabled(false).ClearButton().Value(DateTime.Now)
+    </div>
+
+    <div class="example">
+        <h2>TextBox</h2>
+        @Html.Awe().TextBox("txt1").Enabled(false).Numeric().Value(123)
+    </div>
+
+    <div class="example">
+        <h2>Autocomplete</h2>
+        @(Html.Awe().Autocomplete("autoc1")
+              .Enabled(false)
+              .Value("Mango")
+              .Url(Url.Action("GetItems", "MealAutocomplete")))
+    </div>
+
+    <div class="example">
+        <div class="efield">
+            <label>
+                @Html.Awe().CheckBox("chk7").Otoggl().Enabled(false).Value(true)
+                <span class="o-con">Otoggl</span>
+            </label>
+        </div>
+        <div class="efield">
+            <label>
+                @Html.Awe().CheckBox("chk2").Ochk(false).Enabled(false).Value(true)
+                <span class="o-con">Checkbox</span>
+            </label>
+        </div>
+        <div class="efield">
+            <label>
+                @Html.Awe().CheckBox("chk4").Enabled(false).Value(true)
+                <span class="o-con">Ochk</span>
+            </label>
+        </div>
+        <div class="efield">
+            @Html.Awe().Button().Text("disabled").Enabled(false)
+        </div>
+        <div class="efield">
+            <button type="button" class="awe-btn" onclick="toggleEnable()">toggle enable all editors on page</button>
+        </div>
+        <script>
+            function toggleEnable() {
+                $('#disbDemo .awe-val').each(function () {
+                    var o = $(this).data('o');
+                    o.api.enable(!o.enb);
+                });
+            }
+        </script>
+    </div>
+</div>
+@*end*@
+@Html.Source("Disabled/Index.cshtml", null, true)

@@ -1,0 +1,172 @@
+﻿@page
+@using AweCoreDemo.Utils
+@using DemoHms.Data
+@using AweCoreDemo.Models
+@inject ApplicationDbContext  _context
+@model AweCoreDemo.Pages.Lab.Examinations.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+@{
+    Db.IsLab = true;
+}
+
+<h1>Edit</h1>
+
+<h4>Examination</h4>
+<hr />
+<div class="row">
+    <div class="col-md-11" style="margin:auto;">
+        <div class="card shadow mb-12">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">New Item Details</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink14">
+                        <div class="dropdown-header">Actions:</div>
+                        <a class="dropdown-item" href="#">Reset Form</a>
+                        <a class="dropdown-item" href="#">Save</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form method="post">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="Examination.ExaminationID" />
+                                        <div class="form-group">
+                                            <label asp-for="Examination.Description" class="control-label"></label>
+                                            <input asp-for="Examination.Description" class="form-control" disabled />
+                                            <span asp-validation-for="Examination.Description" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Examination.Code" class="control-label"></label>
+                                            <input asp-for="Examination.Code" class="form-control" disabled />
+                                            <span asp-validation-for="Examination.Code" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Examination.Findings" class="control-label"></label>
+                                            <textarea asp-for="Examination.Findings" class="form-control"></textarea>
+                                            <span asp-validation-for="Examination.Findings" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Examination.ExaminationStatusID" class="control-label"></label>
+                                            <select asp-for="Examination.ExaminationStatusID" class="form-control" asp-items="ViewBag.ExaminationStatusID"></select>
+                                            <span asp-validation-for="Examination.ExaminationStatusID" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Examination.BillStatusID" class="control-label"></label>
+                                            <select asp-for="Examination.BillStatusID" class="form-control" asp-items="ViewBag.BillStatusID"></select>
+                                            <span asp-validation-for="Examination.BillStatusID" class="text-danger"></span>
+                                        </div>
+                                        @*<div class="form-group">
+                                            <label asp-for="Examination.AssignmentID" class="control-label"></label>
+                                            <select asp-for="Examination.AssignmentID" class="form-control disabled" asp-items="ViewBag.AssignmentID"></select>
+                                            <span asp-validation-for="Examination.AssignmentID" class="text-danger"></span>
+                                        </div>*@
+                                        <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-primary" />
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-8">
+                                    @{
+                                        var gridId = "DinnersInlineCrudGrid";
+                                    }
+                                    <script>
+                                        var tests = @Html.Raw(DemoUtils.Encode(_context.Tests.Select(o => new KeyContent(o.TestID, o.Name))));
+                                        var statuses =@Html.Raw(DemoUtils.Encode(_context.ExaminationStatuses.Select(e=>new KeyContent(e.ExaminationStatusID,e.Name))))
+                                    </script>
+                                    <div class="bar">
+                                        <div style="float: right;">
+                                            @Html.Awe().TextBox("txtSearchInl").Placeholder("search...").CssClass("searchtxt")
+                                        </div>
+                                        <button type="button" onclick="" class="awe-btn mbtn">Create</button>
+                                    </div>
+                                    @(Html.Awe()
+                                            .InitPopupForm()
+                                            .Name("delete" + gridId)
+                                            .Group(gridId)
+                                            .Url(Url.Action("Delete", "Procedures"))
+                                            .Success("utils.itemDeleted('" + gridId + "')")
+                                            .OnLoad("utils.delConfirmLoad('" + gridId + "')") // calls grid.api.select and animates the row
+                                            .Height(200)
+                                            .Modal())
+                                    @*@Html.InitDeletePopupForGrid(gridId, "GridInlineEditDemo")*@
+
+                                    @(Html.Awe().Grid(gridId)
+                                          .Mod(o => o.PageInfo().InlineEdit(Url.Action("Create", "Procedures"), Url.Action("Edit", "Procedures")))
+                                          .Url(Url.Action("GridGetItems", "Procedures"))
+                                          .Parent("txtSearchInl", "search")
+                                          .Height(350)
+                                          .Resizable()
+                                          .Reorderable()
+                                          .Attr("data-syncg", "procedure") // crud sync using signalr in site.js
+                                          .Columns(
+                                             new Column { Bind = "ProcedureID", Width = 70, Header = "ID" }.Mod(o => o.InlineId()),
+
+                                            new Column { Bind = "Test.Name", ClientFormat = ".(Test)", Header = "Test" }
+                                                .Mod(o => o.Inline(Html.Awe().AjaxRadioList("TestID").Odropdown().DataFunc("utils.getItems(tests)").Enabled(false), "TestID")),
+
+                                            new Column { Bind = "Description", Width = 200 }
+                                            .Mod(o => o.Inline(Html.Awe().TextBox("Description").Enabled(false))),
+
+                                            new Column { Bind = "Findings", Width = 400 }
+                                            .Mod(o => o.Inline(Html.Awe().TextBox("Findings"))),
+
+                                             new Column { Bind = "ExaminationStatus.Name", ClientFormat = ".(ExaminationStatus)", Header = "Status" }
+                                                .Mod(o => o.Inline(Html.Awe().AjaxRadioList("ExaminationStatusID").Odropdown().DataFunc("utils.getItems(statuses)").Enabled(true), "ExaminationStatusID")),
+
+                                              new Column { ClientFormat = GridUtils.InlineEditFormat(), Width = 80 },
+                                              new Column { ClientFormat = Html.InlineDeleteFormatForGrid(gridId), Width = 85 }))
+                                    @*end*@
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @*<script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/syncHub").build();//new signalR.HubConnection("/syncHub", { transport: signalR.TransportType.LongPolling });
+
+        connection.on("ReceiveMessage", function (message) {
+            alert('Sent message: ' + message);
+            //document.getElementById("DisplayMessages").innerText = message;
+        });
+
+        connection.start().then(() => connection.invoke('SendMessage', 'Listening'));
+
+        function sendMessage() {
+            var msg = "Messages";//document.getElementById("txtMessage").value;
+            connection.invoke("SendMessage", msg).catch(err => console.error(err));
+        }
+    </script>*@
+
+}
